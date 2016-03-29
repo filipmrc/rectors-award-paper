@@ -1,0 +1,44 @@
+\select@language {croatian}
+\contentsline {chapter}{\numberline {1}Uvod}{1}
+\contentsline {section}{\numberline {1.1}Op\IeC {\'c}i i specifi\IeC {\v c}ni ciljevi rada}{2}
+\contentsline {chapter}{\numberline {2}Izvedba}{3}
+\contentsline {section}{\numberline {2.1}Interpretacija pokreta}{3}
+\contentsline {section}{\numberline {2.2}Struktura sustava upravljanja}{4}
+\contentsline {subsection}{\numberline {2.2.1}Detektor}{5}
+\contentsline {subsection}{\numberline {2.2.2}Regulator}{5}
+\contentsline {subsection}{\numberline {2.2.3}API su\IeC {\v c}elje}{6}
+\contentsline {subsection}{\numberline {2.2.4}Manipulator}{6}
+\contentsline {chapter}{\numberline {3}Sklopovska podr\IeC {\v s}ka}{7}
+\contentsline {section}{\numberline {3.1}Microsoft Kinect 3d kamera}{7}
+\contentsline {section}{\numberline {3.2}Kinova Jaco robotska ruka}{7}
+\contentsline {subsection}{\numberline {3.2.1}Tehni\IeC {\v c}ke specifikacije}{7}
+\contentsline {subsubsection}{Op\IeC {\'c}e specifikacije}{8}
+\contentsline {subsubsection}{Aktuatori}{8}
+\contentsline {subsubsection}{Senzori}{8}
+\contentsline {subsection}{\numberline {3.2.2}Ra\IeC {\v c}unalno su\IeC {\v c}elje}{11}
+\contentsline {chapter}{\numberline {4}Programska podr\IeC {\v s}ka}{12}
+\contentsline {section}{\numberline {4.1}ROS}{12}
+\contentsline {subsection}{\numberline {4.1.1}Osnovni koncepti}{13}
+\contentsline {subsection}{\numberline {4.1.2}Ostale kori\IeC {\v s}tene funkcionalnosti}{14}
+\contentsline {subsubsection}{Servisi}{14}
+\contentsline {subsubsection}{Parametarski server}{14}
+\contentsline {subsection}{\numberline {4.1.3}ros control}{14}
+\contentsline {section}{\numberline {4.2}Matlab}{15}
+\contentsline {section}{\numberline {4.3}OpenCV}{16}
+\contentsline {section}{\numberline {4.4}KDL}{16}
+\contentsline {section}{\numberline {4.5}Gazebo}{16}
+\contentsline {subsection}{\numberline {4.5.1}ROS integracija Gazebo paketa}{17}
+\contentsline {chapter}{\numberline {5}Kinematika manipulatora}{18}
+\contentsline {section}{\numberline {5.1}Direktna i inverzna kinematika Jaco robotske ruke}{19}
+\contentsline {subsection}{\numberline {5.1.1}Direktna kinematika}{19}
+\contentsline {subsubsection}{DH Parametri}{19}
+\contentsline {subsubsection}{Matrice homogene transformacije}{21}
+\contentsline {subsection}{\numberline {5.1.2}Inverzna kinematika}{22}
+\contentsline {section}{\numberline {5.2}Iterativno rje\IeC {\v s}avanje kinemati\IeC {\v c}kog problema}{23}
+\contentsline {subsection}{\numberline {5.2.1}Jakobijan manipulatora}{23}
+\contentsline {subsection}{\numberline {5.2.2}Upravlja\IeC {\v c}ka petlja}{25}
+\contentsline {subsubsection}{Provjera sustava}{26}
+\contentsline {chapter}{\numberline {6}Detekcijski algoritam}{28}
+\contentsline {chapter}{\numberline {7}Upravlja\IeC {\v c}ki algoritam}{29}
+\contentsline {section}{\numberline {7.1}Arhitektura upravlja\IeC {\v c}ke petlje}{30}
+\contentsline {chapter}{\numberline {8}Rezultati}{31}

@@ -416,20 +416,22 @@ Zahvaljujući ovoj činjenici, sustav možemo razvijati za simulaciju i stvarni 
 Modularna arhitektura našeg sustava dopušta integraciju manipulatora sa različitim razinama kompleksnosti API-ja.
 Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim kinematičkim funkcijama, smatramo da je radi kompletnosti izvedbe bitno pripremiti sustav i za slučaj kada su dostupne samo naredbe pomicanja zglobova.
 Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike manipulatora izvedenog unutar našeg sustava na relativno složenom primjeru Jaco robotske ruke.
-Kinematičko rješenje nakon toga provjeravamo na simulaciji ruke u programskom paketu Gazebo.
+Kinematičko rješenje nakon toga provjeravamo na dinamičkoj simulaciji ruke u programskom paketu Gazebo.
 
-U idealnom slučaju, rješavanje problema kinematike manipulatora proizvoljnog broja osi zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
-Iz članova dobivene matrice potom analitički dobivamo izraze za Kartezijsku poziciju i orijentaciju alata u ovisnosti o zakretima zglobova.
-
-Rješavanje problema direktne kinematike u općem je slučaju jednostavno: D-H postupkom postavljamo koordinatne sustave vezane uz zglobove ,a potom određivanjem matrica homogenih transformacija dobivamo jednoznačno rješenje.
-Problem inverzne kinematike znatno je složeniji jer zahtjeva rješavanje sustava nelinearnih jednadžbi s više nepoznanica.
-Za složenije manipulatore ovaj problem je netrivijalan te rješenje nije uvijek moguće pronaći koristeći osnovne matematičke metode.
-Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješenja često biti višestruka, a pronalaženje odgovarajućeg ovisi o konstrukciji i poziciji manipulatora.
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.8]{kinematika}
 \caption{Model Jaco robotske ruke sa označenim parametrima} \label{h}
 \end{figure}
+
+U idealnom slučaju, rješavanje problema kinematike manipulatora sa do 6 stupnjeva slobode zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
+Iz članova dobivene matrice potom analitički dobivamo izraze za Kartezijsku poziciju i orijentaciju alata u ovisnosti o zakretima zglobova.
+Sintezu direktne kinematike započinjemo D-H postupkom postavljanja koordinatnih sustava vezanih uz zglobove.
+Određivanjem matrica homogenih transformacija između tih sustava dobivamo bijektivnu\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkciju koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
+
+Problem inverzne kinematike znatno je složeniji jer zahtjeva rješavanje sustava nelinearnih jednadžbi s više nepoznanica.
+Za složenije manipulatore ovaj problem je netrivijalan te rješenje nije uvijek moguće pronaći koristeći osnovne matematičke metode.
+Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješenja često biti višestruka, a pronalaženje odgovarajućeg ovisi o konstrukciji i poziciji manipulatora.
 
 Pronalaženje analitičkih rješenja inverzne kinematike pomoću računalnog algoritma još je složeniji zadatak jer zahtjeva implementaciju univerzalnog pristupa rješavanju nelinearnih jednadžbi čija su rješenja višestruka.
 Pronašli smo da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju (pseudo)inverza matrice Jakobijana manipulatora, koja je puno prikladnija za programsku izvedbu.

@@ -1,6 +1,8 @@
 \documentclass[times, utf8, diplomski, numeric]{fer}
 \usepackage{booktabs}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgf-umlsd}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{bm}
@@ -983,8 +985,18 @@ Z(\mathbf{s})=\left\{\begin{matrix}
 \end{matrix}\right.
 \end{equation}
 \subsubsection{Učenje klasifikatora}
-Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od kojih 1239 s otvorenim dlanom i 1320 sa zatvorenim dlanom. Grafikon 4.4 prikazuje točke koje predstavljaju slike u ravnini određenoj značajkama $f_{1}$ i $f_{2}$ s time da zatvoreni dlanovi su prikazani zelenom bojom, a otvoreni crvenom.\\\\
-U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvije klase, zatvorene i otvorene dlanove s greškom od 3.4\%. Težilo se preciznijoj detekciji zatvorenog dlana, što je uzrokovalo gubitak u preciznosti detekcije otvorenog dlana. Takav pristup je vođen pretpostavkom da prilikom upravljanja robotskom rukom zatvoreni dlan podrazumijeva kako ruka drži neki objekt te želimo biti sigurni kako ga neće olako ispustiti bez naše volje. Iako za neki teži problem ovakav pristup detekciji otvorenosti dlana ne bi bio dobar te bismo se trebali okrenuti naprednijim metodama, u ovom slučaju rezultat je sasvim zadovoljavajuć s obzirom na poprilično jasnu distinkciju između dviju klasa.\\\\
+Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od kojih 1239 s otvorenim dlanom i 1320 sa zatvorenim dlanom. Grafikon \ref{scatter_graph_lbl} prikazuje točke koje predstavljaju slike u ravnini određenoj značajkama $f_{1}$ i $f_{2}$ s time da zatvoreni dlanovi su prikazani zelenom bojom, a otvoreni crvenom.
+
+\begin{figure}[h]
+\label{scatter_graph_lbl}
+\centering
+\input{scatter_graph}
+\renewcommand{\figurename}{Grafikon}
+	\caption{Skup za učenje (crveno - slike zatvorenih dlanova, zeleno - slike otvorenih dlanova)}
+\end{figure}
+
+U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvije klase, zatvorene i otvorene dlanove s greškom od 3.4\%. Težilo se preciznijoj detekciji zatvorenog dlana, što je uzrokovalo gubitak u preciznosti detekcije otvorenog dlana. Takav pristup je vođen pretpostavkom da prilikom upravljanja robotskom rukom zatvoreni dlan podrazumijeva kako ruka drži neki objekt te želimo biti sigurni kako ga neće olako ispustiti bez naše volje. Iako za neki teži problem ovakav pristup detekciji otvorenosti dlana ne bi bio dobar te bismo se trebali okrenuti naprednijim metodama, u ovom slučaju rezultat je sasvim zadovoljavajuć s obzirom na poprilično jasnu distinkciju između dviju klasa.
+
 Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u detektoru prilikom određivanja zatvorenosti dlana.
 
 

@@ -7,6 +7,8 @@
 \usepackage{amsmath}
 \usepackage{bm}
 \usepackage[]{mcode}
+\usepackage{algorithmic}
+\usepackage{algorithm}
 \usepackage{subcaption}
 \usepackage{caption}
 \usepackage{fancyhdr}
@@ -456,7 +458,7 @@ U prvom potpoglavlju opisati ćemo osnovne postupke rješavanja kinematičkog pr
 Pri tome ćemo radi sažetosti izlaganja preskočiti pojedinosti D-H postupka i izvod matrica homogene transformacije.
 Drugo potpoglavlje sadrži opis ideje rješenja inverzne kinematike koje koristimo u računalnom algoritmu.
 Rezultate zamišljenog postupka potom ispitujemo koristeći Matlab.
-\newpage
+
 \section{Direktna i inverzna kinematika Jaco robotske ruke}
 \subsection{Direktna kinematika}
 Problem direktne kinematike rješavamo tako da prvo postavimo koordinatne sustave koji odgovaraju svakom pojedinačnom zglobu prema pravilima D-H postupka.
@@ -733,7 +735,7 @@ J_{\bm{\omega}}
 
 Izrazom \ref{jac_approx2} lineariziramo model gibanja robota oko točke $\bm{\theta}$. 
 Uz odgovarajuću frekvenciju osvježavanja matrice $\mathbf{J}$, moguće je dobiti kvalitetnu aproksimaciju $\Delta \bm{\theta}$ za željeni $\Delta \mathbf{w}$.
-\newpage
+
 \subsection{Upravljačka petlja}
 %Pomoću izvedene Jakobijeve matrice manipulatora konstruiramo upravljačku petlju više razine koja regulira vektor konfiguracije alata $\mathbf{w}$.
 Razmatranjem izraza \ref{jac_approx2} možemo zaključiti da smo posredno došli do alata za aproksimaciju inverzne kinematike. 
@@ -786,10 +788,8 @@ Vektor funkcija $\mathbf{f}$ u ovom slučaju označava preračunavanje kuteva o�
 Dobivene kuteve koristimo kako bi osvježili matricu $\mathbf{J}$ i kako bi dobili trenutni vektor konfiguracije alata $\mathbf{w}$. 
 Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora. 
 
-\newpage
-
 \subsubsection{Provjera sustava}
-Shemu sustava predloženu shemom \ref{petlja} provjeravamo u Matlabu, a potom u Gazebu.
+Shemu sustava predloženu shemom \ref{petlja} provjeravamo u Matlabu.
 Prvi korak je rješavanje direktne kinematike te generiranje funkcije \verb|jacoFK| koja kao argumente prima zakrete zglobova $\mathbf{q}$,
 a kao rezultat vraća vektor konfiguracija alata.
 %\begin{equation}
@@ -1001,9 +1001,9 @@ Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u det
 
 
 \chapter{Upravljački algoritam}\label{Upravljački algoritam}
-Koristimo ranije objašnjene koncepte i metode kako bi detaljno objasnili arhitekturu i izvedbu upravljačke petlje.
+Sada pomoću koncepata i metoda objašnjenih u prethodnim poglavljima možemo detaljno prikazati arhitekturu našeg sustava.
 U prvom potpoglavlju opisujemo sve uključene ROS čvorove, poruke i servise koji čine kostur upravljačkog algoritma.
-Drugo potpoglavlje sadrži opis programskog rješenja kinematike izvedenog u KDL-u.
+Drugo potpoglavlje sadrži detaljan opis modularne strukture glavnog čvora prikazanog na shemi \ref{upr_shm}.
 
 \begin{figure}[h!]
 \centering
@@ -1016,8 +1016,32 @@ Iscrtkani pravokutnik predstavlja granicu između uređaja i računala dok žuti
 
 
 \section{Arhitektura upravljačke petlje}
+Ulazni signal u sustav dolazi iz detekcijskog algoritma u obliku ROS poruke \verb|ime poruke| čija je struktura :
+Kako bi ostvarili mogućnost udaljenog upravljanja, detekcijski dio ostvarujemo kao zasebni ROS čvor koji frekvencijom 30 Hz objavljuje poruke na temu \verb|ime topica|.
+Ovime omogućujemo pokretanje detekcijskog algoritma na zasebnom računalu, uz uvjet da je na istoj mreži kao ostatak ROS čvorova.
 
+Glavni čvor svaku novu poruku \verb|ime topica| čita i obrađuje.
+Početnoj poziciji korisnikovog dlana (pri prvoj detekciji) pridružuje se željena pozicija manipulatora jednaka početnoj.
+Pomak dlana od početne pozicije primljen u poruci sustav zbraja s početnom pozicijom manipulatora koju smo ranije spremili, čime dobivamo novu željenu poziciju manipulatora.
+Trenutna pozicija manipulatora potom je oduzeta od željene, čime dobivamo nama bitnu potrebnu translaciju manipulatora.
+Zbog ograničenja pri detekciji orijentacije dlana, trenutnu orijentaciju (klasificiranu u diskretne slučajeve) direktno prenosimo u željenu orijentaciju manipulatora.
 
+\begin{algorithm}[H]
+\caption{Računanje potrebne promjene vektora konfiguracije}
+\begin{algorithmic}
+\STATE{\textbf{Ulaz:} P -- odmak dlana od početne pozicije \\ \quad R -- diskretna orijentacija \\ M -- početni vektor konfiguracije manipulatora \\ T -- trenutni vektor konfiguracije manipulatora.}
+\STATE{\textbf{Izlaz:} E -- potrebna promjena vektora konfiguracije.}
+\FOR{($i := 0; i < 6; i++$)}
+\IF{($i<3$)}
+\STATE{$nova_i := M_i + P_i$} 
+\ENDIF
+\IF{($i<3$)}
+\STATE{$nova_i := M_i + R_i$} 
+\ENDIF
+\STATE{$E_i = nova_i - T_i$}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 \chapter{Rezultati}
 
 

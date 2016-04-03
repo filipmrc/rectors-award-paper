@@ -813,6 +813,66 @@ Potrebno je uzeti u obzir činjenicu da u ovom procesu nismo modelirali ponašan
 Ovi parametri također ovise o Jakobijanu korištenog manipulatora, ali u ovom potpoglavlju dovoljno nam je bilo dokazati da predložena struktura radi.
 
 \chapter{Detekcijski algoritam}\label{Detekcijski algoritam}
+Upravljanje pokretima ruke može se izvesti na više načina. U ovom radu odlučeno je koristiti dubinsku kameru kojom se snimaju čovjekovi pokreti ruke te se svaka snimljlena slika prevodi u informaciju o trenutnoj lokaciji i orijentaciji ruke u trodimenzionalnom prostoru kojeg dubinska kamera promatra.\\
+Problem detekcije poze u kojoj se nalazi ruka s nekom dozom uspješnosti riješen
+je i kod klasičnih slika (npr. //todo 3 citata), ali taj pristup većinom obilježava prevelika
+ovisnost o svjetlosnim parametrima slike te potreba za većim računalnim resursima. Takvi zahtjevi otežavaju detekciju u stvarnom vremenu na osobnom računalu.\\
+Većina pristupa detekciji objekata kod klasične slike s intenzitetom svjetlosti u pojedinim točkama može se primijeniti i kod dubinske slike. Pri tome dubinsku sliku možemo promatrati kao klasičnu sivu sliku te raditi detekcije nad istom samo moramo imati na umu kako informacija koju sadrži pojedini slikovni element ne odgovara intenzitetu, već je mjera udaljenosti. Također uobičajena crno-bijela slika se sastoji od 8-bitnih vrijednosti što polučuje 256 različitih slikovnih elemenata te u većini slučaja možemo biti zadovoljni s tim. Kod dubinske slike to nije slučaj. Ako imamo 256 različitih slikovnih elemenata sposobni smo detektirati 256 različitih dubina, s čime ne možemo biti zadovoljni ako želimo detekciju na većem rasponu (1m) uz veliku preciznost (1mm). Zato je uobičajen zapis dubinske slike
+pomoću 2 okteta ili broja s jednostrukom preciznosti po IEEE 754 standardu. Ovaj
+potonji zapis kompatibilan je s korištenom OpenCV bibliotekom.\\
+Razvijeni detekcijski algoritam podijeljen je u dvije slijedne komponente. Lokalizacija dlana  u slici te određivanje parametara poze u kojoj se dlan nalazi.\\
+\section{Lokalizacija dlana u slici}
+Jednako kao i kod klasičnih slika prvi korak u preciznom detektiranju poze u kojoj se nalazi ruka jest određivanje njene lokacije na dubinskoj slici. Različite metode su predložene za rješavanje takvog problema. Pri tome rijetko koja metoda ne koristi neki oblik pomagala kako bi što lakše i brže odredila lokaciju u dubinskoj slici te više vremena mogla posvetiti samom određivanju poze u kojoj se ruka nalazi.\\\\
+Kako se ovaj rad orijentira na dubinske slike, a ne klasične slike s dodanim dubinskim kanalom, takvi pokušaji su zanemareni, ali valja spomenuti kako se filtriranjem isključivo boje kože može olakšati pretraga ruke. Neki od takvih pristupa koriste brzu detekciju lica i uzorkovanje parametara boje kože detektirane osobe radi poboljšavanja filtera boje pomoću dobivenih parametara.\\\\
+Qian i suradnici razvili su jednu od najkvalitetnijih metoda danas \cite{qian2014realtime}. Metoda inicijalno pretpostavlja kako se ruka nalazi najbliže kameri u odnosu na ostale objekte u dubinskoj slici. Također, pretpostavlja korištenje nereflektirajuće narukvice na zapešću kojom se lako može izolirati ruka od okoline algoritmom poplavljivanja interesnog područja (eng. \textit{flood fill}).\\\\
+Bolja inicijalna metoda preuzeta je iz rada Shottona i suradnika \cite{shotton2013real} u kojem detektiraju položaj čovjeka na dubinskoj slici. Implementirano prepoznavanje ljudskog kostura pomoću Kinect uređaja temelji se na njihovoj metodi. Tu inicijalnu metodu koriste Thompson i suradnici \cite{tompson2014real}. Metoda koristi jednostavne značajke $f_{\theta}(I,\mathbf{x})$ za svaki slikovni element $\mathbf{x}$ koje su invarijantne na dubinu $d_{I}(\mathbf{x}) $ (Izraz \ref{eq:depth_invariant_feature}).
+\begin{equation}\label{eq:depth_invariant_feature}
+f_{\theta}(I,\mathbf{x})=d_{I}(\mathbf{x}+ \frac{\mathbf{u}}{d_{I}(\mathbf{x})})-d_{I}(\mathbf{x}+ \frac{\mathbf{v}}{d_{I}(\mathbf{x})})\end{equation}
+Dalje za svaki slikovni element $\mathbf{x}$ učenjem šume nasumičnih stabala odluke (eng. \textit{random decision forrest}) odredi se svega nekoliko parova odmaka $(\mathbf{u},\mathbf{v})$ koji dobro binarno klasificiraju svaki slikovni element pripada li on naučenom skupu objekata ili ne.\\\\
+Grupiranjem slikovnih elemenata koji su imali pozitivan odziv klasifikatora možemo izolirati ruku ili više njih na dubinskoj slici.\\\\
+Iako je metoda uspješna i relativno brza, pogotovo na grafičkoj kartici za koju je primarno namijenjena, u slučaju ovog završnog rada nedostatak takve metode bilo bi trajanje njenog učenja. Naime, autori navode kako na klasteru od 1000 jezgara učenje šume od 3 stabla do dubine 20 traje 1 dan, a uzevši u obzir nedostatak navedenih resursa, takav pristup u ovom radu nije moguć.\\
+
+Detektor je implementiran u obliku Python skripte koja poziva naredbe iz OpenCV biblioteke te \textit{freenect} biblioteku za dohvat dubinske slike.\\\\
+Razvijeni detektor sastoji se od više koraka te je sposoban detektirati položaj ruke, orijentaciju dlana te otvorenost šake.\\\\
+Dubinska slika kakvu stvara korištena dubinska kamera je veličine 640x480 slikovnih elemenata. Pri tome vrijednost svakog slikovnog elementa odgovara izračunatom disparitetu na toj poziciji. Pomoću \textit{freenect} biblioteke takav podatak se može pretvoriti u dubinu u milimetrima.\\\\
+Definiran je koordinatni sustav sa središtem u očištu kamere i osima $x$ i $y$ s odgovarajućim indeksom $(u+320,v+240)$ slikovnog elementa (kako bi središte koordinatnog sustava pomakli u središte slike). Osi x i y su skalirane na odmak od središta u milimetrima. Os z odgovara dubini slike također u milimetrima. Prirodom perspektivne projekcije kakvu daje dubinska kamera udaljenost od kamere ne odgovara udaljenosti do projekcijske ravnine. Samim tim se ne može izravno preslikati u z-os koordinatnog sustava, ali kako dlan na radnim udaljenostima ne zauzima više od 15\% slike na tom području je aproksimacija prihvatljiva.\\\\
+Jedna od mogućih aproksimativnih formula za preslikavanje dispariteta u udaljenost od kamere, kakvu koristi \textit{freenect} biblioteka \cite{openkinect} je sljedeća (Izraz \ref{eq:approx_raw_disparity_to_mm}):
+\begin{equation}
+	\label{eq:approx_raw_disparity_to_mm}
+	z_{d}(\mathbf{x})=\frac{1000}{-0.00307*d(\mathbf{x})+3.33}
+\end{equation}
+Dobivenim vrijednostima dubine možemo izračunati $x$ i $y$ vrijednosti koordinantnog sustava na sljedeći način:
+\begin{equation}
+	\label{eq:raw_disparity_to_mm_x}
+	    x(z,u)=0.0021(v - 320)(z-10) 
+\end{equation}
+\begin{equation}
+	\label{eq:raw_disparity_to_mm_y}
+	    y(z,v)=0.0021(v - 240)(z-10)
+\end{equation}
+\section{Izdvajanje dlana od okoline}
+Prvi korak detektora je izdvojiti dlan na slici. Kao i kod metode Qiana i suradnika \cite{qian2014realtime}, ali i mnogih drugih, i u ovom radu se pretpostavlja kako se ruka nalazi na najmanjoj dubini (niti jedan predmet u vidnom polju kamere nije bliži od ruke).\\\\
+
+Za razliku od spomenute metode, u ostvarenoj metodi nije potrebno koristiti pomagala kao što je nereflektirajuća crna narukvica na zapešću. Izolacija dlana od okoline vrši se jednostavnim dubinskim filterom na empirijski određenoj dubini od $130mm$ u odnosu na globalni minimum dubine slike, što je ujedno i globalni minimum dijela slike na kojem se nalazi ruka. Iako najveći raspon prosječne ruke premašuje $110mm$, to ne predstavlja prevelik problem.\\\\
+Na slikama \ref{fig:successful_palm_isolation} vidimo primjere ispravne izolacije dlana na dubinskoj slici. Radilo se o uspravnom dlanu (a), dlanu s dorzalne strane (b), pa čak dlanu u vodoravnoj ravnini (c) ili zatvorenom dlanu (d), ovakav jednostavni detektor je sposoban razlučiti dlan kako bi što više procesnog vremena mogao prepustiti sljedećim fazama detekcije.
+
+U nekim slučajevima detekcija nije ispravna, ali je u granicama otpornosti kasnijih faza detektora. Tako se pri većim kutovima dlana u odnosu na projekcijsku ravninu mogu desiti dva slučaja (Slika \ref{fig:satisfactorily_palm_isolation}). Ako je najbliža točka dlana na području zapešća, zahvaćen je i dio podlaktice, dok ako je najbliža točka na području prstiju, dlan djelomično izlazi iz granica dubinskog filtera.\\\\
+Oba slučaja većinom ne predstavljaju prevelik problem, no postoje i neke iznimke. Naime, ako je podlaktica u razini dlana, detektor neće biti sposoban razlučiti dlan od podlaktice (Slika \ref{fig:poor_palm_isolation}). Takav slučaj predstavlja problem za detektor, ali takav slučaj ne predstavlja problem u korištenju detektora ako je osoba koja ga koristi svjesna takvog nedostatka.\\\\
+Rezultat izolacije dlana uz sliku na kojoj se nalazi samo dlan je i $(x,y,z)$ koordinata središta dlana u prostoru. Središte je dobiveno pronalaskom konture dlana te izlučivanjem njenog središta. U slučaju da je središte konture izvan konture pa samim time i dlana, takva detekcija biva odbačena. Iako postoje položaji ruke gdje je to slučaj, takve položaje u većini slučajeva Kinect nije sposoban registrirati (Poglavlje \ref{sec:kinect_depth}).\\\\
+Jednom kada je dlan segmentiran od pozadine znatno se olakšavaju daljnje operacije. Za razliku od spomenutih naprednijih radova ovdje se neće razmatrati određivanje precizne lokacije ruke u vidu modela od više od 20 stupnjeva slobode. Naime, uzevši u obzir primjenu detektora za upravljanje robotskom rukom, prihvatljiva doza informacije sastoji se od binarne informacije o stupnju zatvorenosti dlana i radij vektora lokacije dlana.
+
+Pri tome također valja imati na umu da na primjer gradijent u običnoj slici ima značenje gradijenta boje, dok se u dubinskoj slici odnosi na gradijent dubine.\\\\
+Neki od ključnih postupaka u detekciji izvedeni su pomoću ove biblioteke:
+\begin{enumerate}[label=$\bullet$]
+	\item \textbf{Segmentacija slike na osnovu praga} je postupak prilikom kojeg se s obzirom na željenu vrijednost praga može konstruirati binarna slika (maska) gdje jedna vrijednost pokriva sve elemente čija je vrijednost ispod praga, a druga vrijednost sve elemente iznad praga. Na slici \ref{fig:image_segmentation} (b) vidimo binarnu sliku dobivenu segmentacijom po dubini slike (a) pri čemu je prag određen kao $130mm$ u dubinu od minimalne vrijednosti dubine na slici.
+\item \textbf{Dilatacija i erozija binarne slike} su morfološke transformacije. Dilatacija je transformacija prilikom koje se generira nova slika iste veličine. Za svaki osvijetljeni slikovni element u početnoj slici se u ovoj slici osvjetljava element na toj lokaciji zajedno s $n$ slikovnih elemenata u njegovoj okolini. Takvim postupkom smo povećali osvijetljene površine na slici. Erozija je slična dilataciji s razlikom što se postupak temelji na neosvijetljenim slikovnim elementima.\\\\
+Na slici \ref{fig:morph} (c) je prikazana morfološka transformacija izvorne slike (a) operacijom zatvaranja (dilatacija pa erozija) uz djelovanje na okolnih 8 slikovnih elemenata. Kao što vidimo ovakav slijed transformacija pokriva moguće šumove unutar osvijetljenog dijela slike te može spojiti bliske skupine osvijetljenih slikovnih elemenata što je korisno ako na primjer šum \textit{odsiječe} prst od ostatka ruke.\\\\
+\item \textbf{Određivanje obujmica} skupina osvijetljenih slikovnih elemenata koristan je način za aproksimaciju oblika na slici. Prvi korak u određivanju obujmica (engl. \textit{convex hull}) je generiranje kontura oko skupina susjednih slikovnih elemenata. Jednom kada je kontura izgenerirana jednostavno se može naći obujmica kao minimalan konveksan poligon koji obuhvaća konturu.\\\\
+Na slici \ref{fig:convex_hull} je običnoj binarnoj slici sivom bojom pridodana razlika u površini konture oblika i obujmice. Ta razlika se može iskoristiti kao dobar indikator zatvorenosti dlana.
+
+\end{enumerate}
+
+
 
 \chapter{Upravljački algoritam}\label{Upravljački algoritam}
 Koristimo ranije objašnjene koncepte i metode kako bi detaljno objasnili arhitekturu i izvedbu upravljačke petlje.

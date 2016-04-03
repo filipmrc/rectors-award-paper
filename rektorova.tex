@@ -789,7 +789,7 @@ Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) re
 \newpage
 
 \subsubsection{Provjera sustava}
-Shemu sustava predloženu shemom \ref{petlja} provjeravamo u programskom paketu Matlab.
+Shemu sustava predloženu shemom \ref{petlja} provjeravamo u Matlabu, a potom u Gazebu.
 Prvi korak je rješavanje direktne kinematike te generiranje funkcije \verb|jacoFK| koja kao argumente prima zakrete zglobova $\mathbf{q}$,
 a kao rezultat vraća vektor konfiguracija alata.
 %\begin{equation}
@@ -832,15 +832,13 @@ crit(k) = crit(k-1) + 100 k (\mathbf{t} - \mathbf{w}(k)) (\mathbf{t} - \mathbf{w
 \end{equation}
 
 Kako bi pronašli parametre $K_I$ i $K_P$ kojima ostvarujemo minimum ove funkcije koristimo Matlab funkciju \verb|fminsearch|.
-Rezultirajući odziv matematičkog modela na grafu \ref{PPI} b) znatno je stabilniji korištenjem PI regulatora sa parametrima $[K_I \ K_P] = [ -0.2154  \  0.3197]$.
-Potrebno je uzeti u obzir činjenicu da u ovom procesu nismo modelirali ponašanje samih elektromotora u zglobovima jer pretpostavljamo da su kvalitetno regulirani od strane FPGA pločice na samom manipulatoru. 
-Ovi parametri također ovise o Jakobijanu korištenog manipulatora, ali u ovom potpoglavlju dovoljno nam je bilo dokazati da predložena struktura radi.
+Potrebno je uzeti u obzir činjenicu da u ovom procesu nismo modelirali ponašanje samih elektromotora u zglobovima jer pretpostavljamo da su kvalitetno regulirani od strane FPGA pločice na manipulatoru. 
+Ovi parametri također ovise o Jakobijanu korištenog manipulatora i raznim mehaničkim karakteristikama, ali rezultati optimiranja mogu poslužiti kao dobra polazna točka pri sintezi regulatora.
 
 \chapter{Detekcijski algoritam}\label{Detekcijski algoritam}
 Upravljanje pokretima ruke može se izvesti na više načina. U ovom radu odlučeno je koristiti dubinsku kameru kojom se snimaju čovjekovi pokreti ruke te se svaka snimljlena slika prevodi u informaciju o trenutnoj lokaciji i orijentaciji ruke u trodimenzionalnom prostoru kojeg dubinska kamera promatra.
 
-Problem detekcije poze u kojoj se nalazi ruka s nekom dozom uspješnosti riješen
-je i kod klasičnih slika (npr. //todo 3 citata), ali taj pristup većinom obilježava prevelika
+Problem detekcije poze u kojoj se nalazi ruka s nekom dozom uspješnosti riješen je i kod klasičnih slika (npr. //todo 3 citata), ali taj pristup većinom obilježava prevelika
 ovisnost o svjetlosnim parametrima slike te potreba za većim računalnim resursima. Takvi zahtjevi otežavaju detekciju u stvarnom vremenu na osobnom računalu.
 
 Većina pristupa detekciji objekata kod klasične slike s intenzitetom svjetlosti u pojedinim točkama može se primijeniti i kod dubinske slike. Pri tome dubinsku sliku možemo promatrati kao klasičnu sivu sliku te raditi detekcije nad istom samo moramo imati na umu kako informacija koju sadrži pojedini slikovni element ne odgovara intenzitetu, već je mjera udaljenosti. Također uobičajena crno-bijela slika se sastoji od 8-bitnih vrijednosti što polučuje 256 različitih slikovnih elemenata te u većini slučaja možemo biti zadovoljni s tim. Kod dubinske slike to nije slučaj. Ako imamo 256 različitih slikovnih elemenata sposobni smo detektirati 256 različitih dubina, s čime ne možemo biti zadovoljni ako želimo detekciju na većem rasponu ($1m$) uz veliku preciznost ($1mm$). Zato je uobičajen zapis dubinske slike

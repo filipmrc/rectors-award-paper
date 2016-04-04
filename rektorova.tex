@@ -1020,6 +1020,7 @@ Ulazni signal u sustav dolazi iz detekcijskog algoritma u obliku ROS poruke \ver
 Kako bi ostvarili mogućnost udaljenog upravljanja, detekcijski dio ostvarujemo kao zasebni ROS čvor koji frekvencijom 30 Hz objavljuje poruke na temu \verb|ime topica|.
 Ovime omogućujemo pokretanje detekcijskog algoritma na zasebnom računalu, uz uvjet da je na istoj mreži kao ostatak ROS čvorova.
 
+\subsection{Glavni čvor}
 Glavni čvor svaku novu poruku \verb|ime topica| čita i obrađuje.
 Početnoj poziciji korisnikovog dlana (pri prvoj detekciji) pridružuje se željena pozicija manipulatora jednaka početnoj.
 Pomak dlana od početne pozicije primljen u poruci sustav zbraja s početnom pozicijom manipulatora koju smo ranije spremili, čime dobivamo novu željenu poziciju manipulatora.
@@ -1029,19 +1030,34 @@ Zbog ograničenja pri detekciji orijentacije dlana, trenutnu orijentaciju (klasi
 \begin{algorithm}[H]
 \caption{Računanje potrebne promjene vektora konfiguracije}
 \begin{algorithmic}
-\STATE{\textbf{Ulaz:} P -- odmak dlana od početne pozicije \\ \quad R -- diskretna orijentacija \\ M -- početni vektor konfiguracije manipulatora \\ T -- trenutni vektor konfiguracije manipulatora.}
+\STATE{\textbf{Ulaz:} P -- odmak dlana od početne pozicije \\ R -- diskretna orijentacija \\ M -- početni vektor konfiguracije manipulatora \\ T -- trenutni vektor konfiguracije manipulatora.}
 \STATE{\textbf{Izlaz:} E -- potrebna promjena vektora konfiguracije.}
 \FOR{($i := 0; i < 6; i++$)}
 \IF{($i<3$)}
 \STATE{$nova_i := M_i + P_i$} 
 \ENDIF
-\IF{($i<3$)}
+\IF{($i>=3$)}
 \STATE{$nova_i := M_i + R_i$} 
 \ENDIF
 \STATE{$E_i = nova_i - T_i$}
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
+
+Vektor $E_i$ predstavlja \textit{vektor razlike konfiguracija} i koristi se u daljnjim koracima algoritma, koji se u ovoj točki grana na nekoliko varijanti ovisno o izboru sklopovskog sučelja.
+
+\subsubsection{Sučelje kartezijske brzine}
+U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno slanje naredbi kartezijske brzine, algoritam se znatno pojednostavljuje.
+Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu vezanom uz samo sučelje, što znači da \verb|ros_control| u ovoj varijanti koristimo samo radi univerzalnosti.
+
+
+
+
+
+
+
+
+
 \chapter{Rezultati}
 
 

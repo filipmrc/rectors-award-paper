@@ -459,7 +459,7 @@ Pri tome ćemo radi sažetosti izlaganja preskočiti pojedinosti D-H postupka i 
 Drugo potpoglavlje sadrži opis ideje rješenja inverzne kinematike koje koristimo u računalnom algoritmu.
 Rezultate zamišljenog postupka potom ispitujemo koristeći Matlab.
 
-\section{Direktna i inverzna kinematika Jaco robotske ruke}
+\section{Direktna i inverzna kinematika Jaco robotske ruke}\label{direkt i inverz}
 \subsection{Direktna kinematika}
 Problem direktne kinematike rješavamo tako da prvo postavimo koordinatne sustave koji odgovaraju svakom pojedinačnom zglobu prema pravilima D-H postupka.
 Iz međusobnih udaljenosti i razlika u orijentaciji ovih zglobova porizlaze D-H parametri koje koristimo za sintezu matrica homogenih transformacija.
@@ -1046,10 +1046,36 @@ Zbog ograničenja pri detekciji orijentacije dlana, trenutnu orijentaciju (klasi
 
 Vektor $E_i$ predstavlja \textit{vektor razlike konfiguracija} i koristi se u daljnjim koracima algoritma, koji se u ovoj točki grana na nekoliko varijanti ovisno o izboru sklopovskog sučelja.
 
-\subsubsection{Sučelje kartezijske brzine}
-U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno slanje naredbi kartezijske brzine, algoritam se znatno pojednostavljuje.
-Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu vezanom uz samo sučelje, što znači da \verb|ros_control| u ovoj varijanti koristimo samo radi univerzalnosti.
+\subsubsection{Sučelje brzine izvršnog člana}
+U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno slanje naredbi kartezijske brzine, algoritam se znatno pojednostavljuje jer ne zahtjeva kinematičke kalkulacije.
 
+Pri primanju poruke tipa \verb|ime_poruke| sa detekcijskog servera, funkcija \verb|sendCartesianCommand| unutar glavnog čvora obrađuje podatke. 
+Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu samog manipulatora, što znači da \verb|ros_control| regulator ovoj varijanti koristimo bez povratne veze.
+Po završetku obrade, Kartezijska naredba šalje se u obliku poruke \verb|ime_2| na temu \verb|goal|, koja je rezervirana za referentnu veličinu kretanja manipulatora.
+Naredba vezana uz izvršni član sprema se u poruku \verb|ime_3| te se šalje na temu \verb|goal_2|, koja je rezervirana za referentnu veličinu operacije izvršnog člana te ima vlastiti regulator.
+
+Pokazalo se da je ovaj pristup optimalan za brzi početak korištenja jer visoka radna frekvencija najčešće znači da se parametar $\alpha$ može postaviti proizvoljno, dok ostalu regulaciju provodi API.
+
+\subsubsection{Sučelje brzine zglobova}
+Samo sučelje jest programska rutina koji ostvarujemo tako da API funkcije manipulatora "umotavamo" u \verb|hardware_interface| klasu koja je dio \verb|ros_control| paketa.
+Pri pokretanju cijelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
+
+Nakon inicijalizacije samog manipulatora, sučelje registrira pojedinačne zglobove i "spaja" se na naredbe pisanja i čitanja stanja zglobova.
+Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \verb|ros_control| regulatorima.
+Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \verb|hardware_interface| klase i neće se spajati na neodgovarajuća sučelja.
+
+Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \verb|velocity_controllers/JointGroupVelocityController|. 
+Regulator svoje parametre učitava iz odgovarajuće konfiguracijske (.yaml) datoteke.
+U parametre između ostalog ubrajamo imena robota i zglobova, tip sučelja, pojačanja P, I i D komponenti, vremenska ograničenja na izvršenje naredbi, ograničenja zglobova i frekvenciju.
+Pokretanjem regulatora API naredbe manipulatora činimo mrežnim resursima unutar ROS "grafa", čime ovaj dio sustava postaje potpuno fizički odvojiv od ostatka.
+Svi podaci sa senzora postaju dostupni na temi \verb|joint_states|, postavljanje referentne veličine vrši se slanjem odgovarajuće poruke na temu \verb|\goal|, a parametri regulatora također su dostupni.
+
+Pokretanjem glavnog čvora dovršavamo inicijalizaciju sustava.
+Dok \verb|ros_control| regulator osigurava stabilnu brzinu, glavni čvor čini nadređenu regulacijsku petlju koja osigurava odgovarajuću referentnu veličinu.
+
+
+Kako bismo ostvarili upravljanje samo preko sučelja brzine zglobova, morali smo rješiti problem kinematike iz poglavlja \ref{direkt i inverz}.
+Uz ovu vrstu sučelja odabranu pri pokretanju, glavni čvor nakon sinteze vektora razlike konfiguracija.
 
 
 

@@ -163,7 +163,7 @@ Također, mrežna arhitektura ROS-a omogućuje pokretanje komponenti pojedinačn
 Općenitost sustava zahtjeva razdvajanje općih funkcija za regulaciju i obradu podataka od funkcija povezanih uz specifični korišteni manipulator.
 Konkretnije, ovu komponentu moramo ostvariti tako da se na nju može spojiti API bilo kojeg manipulatora koji zadovoljava fizičke zahtjeve.
 
-Paket \verb|ros_control| ostvaruje zadano sučelje koristeći apstraktne klase na koje "spajamo" API manipulatora.
+Paket \texttt{ros\_control}ostvaruje zadano sučelje koristeći apstraktne klase na koje "spajamo" API manipulatora.
 Dovoljno je funkcije čitanja stanja zglobova i zadavanja brzine/pozicije "zamotati" u ponuđene klase, te ostatak sustava izvesti koristeći njih.
 
 \subsection{Manipulator}
@@ -357,7 +357,7 @@ ROS nudi mogućnost učitavanja parametara s mrežnih lokacija čime se omoguću
 Ovakvim pristupom se izbjegava potreba ponovnim kompiliranje koda pri svakoj promjeni parametara.
 
 \subsection{ros control}
-ROS paket \verb|ros_control| ostvaruje generičke PID regulatore unutar ROS arhitekture. 
+ROS paket \texttt{ros\_control}ostvaruje generičke PID regulatore unutar ROS arhitekture. 
 Jednostavna i standardizirana integracija s ostatkom ROS ekosustava čini ovaj paket čestom komponentom sustava izvedenih u ROS-u.
 
 Kako bi se postiglo poopćenje PID upravljanja neovisno o konkretnom robotu (tj. o API-ju), API funkcije robota "umataju" se unutar apstraktnih funkcija koje čine ROS-API sučelje.
@@ -421,7 +421,7 @@ Gotovo svaki komercijalni robotski manipulator ima pripadajuću URDF datoteku i 
 
 \subsection{ROS integracija Gazebo paketa}
 Glavni razlog za korištenje ovog simulacijskog paketa uska je integracija sa ROS-om , čime postižemo jednostavan transfer sustava razvijenog na simulaciji na stvarni manipulator.
-Gazebo simulaciju moguće je potpuno upravljati kroz ROS koristeći \verb|ros_control| sučelje, na isti način kao što upravljamo stvarnim sustavom.
+Gazebo simulaciju moguće je potpuno upravljati kroz ROS koristeći \texttt{ros\_control}sučelje, na isti način kao što upravljamo stvarnim sustavom.
 Ova kompatibilnost ostvaruje se kroz \verb|gazebo_ros|, \verb|gazebo_msgs|, \verb|gazebo_plugins|  ROS pakete.
 Ros control sučelje simulacije definiramo unutar URDF datoteke te se pri pokretanju Gazeba unutar ROS okruženja ono objavljuje kao stvarno.
 Zahvaljujući ovoj činjenici, sustav možemo razvijati za simulaciju i stvarni sustav istovremeno, što se pokazalo vrlo korisnim.
@@ -736,6 +736,17 @@ J_{\bm{\omega}}
 Izrazom \ref{jac_approx2} lineariziramo model gibanja robota oko točke $\bm{\theta}$. 
 Uz odgovarajuću frekvenciju osvježavanja matrice $\mathbf{J}$, moguće je dobiti kvalitetnu aproksimaciju $\Delta \bm{\theta}$ za željeni $\Delta \mathbf{w}$.
 
+Problem kod ovog pristupa nastaje u slučajevima kada matrica $\mathbf{J}$ nije kvadratna, što je slučaj kod svih manipulatora sa brojem zglobova različitim od 6.
+Radi potrebe za općim rješenjem koristimo Moore-Penroseov pseudoinverz, koji je svojevrsno poopćenje inverza za sve matrice.
+Uz određene uvjete (ref), pseudoinverz Jakobijana određujemo izrazom \ref{eq:pseudoinverz}:
+\begin{equation}
+\mathbf{J}^{+} = \left( \mathbf{J}^{\dagger} \mathbf{J}\right)^{-1}\mathbf{J}^{\dagger}
+\label{eq:pseudoinverz}
+\end{equation}
+U izrazu \ref{eq:pseudoinverz} simbol $\dagger$ označava operaciju hermitske transpozicije.
+Ovom modifikacijom poopćavamo ideju izraza \ref{jac_approx2} na sve manipualtore.
+Programskom izvedbom pomoću KDL biblioteka na izraz \ref{jac_approx2} dodaju se članovi kojima osiguravamo numeričku stabilizaciju prema metodi opisanoj u (), no za dokaz koncepta u Matlabu koristimo jednostavniju izvedbu.
+
 \subsection{Upravljačka petlja}
 %Pomoću izvedene Jakobijeve matrice manipulatora konstruiramo upravljačku petlju više razine koja regulira vektor konfiguracije alata $\mathbf{w}$.
 Razmatranjem izraza \ref{jac_approx2} možemo zaključiti da smo posredno došli do alata za aproksimaciju inverzne kinematike. 
@@ -1012,7 +1023,7 @@ Drugo potpoglavlje sadrži detaljan opis modularne strukture glavnog čvora prik
 \end{figure}
 
 Na slici \ref{upr_shm} prikazana je detaljna shema sustava u programskoj izvedbi.
-Iscrtkani pravokutnik predstavlja granicu između uređaja i računala dok žuti i sivi predstavljaju područje sustava unutar ROS, odnosno \verb|ros_control| arhitekture, respektivno.
+Iscrtkani pravokutnik predstavlja granicu između uređaja i računala dok žuti i sivi predstavljaju područje sustava unutar ROS, odnosno \texttt{ros\_control}arhitekture, respektivno.
 
 
 \section{Arhitektura upravljačke petlje}
@@ -1049,33 +1060,57 @@ Vektor $E_i$ predstavlja \textit{vektor razlike konfiguracija} i koristi se u da
 \subsubsection{Sučelje brzine izvršnog člana}
 U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno slanje naredbi kartezijske brzine, algoritam se znatno pojednostavljuje jer ne zahtjeva kinematičke kalkulacije.
 
-Pri primanju poruke tipa \verb|ime_poruke| sa detekcijskog servera, funkcija \verb|sendCartesianCommand| unutar glavnog čvora obrađuje podatke. 
-Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu samog manipulatora, što znači da \verb|ros_control| regulator ovoj varijanti koristimo bez povratne veze.
+Pri primanju poruke tipa \texttt{ime\_poruke} sa detekcijskog servera, funkcija \\  \texttt{sendCartesianCommand} unutar glavnog čvora obrađuje podatke. 
+Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu samog manipulatora, što znači da \texttt{ros\_control}regulator ovoj varijanti koristimo bez povratne veze.
 Po završetku obrade, Kartezijska naredba šalje se u obliku poruke \verb|ime_2| na temu \verb|goal|, koja je rezervirana za referentnu veličinu kretanja manipulatora.
 Naredba vezana uz izvršni član sprema se u poruku \verb|ime_3| te se šalje na temu \verb|goal_2|, koja je rezervirana za referentnu veličinu operacije izvršnog člana te ima vlastiti regulator.
 
 Pokazalo se da je ovaj pristup optimalan za brzi početak korištenja jer visoka radna frekvencija najčešće znači da se parametar $\alpha$ može postaviti proizvoljno, dok ostalu regulaciju provodi API.
 
 \subsubsection{Sučelje brzine zglobova}
-Samo sučelje jest programska rutina koji ostvarujemo tako da API funkcije manipulatora "umotavamo" u \verb|hardware_interface| klasu koja je dio \verb|ros_control| paketa.
+Samo sučelje jest programska rutina koji ostvarujemo tako da API funkcije manipulatora "umotavamo" u \verb|hardware_interface| klasu koja je dio \texttt{ros\_control}paketa.
 Pri pokretanju cijelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
 
 Nakon inicijalizacije samog manipulatora, sučelje registrira pojedinačne zglobove i "spaja" se na naredbe pisanja i čitanja stanja zglobova.
-Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \verb|ros_control| regulatorima.
+Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \texttt{ros\_control}regulatorima.
 Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \verb|hardware_interface| klase i neće se spajati na neodgovarajuća sučelja.
 
-Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \verb|velocity_controllers/JointGroupVelocityController|. 
-Regulator svoje parametre učitava iz odgovarajuće konfiguracijske (.yaml) datoteke.
+Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \texttt{velocity\_ controllers/JointGroupVelocityController}. 
+Regulator svoje parametre učitava iz odgovarajuće konfiguracijske (\texttt{.yaml}) datoteke.
 U parametre između ostalog ubrajamo imena robota i zglobova, tip sučelja, pojačanja P, I i D komponenti, vremenska ograničenja na izvršenje naredbi, ograničenja zglobova i frekvenciju.
 Pokretanjem regulatora API naredbe manipulatora činimo mrežnim resursima unutar ROS "grafa", čime ovaj dio sustava postaje potpuno fizički odvojiv od ostatka.
 Svi podaci sa senzora postaju dostupni na temi \verb|joint_states|, postavljanje referentne veličine vrši se slanjem odgovarajuće poruke na temu \verb|\goal|, a parametri regulatora također su dostupni.
 
-Pokretanjem glavnog čvora dovršavamo inicijalizaciju sustava.
-Dok \verb|ros_control| regulator osigurava stabilnu brzinu, glavni čvor čini nadređenu regulacijsku petlju koja osigurava odgovarajuću referentnu veličinu.
+Inicijalizacijom glavnog čvora dovršavamo pokretanje sustava.
+Dok \texttt{ros\_control} regulator osigurava stabilnu brzinu, glavni čvor čini nadređenu regulacijsku petlju koja osigurava odgovarajuću referentnu veličinu baziranu na razlici željenog i trenutnog vektora konfiguracija.
+Kako bi rješili problem kinematike opisan u poglavlju \ref{direkt i inverz}, u klasu \texttt{KDL::Chain} učitavamo opis kinematičkog lanca iz \texttt{.urdf} datoteke.
+Iz učitanog se lanca pomoću dostupnih KDL metoda dostupnih klasi \texttt{Kinematics} generira matrica direktne kinematike i Jakobijan sustava. 
+Nakon toga i funkcija koja obavlja množenje pseudoinverza jakobijana traženom promjenom vektora konfiguracija način sličan \ref{jac_approx2}, pri tome dodajući članove koji osiguravaju numeričku stabilnost.
+Konačno, inicijaliziraju se odgovarajući ros pretplatnici i izdavači te sustav postaje spreman za uporabu.
 
+Sada pri primanju nove naredbe iz kinecta sustav obrađuje ulazne podatke kao što je opisano na početku poglavlja.
+Dobiveni vektor razlike konfiguracije se pomoću funkcije \texttt{KDL::ChainIkSolverVel\_wdls::CartToJnt} pretvara u vektor pogreške pozicije zglobova.
+Pogreške pozicija zglobova tretiraju se kao željene brzine zglobova, ali ih je prvo potrebno skalirati s obzirom na maksimalnu dozvoljenu brzinu.
+Ograničenja brzina upisana su u \texttt{.yaml} datoteku koja se učitava pri pokretanju regulatora te ih \texttt{ros\_control} stavlja na mrežne lokacije koje glavni čvor čita i sprema u varijable.
+Brzine je vrlo bitno skalirati na način kojim se zadržava njihov omjer, stoga prvo pronalazimo brzinu koja najviše prelazi ograničenje te sve brzine skaliramo prema njoj.
+\begin{algorithm}[H]
+\caption{Skaliranje brzina}
+\begin{algorithmic}
+\STATE{\textbf{Ulaz:} V -- brzine bez ograničenja, O -- ograničenja brzine.}
+\STATE{\textbf{Izlaz:} Vs -- skalirane brzine.}
+\FOR{($i := 0; i < broj zglobova; i++$)}
+\IF{$V_i > O_i \ \& \ |V_i^2-O_i^2| > m$)}
+\STATE{$m := (|V_i^2-O_i^2|$}
+\STATE{$i_m = i$}
+\ENDIF
+\ENDFOR
+\STATE{$s = O_{i_m}/V_{i_m}$}
+\FOR{($i := 0; i < broj zglobova; i++$)}
+\STATE{$Vs_i := V_is$}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
-Kako bismo ostvarili upravljanje samo preko sučelja brzine zglobova, morali smo rješiti problem kinematike iz poglavlja \ref{direkt i inverz}.
-Uz ovu vrstu sučelja odabranu pri pokretanju, glavni čvor nakon sinteze vektora razlike konfiguracija.
 
 
 

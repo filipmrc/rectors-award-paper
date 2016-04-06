@@ -1031,7 +1031,6 @@ Ulazni signal u sustav dolazi iz detekcijskog algoritma u obliku ROS poruke \ver
 Kako bi ostvarili mogućnost udaljenog upravljanja, detekcijski dio ostvarujemo kao zasebni ROS čvor koji frekvencijom 30 Hz objavljuje poruke na temu \verb|ime topica|.
 Ovime omogućujemo pokretanje detekcijskog algoritma na zasebnom računalu, uz uvjet da je na istoj mreži kao ostatak ROS čvorova.
 
-\subsection{Glavni čvor}
 Glavni čvor svaku novu poruku \verb|ime topica| čita i obrađuje.
 Početnoj poziciji korisnikovog dlana (pri prvoj detekciji) pridružuje se željena pozicija manipulatora jednaka početnoj.
 Pomak dlana od početne pozicije primljen u poruci sustav zbraja s početnom pozicijom manipulatora koju smo ranije spremili, čime dobivamo novu željenu poziciju manipulatora.
@@ -1055,25 +1054,31 @@ Zbog ograničenja pri detekciji orijentacije dlana, trenutnu orijentaciju (klasi
 \end{algorithmic}
 \end{algorithm}
 
-Vektor $E_i$ predstavlja \textit{vektor razlike konfiguracija} i koristi se u daljnjim koracima algoritma, koji se u ovoj točki grana na nekoliko varijanti ovisno o izboru sklopovskog sučelja.
+Vektor $E_i$ predstavlja \textit{vektor razlike konfiguracija} i koristi se u daljnjim koracima algoritma, koji se ovisno o dostupnim naredbama konfigurira u dva različita oblika.
+Prvi oblik se koristi pri dostupnoj naredbi Kartezijske brzine izvršnog člana, kojom možemo direktno narediti kretanje po x,y i z osima koordinatnog sustava baze.
+Drugi oblik koristi se ako je dostupno postavljanje brzine zglobova, što ga čini složenijim.
+
+\subsection{Inicijalizacija sustava}
+Prvi korak pri inicijalizaciji sustava sastoji se od pokretanja sklopovskih sučelja.
+Samo sučelje jest programska rutina koji ostvarujemo tako da API funkcije manipulatora "umotavamo" u \verb|hardware_interface| klasu koja je dio \texttt{ros\_control}paketa.
+Pri pokretanju cijelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
 
 \subsubsection{Sučelje brzine izvršnog člana}
-U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno slanje naredbi kartezijske brzine, algoritam se znatno pojednostavljuje jer ne zahtjeva kinematičke kalkulacije.
+U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno postavljanje kartezijske brzine, algoritam se znatno pojednostavljuje.
+Na ovaj način izbjegavamo složen kinematički račun iz poglavlja \ref{direkt i inverz} i oslanjamo se na interne algoritme samog manipulatora.
 
 Pri primanju poruke tipa \texttt{ime\_poruke} sa detekcijskog servera, funkcija \\  \texttt{sendCartesianCommand} unutar glavnog čvora obrađuje podatke. 
-Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu samog manipulatora, što znači da \texttt{ros\_control}regulator ovoj varijanti koristimo bez povratne veze.
+Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu samog manipulatora.
+Ovo znači da \texttt{ros\_control} u ovom obliku koristimo isključivo za prosljeđivanje naredbi te čitanje stanja zglobova.
 Po završetku obrade, Kartezijska naredba šalje se u obliku poruke \verb|ime_2| na temu \verb|goal|, koja je rezervirana za referentnu veličinu kretanja manipulatora.
 Naredba vezana uz izvršni član sprema se u poruku \verb|ime_3| te se šalje na temu \verb|goal_2|, koja je rezervirana za referentnu veličinu operacije izvršnog člana te ima vlastiti regulator.
 
 Pokazalo se da je ovaj pristup optimalan za brzi početak korištenja jer visoka radna frekvencija najčešće znači da se parametar $\alpha$ može postaviti proizvoljno, dok ostalu regulaciju provodi API.
 
 \subsubsection{Sučelje brzine zglobova}
-Samo sučelje jest programska rutina koji ostvarujemo tako da API funkcije manipulatora "umotavamo" u \verb|hardware_interface| klasu koja je dio \texttt{ros\_control}paketa.
-Pri pokretanju cijelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
-
-Nakon inicijalizacije samog manipulatora, sučelje registrira pojedinačne zglobove i "spaja" se na naredbe pisanja i čitanja stanja zglobova.
+Nakon inicijalizacije, sučelje registrira pojedinačne zglobove i "spaja" se na naredbe pisanja i čitanja stanja zglobova.
 Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \texttt{ros\_control}regulatorima.
-Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \verb|hardware_interface| klase i neće se spajati na neodgovarajuća sučelja.
+Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \texttt{hardware\_interface} klase i neće se spajati na neodgovarajuća sučelja.
 
 Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \texttt{velocity\_ controllers/JointGroupVelocityController}. 
 Regulator svoje parametre učitava iz odgovarajuće konfiguracijske (\texttt{.yaml}) datoteke.
@@ -1081,6 +1086,7 @@ U parametre između ostalog ubrajamo imena robota i zglobova, tip sučelja, poja
 Pokretanjem regulatora API naredbe manipulatora činimo mrežnim resursima unutar ROS "grafa", čime ovaj dio sustava postaje potpuno fizički odvojiv od ostatka.
 Svi podaci sa senzora postaju dostupni na temi \verb|joint_states|, postavljanje referentne veličine vrši se slanjem odgovarajuće poruke na temu \verb|\goal|, a parametri regulatora također su dostupni.
 
+\subsection{Glavni čvor}
 Inicijalizacijom glavnog čvora dovršavamo pokretanje sustava.
 Dok \texttt{ros\_control} regulator osigurava stabilnu brzinu, glavni čvor čini nadređenu regulacijsku petlju koja osigurava odgovarajuću referentnu veličinu baziranu na razlici željenog i trenutnog vektora konfiguracija.
 Kako bi rješili problem kinematike opisan u poglavlju \ref{direkt i inverz}, u klasu \texttt{KDL::Chain} učitavamo opis kinematičkog lanca iz \texttt{.urdf} datoteke.
@@ -1098,24 +1104,44 @@ Brzine je vrlo bitno skalirati na način kojim se zadržava njihov omjer, stoga 
 \begin{algorithmic}
 \STATE{\textbf{Ulaz:} V -- brzine bez ograničenja, O -- ograničenja brzine.}
 \STATE{\textbf{Izlaz:} Vs -- skalirane brzine.}
+\STATE{$m := 0$}
 \FOR{($i := 0; i < broj zglobova; i++$)}
-\IF{$V_i > O_i \ \& \ |V_i^2-O_i^2| > m$)}
-\STATE{$m := (|V_i^2-O_i^2|$}
-\STATE{$i_m = i$}
+\IF{$|V_i| > O_i \ \& \ \|V_i-O_i\| > m$)}
+\STATE{$m := \|V_i-O_i\|$}
+\STATE{$i_m := i$}
 \ENDIF
 \ENDFOR
 \STATE{$s = O_{i_m}/V_{i_m}$}
 \FOR{($i := 0; i < broj zglobova; i++$)}
-\STATE{$Vs_i := V_is$}
+\STATE{$Vs_i := V_i*s$}
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
 
+Visoka vrijednost akceleracije zglobova može uzrokovati oscilacije u kretanju pri određenim položajima. 
+Akceleracije ograničavamo skaliranjem, na sličan način kao kod brzina.
+Pri ograničavanju potrebno je voditi računa o frekvenciji glavnog čvora jer se brzine osvježavaju 50 puta u sekundi te se male razlike pri svakom taktu mogu pretvoriti u veliku razliku.
+\begin{algorithm}[H]
+\caption{Skaliranje brzina s obzirom na akceleraciju}
+\begin{algorithmic}
+\STATE{\textbf{Ulaz:} V -- brzine bez ograničenja, Vt -- trenutna brzina,  A -- ograničenja akceleracije.}
+\STATE{\textbf{Izlaz:} Vs -- skalirane brzine.}
+\STATE{$m := 0$}
+\FOR{($i := 0; i < broj zglobova; i++$)}
+\IF{$\|V_i - Vt_i\| > A_i \ \& \ \|V_i - Vt_i\| > m $)}
+\STATE{$m := \|V_i - Vt_i\|$}
+\STATE{$i_m = i$}
+\ENDIF
+\ENDFOR
+\STATE{$s = A_{i_m}/m$}
+\FOR{($i := 0; i < broj zglobova; i++$)}
+\STATE{$Vs_i := V_i*s$}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
-
-
-
-
+Nakon ovih skaliranja referentna brzina spremna je za slanje na temu koju čita regulator brzine zglobova.
+Vrijednosti vezane uz izvršni član neovisne su o sučelju i šalju se direktno.
 
 
 

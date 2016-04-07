@@ -62,7 +62,9 @@ U industriji zabave jedna moguća primjena je pomicanje kamere na kraju više-os
 NASA i ostale svemirske agencije već su jedno vrijeme fokusirane na ovakav pristup problemu upravljanja robota u orbitalnim postajama, gdje klasična sučelja zakazuju zbog pobjega tereta.
 Ljudima s poteškoćama u kretanju robotska ruka upravljana ovakvom metodom može olakšati dohvaćanje objekata u okolini. 
 
-\section{Opći i specifični ciljevi rada}
+U poglavlju "Opći i specifični ciljevi rada" definiramo strukturu i izgled 
+
+\chapter{Opći i specifični ciljevi rada}
 Opći cilj našeg rada bio je razvoj upravljačkog sučelja koje kao ulaznu informaciju koristi isključivo gestikulacije i pomake ruke korisnika.
 Zamišljeno sučelje mora biti jednostavno za savladati novom korisniku, intuitivno , pružiti odgovarajuću razinu preciznosti i pri tome zadržati relativno nisku cijenu.
 Iz ovih smjernica proizlaze specifični ciljevi rada:
@@ -78,11 +80,11 @@ Ovime osiguravamo ažurnost sustava kroz vrijeme te jednostavnije popravke i mod
 Kako bi ostvarili ove ciljeve bilo je potrebno savladati metodologiju korištenja nekolicine programskih paketa i biblioteka, kao i riješiti problem međusobne kompatibilnosti brojnih komponenti sustava.
 Komponente je potom potrebno uklopiti u strukturu upravljačke petlje više razine, pri tome vodeći računa o radnim frekvencijama korištenih sklopova.
 
-\chapter{Osnovni koncepti}
-%detaljan opis kako funkcioniraju "oba" načina upravljanja, eventualno ubaciti cardboard slike, slike upravljanja, slike detekcija gui, slike cijelokupnog sustava
-U ovom poglavlju opisujemo zamišljeno upravljačko sučelje. 
-Prvi odlomak opisuje dva načina kojima upravljački algoritam bilježi kretnje ruke korisnika.
-Drugi odlomak sadrži grubi pregled arhitekture cjelokupnog sustava i svrhe pojedinih komponenata, koje detaljnije obrađujemo u poglavlju \ref{Upravljački algoritam}. 
+%\section{Osnovni koncepti}
+%%detaljan opis kako funkcioniraju "oba" načina upravljanja, eventualno ubaciti cardboard slike, slike upravljanja, slike detekcija gui, slike cijelokupnog sustava
+%U ovom poglavlju opisujemo zamišljeno upravljačko sučelje. 
+%Prvi odlomak opisuje dva načina kojima upravljački algoritam bilježi kretnje ruke korisnika.
+%Drugi odlomak sadrži grubi pregled arhitekture cjelokupnog sustava i svrhe pojedinih komponenata, koje detaljnije obrađujemo u poglavlju \ref{Upravljački algoritam}. 
 
 \section{Interpretacija pokreta}\label{2_1}
 Samom prenošenju kretnji ljudske ruke na robota pristupili smo na dva načina: prvi ostvaruje praćenje ljudske ruke u stvarnom vremenu, dok se drugi bazira na načelu sličnom upravljanju kontrolnom palicom (\textit{engl. joystick}).
@@ -145,13 +147,13 @@ Pomoću informacija o poziciji pojedinačnih zglobova također osvježavamo matr
 \caption{Blok dijagram izvedbe sustava}\label{izvedba}
 \end{figure}
 
-\subsection{Detektor}
+\subsubsection{Detektor}
 Zahtjevi postavljeni na detektor relativno su niski. 
 Radna frekvencija trebala bi biti dovoljno visoka da pri prosječnom gibanju referentne veličine bivaju zadane prije no što ih manipulator može sustići kako bi izbjegli oscilacije.
 Minimalni zahtjev na sam detekcijski algoritam jest mogućnost pronalaženja koordinata ljudskog dlana u barem dvije dimenzije, ovime se omogućava kretanje manipulatora po ravnini.
 U našem radu izvedeno je trodimenzionalno translacijsko kretanje, dok je upravljačka petlja potpuno osposobljena za detekciju punih 6 stupnjeva slobode gibanja.
 
-\subsection{Regulator}
+\subsubsection{Regulator}
 Pod pojmom regulator ovdje se podrazumjeva cijela programska struktura koja prima, obrađuje i šalje podatke između više objekata u stvarnom vremenu.
 Stvarnu strukturu regulatora detaljnije ćemo razmotriti u poglavlju \ref{Upravljački algoritam}, kada se upoznamo sa korištenom programskom podrškom i kinematičkim rješenjem.
 
@@ -159,22 +161,50 @@ Ovdje ćemo samo napomenuti da je za kvalitetan rad regulatora bitna sinkronizac
 Ovo je ostvarujemo koristeći mrežnu arhitekturu operacijskog sustava ROS, koji omogućuje određivanje radne frekvencije komponenti i daje detaljan uvid u protok podataka.
 Također, mrežna arhitektura ROS-a omogućuje pokretanje komponenti pojedinačno na različitim fizičkim računalima, što ide u prilog modularnosti sustava.
 
-\subsection{API sučelje}
+\subsubsection{API sučelje}
 Općenitost sustava zahtjeva razdvajanje općih funkcija za regulaciju i obradu podataka od funkcija povezanih uz specifični korišteni manipulator.
 Konkretnije, ovu komponentu moramo ostvariti tako da se na nju može spojiti API bilo kojeg manipulatora koji zadovoljava fizičke zahtjeve.
 
 Paket \texttt{ros\_control}ostvaruje zadano sučelje koristeći apstraktne klase na koje "spajamo" API manipulatora.
 Dovoljno je funkcije čitanja stanja zglobova i zadavanja brzine/pozicije "umotati" u dostupne klase, te ostatak sustava izvesti koristeći njih.
 
-\subsection{Manipulator}
+\subsubsection{Manipulator}
 Manipulator je robotski uređaj koji izvršava željenu radnju te je na njega postavljeno nekoliko osnovnih zahtjeva kako bi bio kompatibilan sa sustavom.
 Kao što je ranije spomenuto, sam manipulator mora imati minimalno dva računalom upravljiva stupnja slobode (time ostvarujemo planarno kretanje).
 Također, manipulator mora biti opermljen senzorima pozicije i/ili brzine koje je moguće čitati na računalu koristeći API.
 
 \chapter{Sklopovska podrška}
-Glavne komponente na kojima smo testirali zamišljeni sustav su Microsoft Kinect RGBD kamera te Kinova Jaco robotska ruka.
+Sustav je dizajniran da bude univerzalan s obzirom na manipulator i detekcijski uređaj, ali pri svim testiranjima koristili smo Kinova Jaco robotsku ruku i Microsoft Kinect 3d kameru.
 \section{Microsoft Kinect 3d kamera}
+[//TODO slika Kinecta]
+Moderni senzori su u mogućnosti prikazati sliku uz submilimetarsku preciznost. Takvu preciznost nam ne nudi Kinect, ali nudi sasvim prihvatljivu preciznost od nekoliko milimetara (ovisno o udaljenosti objekta).
 
+Kinect je naziv za liniju Microsoftovih senzora pokreta razvijenih primarno za potrebe igraćih konzola, ali u širokoj uporabi u području računalnog vida. Sastoji se od dubinske kamere, klasične kamere te niza mikrofona pomoću kojih je u mogućnosti izvršavati kompleksne zadatke prepoznavanja i praćenja kao što je praćenje ljudskih pokreta.
+
+U ovom radu je korišten \textit{Kinect for Xbox 360} \cite{kinect} te se ne razmatraju parametri drugih Kinect senzora.
+
+Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira pseudoslučajne uzorke točaka u Kinectov vidokrug. Infracrvena kamera koja se nalazi na znanoj udaljenosti snimi položaj točaka, po kodiranom uzorku zna pod kojim kutom je uzorak generiran te jednostavnom triangulacijom izračuna dubinu u danoj točki prostora. Kako postoji određena udaljenost između senzora i emitera, na nekim mjestima Kinect neće biti sposoban odrediti dubinu zbog okluzije (Slika \ref{fig:oculsion}).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{detekcija/okulzija}
+	\caption{Okluzija u dubinskoj slici}
+	\label{fig:oculsion}
+\end{figure}
+
+Okluzija se pojavljuje kao posljedica razmaka između emitera infracrvene svjetlosti i kamere. Kako kamera promatra prostor s neke udaljenosti od emitera, vidi neke dijelove prostora koje emiter nije mogao obasjati jer su bili pokriveni drugim objektima. Tako na slici \ref{fig:oculsion} bijelom bojom vidimo sjenu koju dubinska slika ruke ostavlja za sobom. Iz položaja sjene i ruke jasno se vidi kako emiter emitira infracrvenu svjetlost s desne strane kamere što i je slučaj ako pogledamo arhitekturu senzora gdje se emiter nalazi s desne strane. 
+
+Okluzije predstavljaju znatni problem u detektiranjima. U detekciji dlana, dlan može biti u takvom položaju da jedan dio dlana zasjeni drugi te ćemo dobiti maksimalnu moguću dubinu na tom području. Takvi slučajevi mogu prevariti detektor te zato valja imati na umu učinak okluzije prilikom konstrukcije detektora.
+
+Jedan kvalitetan pristup detekciji dlana koristi sintetizirane slike dlana na kojima simulira i okluziju kako bi detektor bio što bolje naučen na prave slike \citep{xu2013efficient}. U istom radu Xu i Cheng su simulirali i neuspješne detekcije malih površina. Jedan takav primjer vidimo na slici \ref{fig:loss-of-little-objects}, gdje je kažiprst okrenut u smjeru kamere te ne uspijeva biti detektiran. Razlog takvih neuspješnih detekcija nalazimo u načinu na koji Kinect određuje kut pod kojim je površina obasjana. Kako je već spomenuto, Kinect generira pseudoslučajne uzorke ovisno o kutu pod kojim su oni projicirani te tako kamera uspoređivanjem uzoraka može znati pod kojim kutom je predmet obasjan. Ako je predmet dovoljno male površine, uzorak neće biti potpun. Kinect pri tome pristupa na isti način kao i kod okluzije, dubinu na tom području postavlja na maksimalnu moguću dubinu.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{detekcija/gubitak-malih-objekata}
+	\caption{Gubitak malih objekata}
+	\label{fig:loss-of-little-objects}
+\end{figure}
+
+\newpage
 \section{Kinova Jaco robotska ruka}
 Kinova Jaco (\ref{JACO2}) robotska je ruka namijenjena osobama s poteškoćama u kretanju.
 Jaco 2010. godine na tržište je stavlja kanadska tvrka Kinova robotics s ciljem olakšavanja svakodnevnog života korisnika.
@@ -285,11 +315,11 @@ m_m \approx k \ i_a;
 \end{align}
 Ovdje $i_a$ predstavlja trenutnu struju armature akturatora, dok je $k$ konstanta definirana specifikacijama motora.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width = 0.5\textwidth]{jaco_cad}
-\caption{Shema Kinova Jaco robotske ruke sa označenim duljinama i zakretima elemenata}
-\end{figure}
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[width = 0.5\textwidth]{jaco_cad}
+%\caption{Shema Kinova Jaco robotske ruke sa označenim duljinama i zakretima elemenata}
+%\end{figure}
 
 \subsection{Računalno sučelje}
 Jaco robotska ruka s računalom se povezuje preko USB 2.0 (\textit{engl. Universal Serial Bus}) sučelja.
@@ -304,7 +334,7 @@ Potpoglavlja koja opisuju ROS i Gazebo sadrže nešto detaljnije opise, jer smat
 \section{ROS}
 \begin{figure}[h!]
 \centering
-\includegraphics[width = 0.5\textwidth]{ros_enabled}
+\includegraphics[width = 0.3\textwidth]{ros_enabled}
 \caption{ROS logotip}
 \end{figure}
 ROS (engl. \textit{Robot Operating System}) je operacijski sustav koji omogućuje jednostavno povezivanja alata i biblioteka potrebnih za razne izvedbe u robotici. 
@@ -324,14 +354,14 @@ Osnovna komunikacija u ROS-u može se vizualizirati u obliku grafa povezanih čv
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.41]{Zavrsni_ROS}
-\caption{Node A i Node B ostvaruju jednosmjernu komunikaciju koristeći topic}
+\includegraphics[width=\textwidth]{ros_shema}
+\caption{Čvor A i čode B ostvaruju jednosmjernu komunikaciju koristeći topic}
 \end{center}
 \end{figure}
 
 Čvorovi spremaju podatke u standardizirane strukture koje zovemo porukama te ih objavljuju na odgovarajuće mrežne lokacije koje nazivamo temama. 
-Svaka tema prima samo jednu točno definiranu vrstu poruke. 
-Objavljivač (en. \textit{publisher}) je objekt koji unutar čvora šalje poruku na temu, dok pretplatnik (en. \textit{subscriber}) čini njegov komplement i čita poruku s teme.
+Svaka tema prima samo jednu točno definiranu vrstu poruke i njen sadržaj dostupan je svim čvorovima na mreži. 
+Izdavač (engl. \textit{publisher}) je objekt unutar čvora koji šalje poruku na temu, dok pretplatnik (engl. \textit{subscriber}) čini njegov komplement i čita poruku trenutno sadržanu na temi.
 
 Ovaj način komunikacije omogućuje distribuciju raznih procesa na više računala što izvedbe čini manje ovisnima o sistemskim zahtjevima i izboru programskog jezika za pojedine čvorove. 
 %slika streama jednog topica
@@ -356,19 +386,19 @@ ROS nudi mogućnost učitavanja parametara s mrežnih lokacija čime se omoguću
 Ovakvim pristupom se izbjegava potreba ponovnim kompiliranje koda pri svakoj promjeni parametara.
 
 \subsection{ros control}
-ROS paket \texttt{ros\_control}ostvaruje generičke PID regulatore unutar ROS arhitekture. 
+ROS paket \texttt{ros\_control}ostvaruje generičke PID regulatore za razna sklopovska sučelja unutar ROS arhitekture. 
 Jednostavna i standardizirana integracija s ostatkom ROS ekosustava čini ovaj paket čestom komponentom sustava izvedenih u ROS-u.
 
-Kako bi se postiglo poopćenje PID upravljanja neovisno o konkretnom robotu (tj. o API-ju), API funkcije robota "umataju" se unutar apstraktnih funkcija koje čine ROS-API sučelje.
-Umjesto da regulatori šalju i čitaju podatke koristeći API funkcije direktno, ove operacije obavljaju se na generičkim funkcijama unutar kojih su "umotane" API funkcije .
-Ovime korisnik kako bi primjenio postojeći sustav na drugog robota mora samo uklopiti odgovarajuće API funkcije unutar generičkih.
+Kako bi se postiglo poopćenje PID upravljanja neovisno o konkretnom robotu (tj. o API-ju), API funkcije robota "umataju" se unutar apstraktnih \texttt{hardware\_interface} klasa koje čine ROS-API sučelje.
+Umjesto da regulatori šalju i čitaju podatke koristeći API funkcije direktno, ove operacije obavljaju se pozivanjem generičkih funkcija unutar kojih su "umotane" API funkcije .
+Kako bi primjenio postojeći sustav na drugog robota (uz dostupnost istog seta naredbi koje regulator koristi), korisnik mora samo uklopiti odgovarajuće API funkcije unutar generičkih.
 Za dobar dio robota ovo sučelje već postoji radi open-source karaktera ROS ekosustava.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1]{gazebo_ros_control}
-\caption{Mathworks Matlab logo}
-\end{figure}
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[scale=1]{gazebo_ros_control}
+%\caption{Mathworks Matlab logo}
+%\end{figure}
 
 \section{Matlab}
 \begin{figure}[h!]
@@ -430,7 +460,7 @@ Zahvaljujući ovoj činjenici, sustav možemo razvijati za simulaciju i stvarni 
 
 \chapter{Kinematika manipulatora}
 Modularna arhitektura našeg sustava dopušta integraciju manipulatora sa različitim razinama kompleksnosti API-ja.
-Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim kinematičkim funkcijama, smatramo da je radi kompletnosti izvedbe bitno pripremiti sustav i za slučaj kada su dostupne samo naredbe pomicanja zglobova.
+Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, smatramo da je radi kompletnosti izvedbe bitno predviditi i slučaj kada su dostupne samo naredbe pomicanja zglobova.
 Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike manipulatora izvedenog unutar našeg sustava na primjeru Jaco robotske ruke.
 Pošto Jaco robotska ruka ima 6 stupnjeva slobode , sa stajališta složenosti kinematike ovaj izbor predstavlja svojevrsni najgori slučaj.
 Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovili numeričku stabilnost rješenja i moguće nedostatke.
@@ -444,7 +474,7 @@ Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovi
 U idealnom slučaju, rješavanje problema kinematike manipulatora sa do 6 stupnjeva slobode zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
 Iz članova dobivene matrice potom analitički dobivamo izraze za Kartezijsku poziciju i orijentaciju alata u ovisnosti o zakretima zglobova.
 Sintezu direktne kinematike započinjemo D-H postupkom postavljanja koordinatnih sustava vezanih uz zglobove.
-Određivanjem matrica homogenih transformacija između tih sustava dobivamo bijektivnu\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkciju koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
+Određivanjem matrica homogenih transformacija između tih sustava dobivamo surjektivnu\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkciju koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
 
 Problem inverzne kinematike znatno je složeniji jer zahtjeva rješavanje sustava nelinearnih jednadžbi s više nepoznanica.
 Za složenije manipulatore ovaj problem je netrivijalan te rješenje nije uvijek moguće pronaći koristeći osnovne matematičke metode.
@@ -453,9 +483,9 @@ Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješen
 Pronalaženje analitičkih rješenja inverzne kinematike pomoću računalnog algoritma još je složeniji zadatak jer zahtjeva implementaciju univerzalnog pristupa rješavanju nelinearnih jednadžbi čija su rješenja višestruka.
 Pronašli smo da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju (pseudo)inverza matrice Jakobijana manipulatora, koja je puno prikladnija za programsku izvedbu.
 
-U prvom potpoglavlju opisati ćemo osnovne postupke rješavanja kinematičkog problema na primjeru Jaco robotske ruke.
+U prvom odlomku opisati ćemo osnovne postupke rješavanja kinematičkog problema na primjeru Jaco robotske ruke.
 Pri tome ćemo radi sažetosti izlaganja preskočiti pojedinosti D-H postupka i izvod matrica homogene transformacije.
-Drugo potpoglavlje sadrži opis ideje rješenja inverzne kinematike koje koristimo u računalnom algoritmu.
+Drugi odlomak sadrži opis ideje rješenja inverzne kinematike koje koristimo u računalnom algoritmu.
 Rezultate zamišljenog postupka potom ispitujemo koristeći Matlab.
 
 \section{Direktna i inverzna kinematika Jaco robotske ruke}\label{direkt i inverz}
@@ -506,7 +536,7 @@ d_{6b}=D_{6}+D_{5}\frac{1}{2\cdot\cos(a)}=D_{6}+D_{5}\frac{\sin(a)}{\sin(2a)}.
 \label{d6b}
 \end{equation}
 
-Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodajemo i razlike u orijentaciji rotacijskih osi zglobova $\alpha$:\\
+Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodajemo i razlike u orijentaciji rotacijskih osi zglobova $\alpha$. Konačni parametri prikazani su u tablici \ref{JacoDH}.
  \begin{table}[h!]
 \centering
 \begin{tabular}{c c c c c}
@@ -524,8 +554,6 @@ $ k $ & $ \alpha_{k} $ & $ a_{k} $ & $ d_{k} $ & $ \theta_{k} $ \\
 \end{tabular}
 \caption{DH parametri} \label{JacoDH}
 \end{table}
-
-Odnos kuteva u matematičkom modelu i stvarnih kuteva zglobova Jaco ruke dan je izrazima \ref{q1}, \ref{q2}, \ref{q3}, \ref{q4}, \ref{q5}, \ref{q6} :
  \begin{equation}
 \theta_{1}=-q_{1_{Jaco}}
 \label{q1}
@@ -549,8 +577,9 @@ Odnos kuteva u matematičkom modelu i stvarnih kuteva zglobova Jaco ruke dan je 
 \begin{equation}
 \theta_{6}=q_{6_{Jaco}}+\dfrac{5\cdot \pi}{9}
 \label{q6}
-\end{equation}\\
+\end{equation}
 
+Odnos kuteva u matematičkom modelu i stvarnih kuteva zglobova Jaco ruke dan je izrazima \ref{q1}, \ref{q2}, \ref{q3}, \ref{q4}, \ref{q5}, \ref{q6}.
 Varijabla $q_{i_{Jaco}}$ predstavlja trenutačnu rotaciju i-tog zgloba Jaco robotske ruke očitanu kroz API, dok $\theta_i$ predstavlja stvarni zakret i-tog zgloba.
 
 \subsubsection{Matrice homogene transformacije}
@@ -642,8 +671,9 @@ Iz matrice $\mathbf{T_{alat}^{baza}}$ dobivamo potpunu informaciju o položaju a
 Vektor \ref{konfig_alat} još nazivamo vektorom konfiguracije alata.
 
 \subsection{Inverzna kinematika}
-Ciljane konfiguracije izvršnog člana u $\mathbb{R}^{3}$ dane su vektorom $\vec{\mathbf{t}} = (\mathbf{t_1}, \ldots , \mathbf{t_k})^{T}$ , a trenutne konfiguracije vektorom
-$\vec{\mathbf{w}} = (\mathbf{w_1}, \ldots , \mathbf{w_k})^{T}$. Kod mehaničkih manipulatora , $\vec{\mathbf{w}}$ je funkcija pozicija zglobova ${\bm{\theta}} = (\theta_{1}, \ldots , \theta_{n})^{T}$ , pa za ovaj slučaj zapisujemo $\vec{\mathbf{w}}=\vec{\mathbf{w}}\left({\vec{\bm{\theta}}}\right) $ . Problem inverzne kinematike definiramo kao pronalaženje vektora $\vec{\bm{\theta}} = (\bm{\theta_1} \ldots \bm{\theta_k})^T$ koji zadovoljava izraz:
+Ciljane konfiguracije izvršnog člana u $\mathbb{R}^{6}$ dane su vektorom $\vec{\mathbf{t}} = (\mathbf{t_1}, \ldots , \mathbf{t_k})^{T}$ , a trenutne konfiguracije vektorom
+$\vec{\mathbf{w}} = (\mathbf{w_1}, \ldots , \mathbf{w_k})^{T}$. Kod mehaničkih manipulatora , $\vec{\mathbf{w}}$ je funkcija pozicija zglobova ${\bm{\theta}} = (\theta_{1}, \ldots , \theta_{n})^{T}$ , pa za ovaj slučaj zapisujemo $\vec{\mathbf{w}}=\vec{\mathbf{w}}\left({\vec{\bm{\theta}}}\right) $. 
+Problem inverzne kinematike definiramo kao pronalaženje vektora $\vec{\bm{\theta}} = (\bm{\theta_1} \ldots \bm{\theta_k})^T$ koji zadovoljava izraz:
 \begin{equation}
 \mathbf{t_i} = \mathbf{w_i}(\bm{\theta}_{\mathbf{i}})
 \label{inverzna_def}
@@ -653,12 +683,12 @@ Ono što čini problem inverzne kinematike problemom u užem smislu jest netrivi
 Razvijeni su različiti pristupi ovom problemu od kojih se mnogi oslanjaju na numeričke metode ili metode pronalaženja minimuma odgovarajuće funkcije.
 
 Korištenjem analitičke metode rješavanja opisane u uvodu ovog poglavlja, vektor $\bm{\theta}_{\mathbf{i}}(\mathbf{t_i})$ dobiva se rješavanjem sustava jednadžbi dobivenog iz vektora konfiguracije alata \ref{konfig_alat}. 
-Promatrajući puni izraz za vektor konfiguracije alata $\mathbf{w}$, primjećujemo da je analitičko rješavanje ovog problema vrlo složen zadatak čije poopćavanje zahtjeva iznimno složen algoritam.
+Promatrajući puni izraz za vektor konfiguracije alata $\mathbf{w}$, primjećujemo da je analitičko rješavanje ovog problema netrivijalan zadatak čije poopćavanje zahtjeva iznimno složen algoritam.
 Ovo nas dovodi do zaključka da univerzalni algoritam rješavanja inverzne kinematike zahtjeva drugačiji pristup.
 
 \section{Iterativno rješavanje kinematičkog problema}
-Kako bi izbjegli komplicirano analitičko rješavanje problema inverzne kinematike, razvili smo metodu koja zaobilazi rješavanje sustava jednadžbi \ref{inverzna_def}.
-Prvi se korak sastoji od određivanja matrice Jakobijana manipulatora, koja povezuje brzine okretanja zglobova sa linearnim i rotacijskim brzinama alata.
+Kako bi izbjegli komplicirano analitičko rješavanje problema inverzne kinematike, koristimo metodu koja zaobilazi rješavanje sustava jednadžbi \ref{inverzna_def}.
+Prvi se korak sastoji od određivanja matrice Jakobijana manipulatora koja povezuje brzine okretanja zglobova sa linearnim i rotacijskim brzinama alata.
 
 Pronalaženjem inverza ove matrice, moguće je odrediti potrebne brzine rotacije zglobova kako bismo ostvarili željene brzine gibanja alata.
 Sintezom upravljačke petlje moguće je ostvariti praćenje referentne veličine u obliku zadanog vektora konfiguraciije alata, čime ostvarujemo iterativni postupak rješavanja inverzne kinematike.
@@ -670,20 +700,17 @@ Radi jednostavnosti zapisa, u nastavku teksta ispuštamo indekse ovih vektora. S
 \begin{equation}
 \mathbf{J} =\frac{d\mathbf{w}}{d\bm{\theta}} 
 \end{equation}
-
 Počinjemo pretpostavkom da za dovoljno malene vrijednosti $\Delta \mathbf{w}$ vrijedi \ref{jac_approx}:
 \begin{equation}
 \Delta \mathbf{w} \approx \mathbf{J}  \Delta \bm{\theta}
 \label{jac_approx}
 \end{equation}
-
 Inverzom matrice $\mathbf{J}$ možemo dobiti sljedeći vrlo koristan identitet:
 \begin{equation}
 \Delta \bm{\theta} \approx \mathbf{J}^{-1} \Delta \textbf{w}
 \label{jac_approx2}
 \end{equation}
-
-Identitet \ref{jac_approx2} važan je jer zahvaljujući njemu ostvarujemo regulator brzine definiran u [poglavlje].
+Identitet \ref{jac_approx2} važan je jer zahvaljujući njemu ostvarujemo regulator brzine definiran u \ref{kin_upr}.
 
 U generalnom slučaju Jacobijeva matrica predstavlja matricu dimenzija $n \times k$ gdje je $\mathbf{w_i} = (w_1, \ldots , w_k)^T$:
 \begin{equation}
@@ -695,33 +722,29 @@ U generalnom slučaju Jacobijeva matrica predstavlja matricu dimenzija $n \times
     \dfrac{\partial {w}_{k}}{\partial \theta_{1}}      & \dfrac{\partial {w}_{k}}{\partial \theta_{2}}  & \dots & \dfrac{\partial {w}_{k}}{\partial \theta_{n}}
 \end{bmatrix}
 \end{equation}
-
-U slučaju kada ova matrica predstavlja manipulator, vrijedi $k=6$.
+U slučaju kada ova matrica predstavlja prostor vektora konfiguracije $\mathbf{w}$, vrijedi $k=6$.
 Ove parametre ponekad nije jednostavno analitički odrediti, stoga je korištena geometrijska metoda kojom zaobilazimo deriviranje. 
 Neka je $\mathbf{p}_{j}$ pozicija j-tog zgloba u baznom koordinatnom sustavu i neka je $\mathbf{z}_{j}$ jedinični vektor osi rotacije j-tog zgloba. 
-Komponente rotacijskog dijela Jakobijana $J_{\bm{\omega}_j}$ jednake su jediničnim vektorima osi rotacije zgloba: 
+Komponente rotacijskog dijela Jakobijana $J_{\bm{\omega}_j}$ jednake su jediničnim vektorima osi rotacije zgloba u baznom koordinatnom sustavu: 
 \begin{equation}
 J_{\bm{\omega}_j} = \dfrac{\partial \textbf{w}}{ \partial \theta_{j}} = \textbf{z}_{j}
 \end{equation}
-
-
 Uz pretpostavku da je rotacija mjerena u radijanima i da je smjer rotacije određen pravilom desne ruke , za translacijski dio Jakobijana $J_{\bm{v}_j}$ članovi iznose:
 \begin{equation}
 J_{\bm{v}_j} = \dfrac{\partial \mathbf{w}}{ \partial \theta_{j}} = \mathbf{z}_{j} \times (\mathbf{w} - \mathbf{p}_{j})
 \end{equation}
-
 U slučaju translacijskog zgloba, računanje člana još je jednostavnije jer je promjena pozicije jednaka jediničnom vektoru "osi rotacije" zgloba:
 \begin{equation}
 J_{\bm{v}_j} = \dfrac{\partial \mathbf{w}}{ \partial \theta_{j}} = \mathbf{z}_{j}
 \end{equation}
-
-Dobivena Jacobijeva matrica ima strukturu:
+Dobivena Jacobijeva matrica ima strukturu \ref{jacob1}, \ref{jacob2} :
 \begin{equation}
 \mathbf{J} =
 \begin{bmatrix}
 J_{\bm{v}}\\
 J_{\bm{\omega}}
 \end{bmatrix}
+\label{jacob1}
 \end{equation}
 
 \begin{equation}
@@ -730,27 +753,34 @@ J_{\bm{\omega}}
 \mathbf{z}_{0} \times (\mathbf{w} - \mathbf{p}_{0}) &\mathbf{z}_{1} \times (\mathbf{w} - \mathbf{p}_{1}) &\ldots &\mathbf{z}_{n-1} \times (\mathbf{w} - \mathbf{p}_{n-1})\\
 \textbf{z}_{0} &\textbf{z}_{1} &\ldots &\textbf{z}_{n-1}\\
 \end{bmatrix}
+\label{jacob2}
 \end{equation}
-
 Izrazom \ref{jac_approx2} lineariziramo model gibanja robota oko točke $\bm{\theta}$. 
 Uz odgovarajuću frekvenciju osvježavanja matrice $\mathbf{J}$, moguće je dobiti kvalitetnu aproksimaciju $\Delta \bm{\theta}$ za željeni $\Delta \mathbf{w}$.
 
 Problem kod ovog pristupa nastaje u slučajevima kada matrica $\mathbf{J}$ nije kvadratna, što je slučaj kod svih manipulatora sa brojem zglobova različitim od 6.
-Radi potrebe za općim rješenjem koristimo Moore-Penroseov pseudoinverz, koji je svojevrsno poopćenje inverza za sve matrice.
+Nekvadratnu matricu nije moguće invertirati, što znači da metoda nije univerzalna.
+Radi potrebe za općim rješenjem koristimo Moore-Penroseov pseudoinverz, koji je svojevrsno poopćenje inverza matrice proizvoljnih dimenzija.
 Uz određene uvjete (ref), pseudoinverz Jakobijana određujemo izrazom \ref{eq:pseudoinverz}:
 \begin{equation}
 \mathbf{J}^{+} = \left( \mathbf{J}^{\dagger} \mathbf{J}\right)^{-1}\mathbf{J}^{\dagger}
 \label{eq:pseudoinverz}
 \end{equation}
 U izrazu \ref{eq:pseudoinverz} simbol $\dagger$ označava operaciju hermitske transpozicije.
-Ovom modifikacijom poopćavamo ideju izraza \ref{jac_approx2} na sve manipualtore.
-Programskom izvedbom pomoću KDL biblioteka na izraz \ref{jac_approx2} dodaju se članovi kojima osiguravamo numeričku stabilizaciju prema metodi opisanoj u (), no za dokaz koncepta u Matlabu koristimo jednostavniju izvedbu.
+Ovom modifikacijom poopćavamo ideju izraza \ref{jac_approx2} na sve manipualtore te osiguravamo veću numeričku stabilnost naspram običnog inverza.
+U praksi se koriste naprednije metode koje osiguravaju dodatnu numeričku stabilizaciju dodatnim članovima, pa u praksi izraz \ref{jac_approx2} poprima oblik \ref{jacob3}.
+\begin{equation}
+\Delta \bm{\theta} \approx \mathbf{J}^{+} \Delta \textbf{w} + \mathbf{S}
+\label{jacob3}
+\end{equation}
+U izrazu \ref{jacob3} matrica $\mathbf{S}$ predstavlja stabilizacijski član koji može biti ovisan o trenutnoj brzini, poziciji ili akceleraciji zglobova.
+Programskom izvedba pomoću KDL biblioteka oslanja se na metodu sličnu \ref{jacob3} čime osigurava stabilnije ponašanje dobivenih brzina, no za dokaz koncepta i testiranje u Matlabu koristimo izraz \ref{jac_approx2}.
 
-\subsection{Upravljačka petlja}
+\subsection{Upravljačka petlja}\label{kin_upr}
 %Pomoću izvedene Jakobijeve matrice manipulatora konstruiramo upravljačku petlju više razine koja regulira vektor konfiguracije alata $\mathbf{w}$.
-Razmatranjem izraza \ref{jac_approx2} možemo zaključiti da smo posredno došli do alata za aproksimaciju inverzne kinematike. 
-Iterativnom metodom moguće je ostvariti kretanje ruke prema željenoj točki dokle god poznajemo $\mathbf{e}$ . 
-Ovom metodom pomoću već postojećih podataka možemo jednostavno dobiti rješenje za linearno kretanje bilo koje točke manipulatora.
+Razmatranjem izraza \ref{jac_approx2} možemo zaključiti da smo posredno došli do metode čijom primjenom u upravljačkoj petlji u teoriji možemo ostvariti kretanje po putanji. 
+Iterativnom primjenom izraza \ref{jac_approx2} moguće je ostvariti kretanje ruke prema željenom vektoru konfiguracije dokle god poznajemo pogrešku $\mathbf{e}$ . 
+Za sintezu Jacobijeve matrice potrebni su nam podaci o trenutnim pozicijama zglobova koji čine povratnu vezu petlje, dok je za računanje potrebne promjene pozicije potrebna informacija o željenom vektoru konfiguracije što je referentna veličina.
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture}[auto, node distance=2cm,>=latex']
@@ -780,16 +810,16 @@ Ovom metodom pomoću već postojećih podataka možemo jednostavno dobiti rješe
 \caption{Blok dijagram izvedbe upravljače petlje manipulatora} \label{petlja}
 \end{figure}
 
-Definiramo vektor razlike konfiguracija kao: 
+Izrazom \ref{e} definiramo vektor razlike konfiguracija: 
 \begin{equation}
 {\mathbf{e_i}} = {\mathbf{t_i}} -{\mathbf{w_i}}
 \label{e}
 \end{equation}
 
 U daljnjem razmatranju iz izraza \ref{e} ispuštamo indekse radi kompaktnosti.
-Razliku referentnog i stvarnog vektora konfiguracije alata sustav prema izrazu \ref{jac_approx2} množimo inverzom matrice $\mathbf{J}$.
+Razliku referentnog i stvarnog vektora konfiguracije alata sustav prema izrazu \ref{jac_approx2} množi inverzom matrice $\mathbf{J}$.
 Kao rezultat množenja dobivamo potrebne zakrete zglobova $\Delta \mathbf{q}$.
-Pošto su rezultirajući referentni zakreti zglobova znatno manji od njihove nominalne kutne brzine, možemo ih tretirati i kao referentne brzine:
+Pri praćenju putanje manipulator nikad neće biti daleko od tražene pozicije, čime bez gubitka općenitosti dobivene potrebne pomake također možemo tretirati kao brzine.
 \begin{equation}
 \Delta \mathbf{q} \approx \bm{\omega}
 \end{equation}
@@ -968,6 +998,8 @@ Na slici \ref{convex_hull} je običnoj binarnoj slici sivom bojom pridodana razl
 \end{figure}
 
 \end{enumerate}
+
+\newpage
 \section{Određivanje poze dlana}
 
 \subsection{Slične metode}
@@ -997,7 +1029,7 @@ Z(\mathbf{s})=\left\{\begin{matrix}
 \subsubsection{Učenje klasifikatora}
 Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od kojih 1239 s otvorenim dlanom i 1320 sa zatvorenim dlanom. Grafikon \ref{scatter_graph_lbl} prikazuje točke koje predstavljaju slike u ravnini određenoj značajkama $f_{1}$ i $f_{2}$ s time da zatvoreni dlanovi su prikazani zelenom bojom, a otvoreni crvenom.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \label{scatter_graph_lbl}
 \centering
 \input{scatter_graph}
@@ -1009,6 +1041,20 @@ U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvij
 
 Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u detektoru prilikom određivanja zatvorenosti dlana.
 
+\newpage
+\subsection{Razvijena metoda primjenom dubokih konvolucijskih neuronskih mreža}
+
+Inicijalna estimacija lokacije dlana u slici ne traje dugo te daljnja procjena poze dlana može trajati puno duže. Već i gore navedena brza metoda određivanja zatvorenosti dlana i na najslabijim uređajima ostavlja poprilično procesorsko vrijeme neiskorišteno. Odlučeno je dakle iskoristiti do tada neiskorišteno procesorsko vrijeme kako bi detektor dao bolji opis poze u kojoj se dlan nalazi.
+
+Prethodna metoda se temelji na jednostavnim, ali vrlo uspješnim heuristikama. Ipak, za opisivanje poze dlana s više parametara takav pristup je puno zahtjevniji. Jedan od alternativnih skupova pristupa su tzv. pristupi vođeni samim podacima (engl. \textit{data-driven approach}). Za takav pristup valja prikupiti dovoljnu količinu željenih (u konkretnom slučaju i označenih) podataka te nad njima naučiti model. Model bi opisivao pozu dlana koji mu je predan kao slika na ulazu.
+
+U nedostatku bolje opreme (konkretno žiroskopa kakav se nalazi u većini mobilnih uređaja) koja bi omogućila brže i preciznije prikupljanje željenih podataka s detaljnijim opisom poze dlana, valjalo je osmisliti efikasan način prikupljanja što većeg broja raznovrsnih podataka uz njihovo precizno označavanje.
+
+Klasifikatora poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i u prethodnoj metodi, dok drugi određuje rotaciju dlana oko x osi. Takva rotacija omogućuje robotskoj ruci da uhvati nešto iznad, ispred ili ispod dlana te zbog toga je odabrana kao najkorisnija u usporedbi s rotacijama oko y ili z osi. Podaci su prikupljani u 15 različitih klasa kao kartezijev produkt tri stupnja zatvorenosti dlana$ {0,0.5,1}$ te 5 različitih rotacija oko x osi ${-90\deg, -45\deg, 0\deg, 45\deg, 90\deg}$. Kada bismo u istu proceduru uključili i druge dvije rotacije, tada bi ukupan broj klasa bio $3*5*5*5 =375$ što uz dane resurse ne bi bilo izvedivo.
+
+Ukupno je prikupljeno $61 395$ označenih slika dlana. Prikupljene slike su dubinske slike dlana dobivenog detekcijom segmentirane na osnovu praga opisanog u postupku detekcije te binarizirane tako da slikovni elementi dlana imaju vrijednost $1$, a ostali $0$.
+
+Razlog binarizaciji i segmentaciji leži u tome što pri učenju modela želimo reducirati količinu informacija koje klasifikator dobiva na ulaz u postupku učenja kako ih ne bi prenaučio. Naime, uklanjanjem pozadine klasifikator neće biti opterećen time što je u pozadini dlana već morati naučiti heuristike isključivo temeljem slikovnih elemenata dlana. Također, iz sličnog razloga ne želimo klasifikatoru pružiti informaciju na kojoj udaljenosti se dlan nalazio u datoj slici kako se ne bi oslonio i na tu informaciju.
 
 \chapter{Upravljački algoritam}\label{Upravljački algoritam}
 Ovo poglavlje pomoću koncepata i metoda objašnjenih u prethodnim poglavljima možemo detaljno prikazuje arhitekturu upravljačkog dijela sustava.
@@ -1075,7 +1121,7 @@ Naredba vezana uz izvršni član sprema se u poruku \verb|ime_3| te se šalje na
 
 Pokazalo se da je ovaj pristup optimalan za brzi početak korištenja jer visoka radna frekvencija najčešće znači da se parametar $\alpha$ može postaviti proizvoljno, dok ostalu regulaciju provodi API.
 
-\subsubsection{Sučelje brzine zglobova}
+\subsubsection{Sučelje brzine/pozicije zglobova}
 Nakon inicijalizacije, sučelje registrira pojedinačne zglobove i "spaja" se na naredbe pisanja i čitanja stanja zglobova.
 Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \texttt{ros\_control}regulatorima.
 Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \texttt{hardware\_interface} klase i neće se spajati na neodgovarajuća sučelja.
@@ -1141,6 +1187,7 @@ Pri ograničavanju potrebno je voditi računa o frekvenciji glavnog čvora jer s
 \end{algorithm}
 
 Nakon ovih skaliranja referentna brzina spremna je za slanje na temu koju čita regulator brzine zglobova.
+U slučaju sučelja pozicije zglobova, ovu veličinu možemo smatrati pomakom te je dodati trenutnim vrijednostima zakreta zglobova kako bi dobili željenu poziciju.
 Vrijednosti vezane uz izvršni član neovisne su o sučelju i šalju se direktno.
 
 \subsection{Kinematika}
@@ -1172,11 +1219,18 @@ Ovakve opise možemo pronaći za većinu komercijalnih manipulatora i stoga je t
 U simulaciju također uključujemo dinamičko ponašanje ruke jer opisna datoteka također sadrži tenzore inercije pojedinih članaka.
 Pri pokretanju, Gazebo automatski generira sklopovsko sučelje iz opisa i inicijalizira regulator.
 Za inicijalizaciju sustava koristimo iste korake kao i prije, pri tome isključujući korak inicijalizacije sklopovskog sučelja za stvarni manipulator.
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{gazebo1}
+\caption{Prikaz modela Jaco robotske ruke unutar Gazebo okruženja.}
+\end{figure}
 
-Prvo testiranje provodimo zadajući jednostavnu translacijsku trajektoriju koju manipulator treba pratiti.
+Prvo testiranje provodimo zadajući jednostavnu kvadratnu isključivo translacijsku trajektoriju koju manipulator treba pratiti.
+Trajektorija ima oblik kvadrata duljina stranica 10 cm koji je orijentiran na način da zahtjeva savladavanje sve tri translacijske osi.
 
 \chapter{Rezultati}
-
+\chapter{Rasprava}
+\chapter{Zaključak}
 
 
 \end{document}

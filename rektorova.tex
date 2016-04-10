@@ -1219,15 +1219,38 @@ Ovakve opise možemo pronaći za većinu komercijalnih manipulatora i stoga je t
 U simulaciju također uključujemo dinamičko ponašanje ruke jer opisna datoteka također sadrži tenzore inercije pojedinih članaka.
 Pri pokretanju, Gazebo automatski generira sklopovsko sučelje iz opisa i inicijalizira regulator.
 Za inicijalizaciju sustava koristimo iste korake kao i prije, pri tome isključujući korak inicijalizacije sklopovskog sučelja za stvarni manipulator.
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[width=0.5\textwidth]{gazebo1}
+%\caption{Prikaz modela Jaco robotske ruke unutar Gazebo okruženja.}
+%\end{figure}
+
+Testiranje provodimo zadajući kružne, isključivo translacijske putanje koje manipulator treba periodički izvoditi.
+Prva putanja prostire se samo u yz-ravnini te bi se u idealnom slučaju trebalo događati samo dvodimenzionalno kretanje.
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.5\textwidth]{gazebo1}
-\caption{Prikaz modela Jaco robotske ruke unutar Gazebo okruženja.}
+\includegraphics[width=0.49\textwidth]{xz_krug}
+\includegraphics[width=0.49\textwidth]{yz_krug}
+\caption{Prikaz zadane putanje i njene izvedbe simuliranom Jaco robotskom rukom unutar Gazebo okruženja. \textbf{Lijevo}: prikaz u xz-ravnini \textbf{Desno}: prikaz u yz-ravnini} \label{krug_1}
 \end{figure}
 
-Prvo testiranje provodimo zadajući jednostavnu kvadratnu isključivo translacijsku trajektoriju koju manipulator treba pratiti.
-Trajektorija ima oblik kvadrata duljina stranica 10 cm koji je orijentiran na način da zahtjeva savladavanje sve tri translacijske osi.
-sdad
+Na slici \ref{krug_1} primjećujemo kako za planarno gibanje model ima naočigled zadovoljavajuće preformanse. 
+Prikaz u xz-ravnini otkriva kako ostvarujemo skoro savršeno kružnu putanju. Greška u stacionarnom stanju uzrokovana je relativno malim promjerom kruga čija zakrivljenost zahtjeva veliku brzinu sustizanja.
+Na prikazu gibanja u yz-ravnini primjećujemo odstupanja reda veličine manjeg od milimetra koja ne predstavljaju problem jer industrijski precizno kretanje nije ciljana karakteristika našeg sustava.
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.49\textwidth]{xz_krug2}
+\includegraphics[width=0.49\textwidth]{yz_krug2}
+\caption{Prikaz zadane putanje i njene izvedbe simuliranom Jaco robotskom rukom unutar Gazebo okruženja. \textbf{Lijevo}: prikaz u xz-ravnini \textbf{Desno}: prikaz u yz-ravnini} \label{krug_2}
+\end{figure}
+
+Postavljamo krug duž xz-ravnine i zabilježavamo rezultate na slici \ref{krug_2}. 
+Rezultati su slični kao i kod slučaja sa slike \ref{krug_1}, te su pogreške u praćenju zanemarive kada uzmemo u obzir zamišljene aplikacije sustava.
+Iz ovih rezultata možemo zaključiti kako je pri translacijskom gibanju po neprekinutoj krivulji kinematičko rješenje zadovoljavajuće. 
+Također je potrebno napomenuti kako postoje točke u kojima i programska izvedba postaje numerički nestabilna te se u tim slučajevima karakteristike ponešto kvare.
+
+
+
 \chapter{Rezultati}
 \chapter{Rasprava}
 \chapter{Zaključak}

@@ -1,0 +1,124 @@
+\begin{thebibliography}{18}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bi et~al.(2009)Bi, Ren, i Wu]{bi2009three}
+Weihong Bi, Hongmin Ren, i Qingbiao Wu.
+\newblock Three-step iterative methods with eighth-order convergence for
+  solving nonlinear equations.
+\newblock \emph{Journal of Computational and Applied Mathematics}, 225\penalty0
+  (1):\penalty0 105--112, 2009.
+
+\bibitem[Broyden(1965)]{broyden1965class}
+Charles~G Broyden.
+\newblock A class of methods for solving nonlinear simultaneous equations.
+\newblock \emph{Mathematics of computation}, 19\penalty0 (92):\penalty0
+  577--593, 1965.
+
+\bibitem[Buss(2004)]{buss2004introduction}
+Samuel~R Buss.
+\newblock Introduction to inverse kinematics with jacobian transpose,
+  pseudoinverse and damped least squares methods.
+\newblock \emph{IEEE Journal of Robotics and Automation}, 17\penalty0
+  (1-19):\penalty0 16, 2004.
+
+\bibitem[Buss i Kim(2005)]{buss2005selectively}
+Samuel~R Buss i Jin-Su Kim.
+\newblock Selectively damped least squares for inverse kinematics.
+\newblock \emph{journal of graphics, gpu, and game tools}, 10\penalty0
+  (3):\penalty0 37--49, 2005.
+
+\bibitem[Grochow et~al.(2004)Grochow, Martin, Hertzmann, i
+  Popovi{\'c}]{grochow2004style}
+Keith Grochow, Steven~L Martin, Aaron Hertzmann, i Zoran Popovi{\'c}.
+\newblock Style-based inverse kinematics.
+\newblock U \emph{ACM transactions on graphics (TOG)}, svezak~23, stranice
+  522--531. ACM, 2004.
+
+\bibitem[Klein i Huang(1983)]{klein1983review}
+Charles~A Klein i Ching-Hsiang Huang.
+\newblock Review of pseudoinverse control for use with kinematically redundant
+  manipulators.
+\newblock \emph{Systems, Man and Cybernetics, IEEE Transactions on},
+  2:\penalty0 245--250, 1983.
+
+\bibitem[Larson i Pranke(1999)]{larson1999human}
+Wiley~J Larson i Linda~K Pranke.
+\newblock \emph{Human spaceflight: mission analysis and design}.
+\newblock McGraw-Hill Companies, 1999.
+
+\bibitem[Microsoft(2015)]{kinect}
+Microsoft.
+\newblock Kinect for xbox 360.
+\newblock \url{http://www.xbox.com/en-US/xbox-360/accessories/kinect}, 2015.
+\newblock pristupljeno 9.6.2015.
+
+\bibitem[OpenKinect(2013)]{openkinect}
+OpenKinect.
+\newblock Imaging information.
+\newblock \url{http://openkinect.org/wiki/Imaging_Information}, 2013.
+\newblock pristupljeno 8.6.2015.
+
+\bibitem[Qian et~al.(2014)Qian, Sun, Wei, Tang, i Sun]{qian2014realtime}
+Chen Qian, Xiao Sun, Yichen Wei, Xiaoou Tang, i Jian Sun.
+\newblock Realtime and robust hand tracking from depth.
+\newblock U \emph{Computer Vision and Pattern Recognition (CVPR), 2014 IEEE
+  Conference on}, stranice 1106--1113. IEEE, 2014.
+
+\bibitem[Shotton et~al.(2013)Shotton, Sharp, Kipman, Fitzgibbon, Finocchio,
+  Blake, Cook, i Moore]{shotton2013real}
+Jamie Shotton, Toby Sharp, Alex Kipman, Andrew Fitzgibbon, Mark Finocchio,
+  Andrew Blake, Mat Cook, i Richard Moore.
+\newblock Real-time human pose recognition in parts from single depth images.
+\newblock \emph{Communications of the ACM}, 56\penalty0 (1):\penalty0 116--124,
+  2013.
+
+\bibitem[Siciliano et~al.(2010)Siciliano, Sciavicco, Villani, i
+  Oriolo]{siciliano2010robotics}
+Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani, i Giuseppe Oriolo.
+\newblock \emph{Robotics: modelling, planning and control}.
+\newblock Springer Science \& Business Media, 2010.
+
+\bibitem[Tompson et~al.(2014)Tompson, Stein, Lecun, i Perlin]{tompson2014real}
+Jonathan Tompson, Murphy Stein, Yann Lecun, i Ken Perlin.
+\newblock Real-time continuous pose recovery of human hands using convolutional
+  networks.
+\newblock \emph{ACM Transactions on Graphics (TOG)}, 33\penalty0 (5):\penalty0
+  169, 2014.
+
+\bibitem[Uicker et~al.(1964)Uicker, Denavit, i Hartenberg]{uicker1964iterative}
+JJ~Uicker, J~Denavit, i RS~Hartenberg.
+\newblock An iterative method for the displacement analysis of spatial
+  mechanisms.
+\newblock \emph{Journal of Applied Mechanics}, 31\penalty0 (2):\penalty0
+  309--314, 1964.
+
+\bibitem[\v{S}ari\'{c}(2011)]{libhand}
+Marin \v{S}ari\'{c}.
+\newblock Libhand: A library for hand articulation.
+\newblock http://www.libhand.org/, 2011.
+\newblock Version 0.9.
+
+\bibitem[Wang i Chen(1991)]{wang1991combined}
+Li-Chun~Tommy Wang i Chih~Cheng Chen.
+\newblock A combined optimization method for solving the inverse kinematics
+  problems of mechanical manipulators.
+\newblock \emph{Robotics and Automation, IEEE Transactions on}, 7\penalty0
+  (4):\penalty0 489--499, 1991.
+
+\bibitem[Xu i Cheng(2013)]{xu2013efficient}
+Chi Xu i Li~Cheng.
+\newblock Efficient hand pose estimation from a single depth image.
+\newblock U \emph{Computer Vision (ICCV), 2013 IEEE International Conference
+  on}, stranice 3456--3462. IEEE, 2013.
+
+\bibitem[Yoshida(2009)]{yoshida2009achievements}
+Kazuya Yoshida.
+\newblock Achievements in space robotics.
+\newblock \emph{IEEE Robot. Automat. Mag.}, 16\penalty0 (4):\penalty0 20--28,
+  2009.
+
+\end{thebibliography}

@@ -16,6 +16,7 @@
 \graphicspath{ {images/} }
 
 \begin{document}
+\renewcommand{\labelitemi}{$\bullet$}
 \tikzstyle{block} = [draw, fill=white!20, rectangle, 
     minimum height=2em, minimum width=4em]
 \tikzstyle{block2} = [draw, fill=white!20, rectangle, 
@@ -58,7 +59,7 @@ Dobivene informacije obrađuju se razvijenim algoritmom detekcije dlana ruke te 
 %doradi zadnji paragraf, bolje primjene, fokusirati se više na potrebu za ljudskim aspektom i postupnim ulaskom robota u svakodnevni život
 Ovakvim upravljanjem dobivamo prirodnije kretanje robotskih manipulatora, što će postupnim ulaskom robota u svakodnevni život postati tražena karakteristika.
 U industriji zabave jedna moguća primjena je pomicanje kamere na kraju više-osnog manipulatora, gdje ovakvo upravljanje omogućuje intuitivniju kontrolu kadra od strane snimatelja.
-NASA i ostale svemirske agencije već su jedno vrijeme fokusirane na ovakav pristup problemu upravljanja robota u orbitalnim postajama, gdje klasična sučelja zakazuju zbog pobjega tereta.
+Svemirske agencije i robotički laboratoriji diljem svijeta već su duže vrijeme fokusirani na ovakav pristup problemu upravljanja robota u orbitalnim postajama \cite{yoshida2009achievements} \cite{larson1999human}, gdje klasična sučelja zakazuju zbog pobjega tereta.
 Ljudima s poteškoćama u kretanju robotska ruka upravljana ovakvom metodom može olakšati dohvaćanje objekata u okolini, pritom dajući obavljanju zadataka ljudsku dimenziju koja je pri uporabi ovakvih pomagala bitna. 
 
 U poglavlju "Opći i specifični ciljevi rada" definiramo zadatke, zahtjeve i okvirnu strukturu upravljačkog sučelja koje razvijamo. 
@@ -74,7 +75,7 @@ U istom poglavlju izlažemo rezultate testiranja sustava na simulaciji robotske 
 Konačno, izlažemo rezultate dobivene korištenjem stvarnog manipulatora te zaključujemo rad. 
 
 \chapter{Opći i specifični ciljevi rada}
-Opći cilj našeg rada bio je razvoj upravljačkog sučelja koje kao ulaznu informaciju koristi isključivo gestikulacije i pomake ruke korisnika.
+Opći cilj našeg rada je razvoj upravljačkog sučelja koje kao ulaznu informaciju koristi isključivo gestikulacije i pomake ruke korisnika.
 Zamišljeno sučelje mora biti jednostavno za savladati novom korisniku, intuitivno , pružiti odgovarajuću razinu preciznosti i pri tome zadržati relativno nisku cijenu.
 Iz ovih smjernica proizlaze specifični ciljevi rada:
 \begin{itemize}
@@ -106,16 +107,17 @@ Upravljačka petlja "primjećuje" ovu razliku te regulacijom brzine zglobova ili
 Izvedba \textit{joystick} načina rada oko početne pozicije korisnikove ruke formira sferu promjera ovisnog o veličini dlana.
 Zadržavanjem dlana korisnika unutar kugle, upravljački algoritam zadržava izvršni član u trenutnoj poziciji.
 Pomicanjem dlana korisnika izvan sfere, upravljački algoritam pomiče vrh manipulatora u smjeru vektora razlike pozicija dlana od središta kugle.
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{koncept21}
-\includegraphics[scale=0.3]{koncept22}
-\caption{Prikaz \textit{joystick} načina upravljanja.}
-\end{figure}
+%\begin{figure}
+%\centering
+%\includegraphics[scale=0.3]{koncept21}
+%\includegraphics[scale=0.3]{koncept22}
+%\caption{Prikaz \textit{joystick} načina upravljanja.}
+%\end{figure}
 
 Zajednička funkcija kod oba pristupa vezana je uz otvaranje i zatvaranje alata (izvršnog člana). 
 Otvaranje šake korisnika upravljački algoritam interpretira kao naredbu otvaranja alata manipulaotra, dok se zatvorena šaka interpretira kao naredba zatvaranja.
 Ova funkcija naravno ovisi o tipu alata na kraju manipulatora, no mapiranje otvaranja i zatvaranja šake na neku drugu funkciju ne predstavlja problem radi separabilnosti dijela upravljačke petlje vezane uz izvršni član.
+U ovom radu većinom ćemo se baviti prvim i složenijim načinom upravljanja, jer svi sustavi razvijeni za njega mogu ostvariti \textit{joystick} način rada.
 
 \section{Struktura sustava upravljanja}
 Sustav upravljanja na najvišoj se razini sastoji od 4 komponente:
@@ -423,7 +425,7 @@ U ovom radu Matlab koristimo pri razvoju rješenja kinematike manipulatora za pr
 \section{OpenCV}
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.4]{logo_opencv}
+\includegraphics[scale=0.6]{logo_opencv}
 \caption{OpenCV logo}
 \end{figure}
 OpenCV je biblioteka otvorenog koda koja je revolucionarizirala područje računalnog vida. Mnogobrojnim ugrađenim funkcijama koje su dobro dokumentirane omogućava početnicima lagani početak bavljenja računalnim vidom. U ovom radu korištene su ugrađene funkcije dostupne u biblioteci za obradu slike od kojih valja izdvojiti brze izvedbe algoritma za pronalaženje kontura na slici, određivanje obujmica kontura te implementacije morfoloških operacija nad slikom.
@@ -439,7 +441,7 @@ OpenKinect je otvorena zajednica programera entuzijasta koji su razvili bibliote
 \section{KDL}
 KDL (engl. \textit{Kinematics Dynamics Library}) je open-source C++ biblioteka razvijena za modeliranje i računanje kinematičkih lanaca.
 Pomoću ove biblioteke moguće je jednostavno programski rješavati direktnu i inverznu kinematiku te dinamiku manipulatora sa manje od 7 stupnjeva slobode.
-Nama je vrlo korisna mogućnost konstrukcije Jacobijeve matrice manipulatora (definirana kasnije), čiji se pseudoinverz pokazuje vrlo važnim rješenju problema praćenja putanje u općem slučaju.
+Nama je vrlo korisna mogućnost konstrukcije Jacobijeve matrice manipulatora (definirana kasnije), koja pokazuje vrlo važnom prilikom rješavanja problema praćenja putanje u općem slučaju.
 KDL također vodi računa o izbjegavanju singulariteta u matricama, čime je osiguran kontinuiran rad upravljačkog algoritma.
 
 \section{Gazebo}
@@ -449,10 +451,10 @@ KDL također vodi računa o izbjegavanju singulariteta u matricama, čime je osi
 \caption{Gazebo logo}
 \end{figure}
 Gazebo je open-source programski paket za simulaciju robotskih sustava, njihovih senzora i okoline.
-Kako bi se postiglo simuliranje dinamike robota korsitimo DART, jednu od nekoliko biblioteka ovog tipa\footnote{DART(engl . Dynamic Animation and Robotics Toolkit) - \texttt{http://dartsim.github.io/}} koje Gazebo podržava.
-Kvalitetno iscrtavanje 3d modela korištenog robota u Gazebu je omogućeno korištenjem OGRE 3d modula.
+Kako bi se postiglo simuliranje dinamike robota korsitimo DART\footnote{DART(engl . Dynamic Animation and Robotics Toolkit) - \texttt{www.dartsim.github.io}} , jednu od nekoliko biblioteka ovog tipa koje Gazebo podržava.
+Kvalitetno iscrtavanje 3d modela korištenog robota u Gazebu je omogućeno korištenjem OGRE\footnote{OGRE(engl . Object-Oriented Graphics Rendering Engine) - \texttt{www.ogre3d.org}} 3d grafičkog modula.
 
-Semantički opis robota, njegovih komponenti, prijenosa i zglobova Gazebo dobiva iz pripadajuće URDF datoteke.
+Semantički opis robota, njegovih komponenti, prijenosa i zglobova Gazebo dobiva iz pripadajuće URDF\footnote{URDF(engl . Unified Robot Description Format )} datoteke.
 URDF je vrlo često korišten format za opis kinematičkih lanaca koji nudi kvalitetnu integraciju u sa Gazebom i brojnim drugim robotičkim aplikacijama.
 Proces pripreme simulacije znatno ubrzava činjenica da gotovo svaki komercijalni robotski manipulator ima pripadajuću URDF datoteku.
 
@@ -470,7 +472,7 @@ Zahvaljujući ovoj činjenici, sustav možemo razvijati za simulaciju i stvarni 
 \chapter{Kinematika manipulatora}
 Modularna arhitektura našeg sustava dopušta integraciju manipulatora sa različitim razinama kompleksnosti API-ja.
 Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, smatramo da je radi kompletnosti izvedbe bitno predviditi i slučaj kada su dostupne samo naredbe pomicanja zglobova.
-Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike manipulatora izvedenog unutar našeg sustava na primjeru Jaco robotske ruke.
+Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike neredundantnog manipulatora izvedenog unutar našeg sustava na primjeru Jaco robotske ruke.
 Pošto Jaco robotska ruka ima 6 stupnjeva slobode , sa stajališta složenosti kinematike ovaj izbor predstavlja svojevrsni najgori slučaj.
 Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovili numeričku stabilnost rješenja i moguće nedostatke.
 
@@ -482,19 +484,19 @@ Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovi
 
 U idealnom slučaju, rješavanje problema kinematike manipulatora sa do 6 stupnjeva slobode zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
 Iz članova dobivene matrice potom analitički dobivamo izraze za Kartezijsku poziciju i orijentaciju alata u ovisnosti o zakretima zglobova.
-Sintezu direktne kinematike započinjemo D-H postupkom postavljanja koordinatnih sustava vezanih uz zglobove.
+Sintezu direktne kinematike započinjemo D-H postupkom \cite{uicker1964iterative} postavljanja koordinatnih sustava vezanih uz zglobove.
 Određivanjem matrica homogenih transformacija između tih sustava dobivamo surjektivnu\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkciju koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
 
 Problem inverzne kinematike znatno je složeniji jer zahtjeva rješavanje sustava nelinearnih jednadžbi s više nepoznanica.
-Za složenije manipulatore ovaj problem je netrivijalan te rješenje nije uvijek moguće pronaći koristeći osnovne matematičke metode.
+Za složenije manipulatore ovaj problem je netrivijalan te rješenje nije uvijek moguće pronaći.
 Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješenja često biti višestruka, a pronalaženje odgovarajućeg ovisi o konstrukciji i poziciji manipulatora.
 
-Pronalaženje analitičkih rješenja inverzne kinematike pomoću računalnog algoritma još je složeniji zadatak jer zahtjeva implementaciju univerzalnog pristupa rješavanju nelinearnih jednadžbi čija su rješenja višestruka.
-Pronašli smo da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju (pseudo)inverza matrice Jakobijana manipulatora, koja je puno prikladnija za programsku izvedbu.
+Analitička rješenja problema ne postoje za većinu konfiguracija sa 6 stupnjeva slobode \cite{grochow2004style}, a klasični pristupi aproksimiranju rješenja sustava nelinearnih jednadžbi \cite{broyden1965class}\cite{bi2009three} zahtjevaju složen račun.
+Pronašli smo da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju inverza matrice Jakobijana manipulatora \cite{buss2004introduction}, koja je puno prikladnija za programsku izvedbu.
 
-U prvom odlomku opisati ćemo osnovne postupke rješavanja kinematičkog problema na primjeru Jaco robotske ruke.
-Pri tome ćemo radi sažetosti izlaganja preskočiti pojedinosti D-H postupka i izvod matrica homogene transformacije.
-Drugi odlomak sadrži opis ideje rješenja inverzne kinematike koje koristimo u računalnom algoritmu.
+U prvom odlomku opisati ćemopreskočiti pojedinosti D-H postupka i izvod matrica homogene transformacije.
+Drugi odlomak sadrži opis ideje rješenja inverzne kinematike osnovne postupke rješavanja kinematičkog problema na primjeru Jaco robotske ruke.
+Pri tome ćemo radi sažetosti izlaganja  koje koristimo u računalnom algoritmu.
 Rezultate zamišljenog postupka potom ispitujemo koristeći Matlab.
 
 \section{Direktna i inverzna kinematika Jaco robotske ruke}\label{direkt i inverz}
@@ -689,7 +691,7 @@ Problem inverzne kinematike definiramo kao pronalaženje vektora $\vec{\bm{\thet
 \end{equation}
 
 Ono što čini problem inverzne kinematike problemom u užem smislu jest netrivijalnost rješavanja sustava jednadžbi \ref{inverzna_def} kako bi dobili $\bm{\theta}_{\mathbf{i}}(\mathbf{t_i})$. 
-Razvijeni su različiti pristupi ovom problemu od kojih se mnogi oslanjaju na numeričke metode ili metode pronalaženja minimuma odgovarajuće funkcije.
+Razvijeni su različiti pristupi ovom problemu od kojih se mnogi oslanjaju na numeričke metode ili metode pronalaženja minimuma odgovarajuće funkcije \cite{wang1991combined}.
 
 Korištenjem analitičke metode rješavanja opisane u uvodu ovog poglavlja, vektor $\bm{\theta}_{\mathbf{i}}(\mathbf{t_i})$ dobiva se rješavanjem sustava jednadžbi dobivenog iz vektora konfiguracije alata \ref{konfig_alat}. 
 Promatrajući puni izraz za vektor konfiguracije alata $\mathbf{w}$, primjećujemo da je analitičko rješavanje ovog problema netrivijalan zadatak čije poopćavanje zahtjeva iznimno složen algoritam.
@@ -769,7 +771,7 @@ Uz odgovarajuću frekvenciju osvježavanja matrice $\mathbf{J}$, moguće je dobi
 
 Problem kod ovog pristupa nastaje u slučajevima kada matrica $\mathbf{J}$ nije kvadratna, što je slučaj kod svih manipulatora sa brojem zglobova različitim od 6.
 Nekvadratnu matricu nije moguće invertirati, što znači da metoda nije univerzalna.
-Radi potrebe za općim rješenjem koristimo Moore-Penroseov pseudoinverz, koji je svojevrsno poopćenje inverza matrice proizvoljnih dimenzija.
+Radi potrebe za općim rješenjem koristimo metodu baziranu na Moore-Penroseovom pseudoinverzu \cite{klein1983review}, koji je svojevrsno poopćenje inverza matrice proizvoljnih dimenzija.
 Uz određene uvjete (ref), pseudoinverz Jakobijana određujemo izrazom \ref{eq:pseudoinverz}:
 \begin{equation}
 \mathbf{J}^{+} = \left( \mathbf{J}^{\dagger} \mathbf{J}\right)^{-1}\mathbf{J}^{\dagger}
@@ -783,7 +785,7 @@ U praksi se koriste naprednije metode koje osiguravaju dodatnu numeričku stabil
 \label{jacob3}
 \end{equation}
 U izrazu \ref{jacob3} matrica $\mathbf{S}$ predstavlja stabilizacijski član koji može biti ovisan o trenutnoj brzini, poziciji ili akceleraciji zglobova.
-Programskom izvedba pomoću KDL biblioteka oslanja se na poboljšanu varijantu metode \ref{jacob3} zvanu metoda prigušenih najmanjih kvadrata (\textit{engl. damped least squares}).
+Programskom izvedba pomoću KDL biblioteka oslanja se na poboljšanu varijantu metode \ref{jacob3} zvanu metoda prigušenih najmanjih kvadrata (\textit{engl. damped least squares}) \cite{buss2005selectively}.
 Za razliku od ranije navedenih metoda, ova ne traži najmanji vektor $\Delta \bm{\theta}$ koji zadovoljava \ref{jakob}.
 Metoda prigušenih najmanjih kvadrata nalazi vektor $\Delta \bm{\theta}$ koji pronalazi minimum iznosa:
 \begin{equation}
@@ -841,7 +843,7 @@ Također, ova mjera razlike u orijentaciji mora biti kompatibilna sa geometrijsk
 {\mathbf{e}_{O}} = 0.5\left(\mathbf{R}_{x_c}\times\mathbf{R}_{x_t} + \mathbf{R}_{y_c}\times\mathbf{R}_{y_t} + \mathbf{R}_{z_c}\times\mathbf{R}_{z_t}\right)
 \label{eo}
 \end{equation}
-Koristimo izraz \ref{eo} definiran u (RMPC-139), koji je pogodan za kinematičke lance koji ne posjeduju sferne zglobove.
+Koristimo izraz \ref{eo} definiran u \cite{siciliano2010robotics}, koji je pogodan za kinematičke lance koji ne posjeduju sferne zglobove.
 Elementi izraza predstavljaju stupce rotacijskih matrica koji korespondiraju sa orijentacijom koordinatnog sustava koji je njima definiran.
 
 Razliku referentnog i stvarnog vektora konfiguracije alata sustav prema izrazu \ref{jac_approx2} množi inverzom matrice $\mathbf{J}$.
@@ -855,7 +857,7 @@ Vektor funkcija $\mathbf{f}$ u ovom slučaju označava preračunavanje kuteva o�
 Dobivene kuteve koristimo kako bi osvježili matricu $\mathbf{J}$ i kako bi dobili trenutni vektor konfiguracije alata $\mathbf{w}$. 
 Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora. 
 
-\subsubsection{Provjera sustava}\label{provjera}
+\subsection{Provjera sustava}\label{provjera}
 Zamišljenu upravljačku shemu sustava prikazanu na slici \ref{petlja} provjeravamo u Matlabu.
 Prvi korak je rješavanje direktne kinematike te generiranje funkcije \verb|jacoFK| koja kao argumente prima zakrete zglobova $\mathbf{q}$,
 a kao rezultat vraća vektor konfiguracija alata.
@@ -886,6 +888,7 @@ Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za predlož
 \caption{Promjena orijentacije inverzom Jakobijana.
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{rot1m}
 \end{figure}
+
 Sa slike \ref{rot1m} vidimo kakop pri isklučivo rotacijskom kretanju koristeći izraz \ref{jac_approx2} ne možemo dobiti zadovoljavajuće rješenje.
 Ovaj slučaj jednostavan je dokaz ranije tvrdnje kako "obični" Jakobijan često nije dovoljno numerički stabilan. 
 Kako bi doskočili ovom problemu koristimo metodu prigušenih najmanjih kvadrata iz izraza \ref{dlq2} sa faktorom $\lambda = 0.2$.
@@ -897,7 +900,8 @@ Kako bi doskočili ovom problemu koristimo metodu prigušenih najmanjih kvadrata
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{rot2m}
 \end{figure}
 
-Iz slike \ref{rot2m} vidimo kako je ostvaren drastično bolji odziv. 
+Iz slike \ref{rot2m} vidimo kako je ostvareno drastično bolje ponašanje.
+Na prikazu translacije primjećujemo nakupinu crvenih indikatora u jednoj točki, što znači da je pozicija izvršnog člana približno konstantna.
 Ostaje nam još ispitati ponašanje pri promjeni cijelog vektora konfiguracije.
 \begin{figure}[h!]
 \centering
@@ -1350,6 +1354,7 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 
 \chapter{Rasprava}
 \chapter{Zaključak}
-
+\bibliography{literatura}
+\bibliographystyle{fer}
 
 \end{document}

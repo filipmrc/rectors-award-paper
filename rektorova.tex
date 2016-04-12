@@ -794,9 +794,9 @@ Metoda prigušenih najmanjih kvadrata nalazi vektor $\Delta \bm{\theta}$ koji pr
 Izraz \ref{dlq} može se svesti na izraz \ref{dlq2}, gdje konstantu $\lambda$ odabiremo ovisno o konstrukciji manipulatora prema nekoj od razvijenih metoda (ref).
 Jedan prijedlog korišten pri testiranju koncepta jest postavljanje konstante na vrijednost maksimalne dopuštene promjene vrijednosti nekog zgloba unutar jednog radnog ciklusa.
 \begin{equation}
-\Delta \bm{\theta} = \mathbf{J}^T\left(\mathbf{J}^T \mathbf{J} + \lambda^2\mathbf{I}\right)^{-1} \label{dlq2}
+\Delta \bm{\theta} = \left(\mathbf{J}^{\dagger} \mathbf{J} + \lambda^2\mathbf{I}\right)^{-1}\mathbf{J}^{\dagger} \Delta \mathbf{w} \label{dlq2}
 \end{equation}
-Pokazalo se da je ovakva izvedba superiorna prema ostalim metodama, što pokazujemo u odlomku \ref{provjera}.
+Pokazalo se da je ovakva izvedba superiorna prema ostalim metodama, što pokazujemo u odlomku \ref{provjera}. Primjećujemo da izraz \ref{dlq2} za $\lambda = 0$ postaje \ref{jacob3}.
 
 \subsection{Upravljačka petlja}\label{kin_upr}
 %Pomoću izvedene Jakobijeve matrice manipulatora konstruiramo upravljačku petlju više razine koja regulira vektor konfiguracije alata $\mathbf{w}$.
@@ -859,8 +859,28 @@ Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) re
 
 \subsection{Provjera sustava}\label{provjera}
 Zamišljenu upravljačku shemu sustava prikazanu na slici \ref{petlja} provjeravamo u Matlabu.
-Prvi korak je rješavanje direktne kinematike te generiranje funkcije \verb|jacoFK| koja kao argumente prima zakrete zglobova $\mathbf{q}$,
-a kao rezultat vraća vektor konfiguracija alata.
+Prvi korak je rješavanje direktne kinematike te generiranje funkcije \texttt{jacoFK(q)} koja kao argumente prima zakrete zglobova $\mathbf{q}$,
+a kao rezultat vraća matricu homogene transformacije alata.
+Sastavljamo matricu Jakobijana geometrijskom metodom u funkciji \texttt{JacoJ(q , dw)} radi boljih performansi od simboličke zamjene.
+Konačno, stvaramo upravljačku petlju koja se izvodi sa proizvoljnim brojem koraka.  Uključujemo i funkciju \texttt{skaliranje} koja s obzirom na maksimalnu brzinu skalira pogrešku $e$.
+\begin{algorithm}[H]
+\caption{Upravljačka petlja}
+\begin{algorithmic}
+\STATE{\textbf{Ulaz:} $w$ -- referentni vektor konfiguracije, $q$ -- početni položaj zglobova.}
+\STATE{broje koraka $:= 6$}
+\STATE{$r :=$ eul2rot($w_{4-6}$)}
+\FOR{($i := 0; i <$ broj koraka$; i++$)}
+\STATE{$T :=$ jacoFK($q$)}
+\STATE{$R := T_{1-3,1-3}$}
+\STATE{$e_{1-3} := w_{1-3} - T_{1-3,4}$}
+\STATE{$e_{4-6} := 0.5\left(R_x\times r_x + R_y\times r_y + R_z\times r_z\right)$}
+\STATE{$e  :=$ skaliraj($e$)} 
+\STATE{$J :=$ jacoJ($q$,$e$)}
+\STATE{$dq : = J^{-1}e$}
+\STATE{$q := q + dq$}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 %\begin{equation}
 %\alpha = atan2\left(\frac{r_{21}}{r_{11}}\right)
 %\end{equation}
@@ -872,15 +892,18 @@ a kao rezultat vraća vektor konfiguracija alata.
 %\end{equation}
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.49]{matlab_pravocrtno1}
-\caption{Kretanje matematičkog modela Jaco robotske ruke prema zadanoj točki. Orijentacija alata je konstantna.} \label{P1}
+\includegraphics[width=0.49\textwidth]{matlab_pravocrtno1_kut}
+\includegraphics[width=0.49\textwidth]{matlab_pravocrtno1}
+\caption{Promjena pozicije inverzom Jakobijana.
+Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{P1}
 \end{figure}
 
 Radna frekvencija detekcije kreće se oko 30 Hz , a matricu Jakobijana planiramo osvježavati oko 200 puta u sekundi.
 Iz ovih smjernica uzimamo kako ćemo pri testiranju osvježavati matricu Jakobijana 6 puta pri izvršavanju kretanja.
 Iz grafa \ref{P1} vidljivo je kako pri čistom translacijskom kretanju upravljačka petlja sa P regulatorom ostvaruje željenu konfiguraciju  bez oscilacija u kretanju.
 %ubaci vremena
-Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za predloženu metodu.
+
+Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za metodu baziranu na korištenju običnog inverza Jakobijana.
 \begin{figure}[h!]
 \centering
 \includegraphics[width = 0.49\textwidth]{matlab_rot1}
@@ -1339,9 +1362,9 @@ Ovo je posljedica činjenice da manipulatori imaju tzv. singularne konfiguracije
 U ovakvim konfiguracijama male kartezijske promjene zahtjevaju neizvedivo brze rotacije zglobova, čime sustav postaje nestabilan.
 
 Metoda provođenja kinematičkog računa unutar KDL biblioteka "ublažava" singularitete tako da spriječava ulazak vrijednosti u beskonačnost te osigurava kontinuiran rad sustava.
-Pronalazak svih singularnih konfiguracija zahtjeva pronalaženje svih zakreta zglobova koji zadovoljavaju identitet \ref{singularity}:
+Pronalazak svih singularnih konfiguracija u slučaju metode prigušenih najmanjih kvadrata zahtjeva pronalaženje svih zakreta zglobova koji zadovoljavaju identitet \ref{singularity}:
 \begin{equation}
-\det \mathbf{J} = \mathbf{0} \label{singularity}
+\det \mathbf{\mathbf{J}^{\dagger} \mathbf{J}} = \mathbf{0} \label{singularity}
 \end{equation}
 
 Iako pronalaženje svih jedinstvenih rješenja ovog identiteta programski nije pretjerano složeno, izbjegavanje ovakvih konfiguracija složeniji je problem.

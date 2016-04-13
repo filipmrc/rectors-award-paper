@@ -446,6 +446,13 @@ OpenCV je biblioteka otvorenog koda koja je revolucionarizirala područje račun
 \end{figure}
 OpenKinect je otvorena zajednica programera entuzijasta koji su razvili biblioteku \textit{libfreenect} kao biblioteku otvorenog koda koja daje na raspolaganje sučelje za upravljanje Kinect uređajima na različitim platformama. Funkcijama za dohvat podataka s priključenog Kinect uređaja moguće je dohvatiti trenutnu dubinsku sliku u preglednom obliku koji je kompatibilan s bibliotekom OpenCV kako bi se ona mogla dalje procesirati.
 
+\section{TensorFlow}
+\textit{TensorFlow} je biblioteka otvorenog koda namjenjena brzom izračunu operacija nad podacima u obliku višedimenzionalnih tenzora. Temelji se na grafovima toka podataka gdje svaki čvor (engl. \textit{node}) u usmjerenom grafu je jedna operacija nad jednim ili više ulaznih tenzora te računa izlaz kao jedan ili više izlaznih tenzora. Većina operacija ima zna izračunati i parcijalnu derivaciju svakog izlaza po svakom od ulaza koje se koriste prilikom propagacije greške tokom učenja. 
+
+Kako je orijentirana na strojno učenje uporabom neuronskih mreža nudi i širok spektar različitih specijaliziranih metoda, kao što su različiti optimizatori ili različiti modeli prijenosnih funkcija.
+
+Biblioteka također omogućava lako postavljanje željene arhitekture mreže i učenje istih na grafičkim procesorima što višestruko ubrzava sam proces učenja.
+
 \section{KDL}
 KDL (engl. \textit{Kinematics Dynamics Library}) je open-source C++ biblioteka razvijena za modeliranje i računanje kinematičkih lanaca.
 Pomoću ove biblioteke moguće je jednostavno programski rješavati direktnu i inverznu kinematiku te dinamiku manipulatora sa manje od 7 stupnjeva slobode.
@@ -1135,11 +1142,41 @@ Prethodna metoda se temelji na jednostavnim, ali vrlo uspješnim heuristikama. I
 
 U nedostatku bolje opreme (konkretno žiroskopa kakav se nalazi u većini mobilnih uređaja) koja bi omogućila brže i preciznije prikupljanje željenih podataka s detaljnijim opisom poze dlana, valjalo je osmisliti efikasan način prikupljanja što većeg broja raznovrsnih podataka uz njihovo precizno označavanje.
 
-Klasifikatora poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i u prethodnoj metodi, dok drugi određuje rotaciju dlana oko x osi. Takva rotacija omogućuje robotskoj ruci da uhvati nešto iznad, ispred ili ispod dlana te zbog toga je odabrana kao najkorisnija u usporedbi s rotacijama oko y ili z osi. Podaci su prikupljani u 15 različitih klasa kao kartezijev produkt tri stupnja zatvorenosti dlana$ {0,0.5,1}$ te 5 različitih rotacija oko x osi ${-90\deg, -45\deg, 0\deg, 45\deg, 90\deg}$. Kada bismo u istu proceduru uključili i druge dvije rotacije, tada bi ukupan broj klasa bio $3*5*5*5 =375$ što uz dane resurse ne bi bilo izvedivo.
+Klasifikator poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i u prethodnoj metodi, dok drugi određuje rotaciju dlana oko x osi. Takva rotacija omogućuje robotskoj ruci da uhvati nešto iznad, ispred ili ispod dlana te zbog toga je odabrana kao najkorisnija u usporedbi s rotacijama oko y ili z osi. Podaci su prikupljani u 15 različitih klasa kao kartezijev produkt tri stupnja zatvorenosti dlana $ (0,0.5,1)$ te 5 različitih rotacija oko x osi $(-90\deg, -45\deg, 0\deg, 45\deg, 90\deg)$. Kada bismo u istu proceduru uključili i druge dvije rotacije, tada bi ukupan broj klasa bio $3\cdot5\cdot5\cdot5 =375$ što uz dane resurse ne bi bilo izvedivo.
 
 Ukupno je prikupljeno $61 395$ označenih slika dlana. Prikupljene slike su dubinske slike dlana dobivenog detekcijom segmentirane na osnovu praga opisanog u postupku detekcije te binarizirane tako da slikovni elementi dlana imaju vrijednost $1$, a ostali $0$.
 
 Razlog binarizaciji i segmentaciji leži u tome što pri učenju modela želimo reducirati količinu informacija koje klasifikator dobiva na ulaz u postupku učenja kako ih ne bi prenaučio. Naime, uklanjanjem pozadine klasifikator neće biti opterećen time što je u pozadini dlana već morati naučiti heuristike isključivo temeljem slikovnih elemenata dlana. Također, iz sličnog razloga ne želimo klasifikatoru pružiti informaciju na kojoj udaljenosti se dlan nalazio u datoj slici kako se ne bi oslonio i na tu informaciju.
+
+Oformljena konvolucijska mreža na ulazu prima binariziranu sliku dimenzija $64\times64\times1$ te na izlazu generira dva vektora. Prvi vektor je trodimenzionalni i opisuje zatvorenost dlana kako je opisano, dok drugi je peterodimenzionalni i opisuje orijentaciju. Vrijednosti odgovaraju vjerojatnosti s kojom ulazna slika pripada određenoj klasi. 
+
+Takav diskretiziran izlaz se dalje pretvara u dvije vrijednosti, postotak zatvorenosti dlana i orijentaciju dlana kao broj između $0$ i $1$ gdje $0$ odgovara dlanu s vidljivom palmarnom stranom dlana dok $1$ pri vidljivoj dorzalnoj strani dlana prilikom rotacije oko x osi definiranog sustava.
+
+Korištena konvolucijska mreža sastoji se od 5 konvolucijskih slojeva s filterom veličine $3\times3$ slikovnih elemenata i $16$ kanala, a iza svakog osim prvog slijedi podotipkavajući sloj s filterom veličine $2\times2$ koji smanjuje dimenzionalnost ulaznog tenzora na četvrtinu njegove inicijalne veličine uzimanjem maksimalne vrijednosti u pojedinim oknima (engl. \textit{maxpool}). Za prijenosnu funkciju u svakom sloju korištena je ispravljena linearna funkcija (engl. \textit{rectified linear unit}) oblika:
+
+$$f(x) = max(0,x)$$
+
+Tako je na predzadnjem sloju dobivena reprezentacija slike pomoću tenzora veličine $4\times4\times16$ koji se izravnava (engl. \textit{flatten}) u $256$ dimenzionalni vektor dobivenih značajki. Takve značajke su dalje jednim potpuno povezanim slojem povezane s gore navedenim izlazom neuronske mreže.
+
+Učenje mreže provodi se algoritmom unazadne propagacije gradijenata (engl. \textit{backpropagation}) pri čemu se za grešku koristi težinski zbroj unakrsnih entropija softmax funkcije izlaza za pojedinu klasu (engl. \textit{softmax cross entropy loss}).
+
+Također, radi sprečavanja prenaučivanja modela, u funkciju gubitka pridodan je i L2 gubitak učenih težina
+
+U implementaciji neuronske mreže korištena je bibiloteka \textit{TensorFlow}. Učenje je trajalo 3 sata na grafičkoj kartici \textit{Nvidia GeForce 840M} pri čemu bi se pri svakoj stagnaciji faktora učenja on smanjivao 3 puta.
+
+Dobiveni rezultati prikazani su na slijedećoj tablici:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{ | l  l  l  l |}
+    \hline
+Vrsta skupa & Točnost otvorenosti & Točnost orijentacije & Ukupna točnost \\ \hline
+    Skup za učenje & $99.8\%$&$99.2\%$&$98.9\%$\\
+    Skup za validaciju &$96.4\%$&$93.7\%$&$91.1\%$\\
+    Skup za ispitivanje & $96.7\%$&$93.6\%$&$91.2\%$\\ \hline
+    \end{tabular}
+    \caption{Prikaz tehničkih specifikacija Jaco robotske ruke} \label{bla}
+\end{table}
+
 
 \chapter{Upravljački algoritam}\label{Upravljački algoritam}
 Ovo poglavlje pomoću koncepata i metoda objašnjenih u prethodnim poglavljima možemo detaljno prikazuje arhitekturu upravljačkog dijela sustava.

@@ -206,7 +206,7 @@ Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira pseu
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.75\textwidth]{detekcija/okulzija}
+    \includegraphics[width=0.75\textwidth]{detekcija/okluzija}
 	\caption{Okluzija u dubinskoj slici}
 	\label{fig:oculsion}
 \end{figure}
@@ -1100,7 +1100,7 @@ Qian i suradnici u svom radu \cite{qian2014realtime} su modelirali prosječnu ru
 Thompson i suradnici u svojem radu \cite{tompson2014real} koriste naučenu kaskadu konvolucijskih neuronskih mreža. Učenje je izvršeno na 70 000 označenih slika. Mreže na izlazu daju dvodimenzionalnu Gaussovu razdiobu vjerojatnosti da se na određenoj lokaciji nalazi jedna od 36 označenih lokacija na ruci (npr. vrh malog prsta). I u ovom radu inverznom kinematikom se traži model ruke koji najviše odgovara razdiobama. Pri tome je rabljen često korišten model ruke otvorenog koda \textit{libhand} \cite{libhand}.\\\\
 Valja napomenuti kako su navedene metode sposobne prepoznati ruku u jednoj dubinskoj slici te im ne treba niz slika.
 
-\subsection{Razvijena brza metoda određivanja zatvorenosti dlana}
+\subsection{Razvijena brza metoda određivanja zatvorenosti dlana} \label{brza-metoda}
 Zatvorenost dlana je apstraktan pojam te ga treba pobliže definirati. Prilično je intuitivan pojam otvoreni dlan koji predstavlja dlan u planarnom položaju, pri čemu kutevi između članaka teže nuli (Slika \ref{fig:successful_palm_isolation} a). Isto tako je jasan je pojam zatvorenog dlana (Slika \ref{fig:successful_palm_isolation} d). Teško je pak definirati stupanj zatvorenosti prilikom neke geste, pri kojoj dlan nije ni potpuno otvoren ni zatvoren, pogotovo ako je svaki prst pod svojim kutom. Tako se u ovom radu stupanj zatvorenosti određuje binarno pri čemu \textit{0} predstavlja zatvoren dlan, a \textit{1} sve ostale položaje.\\\\
 Navedeni pristup sasvim je dovoljan pri kontroli željenog robota jer takav klasifikator nam određuje hoće li se prsti robotske ruke skupiti ili ne. Naime, iako robot posjeduje prste, nezgrapno bi bilo odrediti parametar zatvorenosti za svaki prst kako broj robotskih prstiju (3) ne korespondira broju ljudskih.\\\\
 Klasifikator je napravljen jednostavno i empirijski. Izračuna se površina binarne slike zahvaćena konturom dlana ($ P_{k}(\mathbf{s}) $) i površina obujmice iste konture ($ P_{o}(\mathbf{s}) $). Generira se značajka koja predstavlja omjer površine konture i obujmice (\ref{eq:closure_feature_1}).
@@ -1138,16 +1138,25 @@ Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u det
 
 Inicijalna estimacija lokacije dlana u slici ne traje dugo te daljnja procjena poze dlana može trajati puno duže. Već i gore navedena brza metoda određivanja zatvorenosti dlana i na najslabijim uređajima ostavlja poprilično procesorsko vrijeme neiskorišteno. Odlučeno je dakle iskoristiti do tada neiskorišteno procesorsko vrijeme kako bi detektor dao bolji opis poze u kojoj se dlan nalazi.
 
+\subsubsection{Prikupljanje podataka}
 Prethodna metoda se temelji na jednostavnim, ali vrlo uspješnim heuristikama. Ipak, za opisivanje poze dlana s više parametara takav pristup je puno zahtjevniji. Jedan od alternativnih skupova pristupa su tzv. pristupi vođeni samim podacima (engl. \textit{data-driven approach}). Za takav pristup valja prikupiti dovoljnu količinu željenih (u konkretnom slučaju i označenih) podataka te nad njima naučiti model. Model bi opisivao pozu dlana koji mu je predan kao slika na ulazu.
 
 U nedostatku bolje opreme (konkretno žiroskopa kakav se nalazi u većini mobilnih uređaja) koja bi omogućila brže i preciznije prikupljanje željenih podataka s detaljnijim opisom poze dlana, valjalo je osmisliti efikasan način prikupljanja što većeg broja raznovrsnih podataka uz njihovo precizno označavanje.
 
 Klasifikator poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i u prethodnoj metodi, dok drugi određuje rotaciju dlana oko x osi. Takva rotacija omogućuje robotskoj ruci da uhvati nešto iznad, ispred ili ispod dlana te zbog toga je odabrana kao najkorisnija u usporedbi s rotacijama oko y ili z osi. Podaci su prikupljani u 15 različitih klasa kao kartezijev produkt tri stupnja zatvorenosti dlana $ (0,0.5,1)$ te 5 različitih rotacija oko x osi $(-90\deg, -45\deg, 0\deg, 45\deg, 90\deg)$. Kada bismo u istu proceduru uključili i druge dvije rotacije, tada bi ukupan broj klasa bio $3\cdot5\cdot5\cdot5 =375$ što uz dane resurse ne bi bilo izvedivo.
 
-Ukupno je prikupljeno $61 395$ označenih slika dlana. Prikupljene slike su dubinske slike dlana dobivenog detekcijom segmentirane na osnovu praga opisanog u postupku detekcije te binarizirane tako da slikovni elementi dlana imaju vrijednost $1$, a ostali $0$.
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1.0\textwidth]{detekcija/dataset}
+\caption{Neki od prikupljenih označenih podataka} \label{covnet-dataset}
+\end{figure}
+
+Ukupno je prikupljeno $61 395$ označenih slika dlana podijeljenih u 3 skupa (učenje, validacija i ispitivanje) u omjeru $8:1:1$. Prikupljene slike su dubinske slike dlana dobivenog detekcijom segmentirane na osnovu praga opisanog u postupku detekcije te binarizirane tako da slikovni elementi dlana imaju vrijednost $1$, a ostali $0$ (slika \ref{covnet-dataset}).
 
 Razlog binarizaciji i segmentaciji leži u tome što pri učenju modela želimo reducirati količinu informacija koje klasifikator dobiva na ulaz u postupku učenja kako ih ne bi prenaučio. Naime, uklanjanjem pozadine klasifikator neće biti opterećen time što je u pozadini dlana već morati naučiti heuristike isključivo temeljem slikovnih elemenata dlana. Također, iz sličnog razloga ne želimo klasifikatoru pružiti informaciju na kojoj udaljenosti se dlan nalazio u datoj slici kako se ne bi oslonio i na tu informaciju.
 
+
+\subsubsection{Arhitektura}\label{arhitektura-mreze}
 Oformljena konvolucijska mreža na ulazu prima binariziranu sliku dimenzija $64\times64\times1$ te na izlazu generira dva vektora. Prvi vektor je trodimenzionalni i opisuje zatvorenost dlana kako je opisano, dok drugi je peterodimenzionalni i opisuje orijentaciju. Vrijednosti odgovaraju vjerojatnosti s kojom ulazna slika pripada određenoj klasi. 
 
 Takav diskretiziran izlaz se dalje pretvara u dvije vrijednosti, postotak zatvorenosti dlana i orijentaciju dlana kao broj između $0$ i $1$ gdje $0$ odgovara dlanu s vidljivom palmarnom stranom dlana dok $1$ pri vidljivoj dorzalnoj strani dlana prilikom rotacije oko x osi definiranog sustava.
@@ -1164,6 +1173,7 @@ Također, radi sprečavanja prenaučivanja modela, u funkciju gubitka pridodan j
 
 U implementaciji neuronske mreže korištena je bibiloteka \textit{TensorFlow}. Učenje je trajalo 3 sata na grafičkoj kartici \textit{Nvidia GeForce 840M} pri čemu bi se pri svakoj stagnaciji faktora učenja on smanjivao 3 puta.
 
+\subsubsection{Rezultati}
 Dobiveni rezultati prikazani su na slijedećoj tablici:
 \begin{table}[h!]
     \centering
@@ -1174,11 +1184,43 @@ Vrsta skupa & Točnost otvorenosti & Točnost orijentacije & Ukupna točnost \\ 
     Skup za validaciju &$97.1\%$&$94.5\%$&$92.1\%$\\
     Skup za ispitivanje & $97.0\%$&$94.6\%$&$92.2\%$\\ \hline
     \end{tabular}
-    \caption{Prikaz točnosti naučene konvolucijske mreže} \label{bla}
+    \caption{Prikaz točnosti naučene konvolucijske mreže} \label{rezultati-mreze}
 \end{table}
 
-Neuronska mreža dobivena ovakvim postupkom sposobna je klasificirati ~1200 slika u sekundi na gore navedenoj grafičkoj kartici, a 160 slika u sekundi na procesoru porodice \textit{Intel Core i7}. U svakom slučaju klasifikacija će i na slabijim današnjim procesorima raditi u stvarnom vremenu, što je i bio cilj.
+Kao što se vidi u tablici \ref{rezultati-mreze} ukupna točnost mreže prelazi 92\% prilikom klasifikacije na pojedinačnoj slici. Klasifikacija se dodatno poboljšava uprosječavanjem zadnjih $7$ slika dubinske kamere, kao i u odlomku \ref{brza-metoda} te tako točnost raste na 96\%. Kao što je bilo i očekivano, klasifikacija otvorenosti dlana je puno lakši problem od orijentacije te u pojedinačnim slikama je dobivena točnost od 97\%.
 
+Za vizualizaciju dobivenih visokodimenzionalnih podataka korištena je dobro poznata metoda redukcije dimenzionalnosti t-SNE \ref{van2008visualizing} pomoću koje je vizualiziran izlaz zadnjeg potpuno povezanog sloja neuronske mreže. Metoda pokušava očuvati euklidsku udaljenost između vektora u višedimenzionalnom prostoru pri prenošenju u nižedimenzionalni prostor (u ovom slučaju dvije dimenzije). Metoda je iterativna te pokušava minimizirati pogrešku euklidske udaljenosti među primjerima.
+
+Pretpostavka dobro naučenog modela je ta da na toj razini je mreža dovoljno dobro naučena da obični linearni višeklasni klasifikator može razdvojiti primjere. To ne znači nužno da u t-SNE vizualizaciji će primjeri biti linearno odvojivi već kako se primjeri istih klasa nalaze na međusobno relativno bliskoj udaljenosti.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1.0\textwidth]{detekcija/train_otvorenost}
+\caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje grupiranih po označenoj otvorenosti.} \label{tsne-otvorenost}
+\end{figure}
+
+Na grafu \ref{tsne-otvorenost} možemo primjetiti kako su većinom primjeri dobro grupirani, a najviše odskaču primjeri za poluotvoren dlan što se i moglo pretpostaviti s obzirom kako je ona najlošije definirana klasa, kao nešto između otvorenog i zatvorenog dlana.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1.0\textwidth]{detekcija/train_kut}
+\caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje grupiranih po označenom kutu dlana.} \label{tsne-kut}
+\end{figure}
+
+Pojava okluzije u dubinskoj slici oslabljuje kvalitetu detekcije malih površina te tako dlan postavljen u xz ravninu definiranog koordinatnog sustava je zahtjevno detektirati pa time i klasificirati. Ipak mreža je uspjela i takav problem rješiti te je zanimljivo promotriti t-SNE prikaz obojan po klasama orijentacije dlana (graf \ref{tsne-kut}) gdje vidimo kako su primjeri horizontalno postavljenog dlana (zeleno) relativno udaljeni od primjera vertikalno postavljenog dlana te da između njih se nalaze klase dlana pod kutem od $45$ i $-45$ stupnjeva u odnosu na horizontalu što namo može ukazati na to da je mreža naučila interpolirati između horizontalnog i vertikalnog dlana. Time je opravdano interpoliranje izlaza neuronske mreže kako je opisano u prethodnom odlomku (\ref{arhitektura-mreze}).
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 1.0\textwidth]{detekcija/train_all}
+\caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje.} \label{tsne-all}
+\end{figure}
+
+Zanimljivo je pogledati i brojnost nakupina istovjetnih klasa na grafovima \ref{tsne-kut} i \ref{tsne-otvorenost}, gdje u oba slučaja neke klase imaju više udaljenih nakupina iako pripadaju istoj klasi. Graf \ref{tsne-all} kao kartezijev produkt oba elementa klasfikacije (otvorenost i orijentacija) može ponuditi objašnjenje tog naizgled problema. Naime, na izlazu mreže mogu se pojaviti 15 različitih slučajeva, koji su u grafu prikazani različitim bojama. Može se primjetiti kako primjeri istih elemenata kartezijevi produkta klasa zauzimaju puno kompaktinij prostor nego gledajući svaki element klasifikacije zasebno.
+
+Ovakvom analizom možemo zaključiti kako će se najveće greške prilikom klasifikacije dešavati u području horizontalnog dlana što i ja bilo za očekivati s obzirom na lošu kvalitetu ulazne slike u takvim pozama zbog okluzija.
+
+Neuronska mreža dobivena ovakvim postupkom sposobna je klasificirati ~1200 slika u sekundi na gore navedenoj grafičkoj kartici, a 160 slika u sekundi na procesoru porodice \textit{Intel Core i7}. U svakom slučaju klasifikacija će i na slabijim današnjim procesorima raditi u stvarnom vremenu, što je i bio cilj.
 
 \chapter{Upravljački algoritam}\label{Upravljački algoritam}
 Ovo poglavlje pomoću koncepata i metoda objašnjenih u prethodnim poglavljima možemo detaljno prikazuje arhitekturu upravljačkog dijela sustava.

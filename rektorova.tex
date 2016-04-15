@@ -29,18 +29,21 @@
 \tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
 
 % TODO: Navedite broj rada.
-\thesisnumber{3962}
+%\thesisnumber{3962}
 
 % TODO: Navedite naslov rada.
-\title{Teleoperacija robotske ruke Kinova Jaco 3D kamerom}
+\title{Univerzalni sustav teleoperacije manipulatora kretnjama ljudske ruke}
 
 % TODO: Navedite vaše ime i prezime.
-\author{Filip Marić}
+\author{Filip Marić \\ Ivan Jurin}
 
 \maketitle
 
 % Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
-\zahvala{}
+\zahvala{Ovaj rad izrađen je na Fakultetu elektrotehnike i računarstva 
+Sveučilišta u Zagrebu pod vodstvom prof. dr. sc. Ivana Petrovića i prof. 
+dr. sc. Zorana Kalafatića i predan je na natječaj za dodjelu Rektorove 
+nagrade u akademskoj godini 2015./2016.}
 
 \tableofcontents
 
@@ -802,7 +805,9 @@ Pokazalo se da je ovakva izvedba superiorna prema ostalim metodama, što pokazuj
 %Pomoću izvedene Jakobijeve matrice manipulatora konstruiramo upravljačku petlju više razine koja regulira vektor konfiguracije alata $\mathbf{w}$.
 Razmatranjem izraza \ref{jac_approx2} možemo zaključiti da smo posredno došli do metode čijom primjenom u upravljačkoj petlji u teoriji možemo ostvariti kretanje po putanji. 
 Iterativnom primjenom izraza \ref{jac_approx2} moguće je ostvariti kretanje ruke prema željenom vektoru konfiguracije dokle god poznajemo pogrešku $\mathbf{e}$ . 
-Za sintezu Jacobijeve matrice potrebni su nam podaci o trenutnim pozicijama zglobova koji čine povratnu vezu petlje, dok je za računanje potrebne promjene pozicije potrebna informacija o željenom vektoru konfiguracije što je referentna veličina.
+Za sintezu Jacobijeve matrice potrebni su nam podaci o trenutnim pozicijama zglobova $\bm{\theta}$, koji čine unutarnju povratnu vezu petlje.
+Vanjsku povratnu vezu korištenu za računanje potrebne promjene vektora konfiguracije ostvarujemo pomoću bloka funkcije direktne kinematike \textbf{DK}.
+Blok $\mathbf{J^{-1}}$ u ovom slučaju podrazumjeva bilo koju od metoda \ref{jac_approx2}, \ref{jacob3} ili \ref{dlq2} kojima povezujemo promjene zglobova sa promjenama vektora konfiguracije.
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture}[auto, node distance=2cm,>=latex']
@@ -839,6 +844,7 @@ Izrazom \ref{e} definiramo vektor razlike translacija u iteraciji $i$. Njime je 
 \end{equation}
 Kako bi potpuno definirali potrebnu promjenu konfiguracije, moramo poznavati i razliku u orijentaciji. 
 Također, ova mjera razlike u orijentaciji mora biti kompatibilna sa geometrijskom izvedbom Jakobijana koju koristimo u izračunima.
+Ovo čini izračun nešto je složenijim, te se on ne može svesti na oduzimanje.
 \begin{equation}
 {\mathbf{e}_{O}} = 0.5\left(\mathbf{R}_{x_c}\times\mathbf{R}_{x_t} + \mathbf{R}_{y_c}\times\mathbf{R}_{y_t} + \mathbf{R}_{z_c}\times\mathbf{R}_{z_t}\right)
 \label{eo}
@@ -846,16 +852,16 @@ Također, ova mjera razlike u orijentaciji mora biti kompatibilna sa geometrijsk
 Koristimo izraz \ref{eo} definiran u \cite{siciliano2010robotics}, koji je pogodan za kinematičke lance koji ne posjeduju sferne zglobove.
 Elementi izraza predstavljaju stupce rotacijskih matrica koji korespondiraju sa orijentacijom koordinatnog sustava koji je njima definiran.
 
-Razliku referentnog i stvarnog vektora konfiguracije alata sustav prema izrazu \ref{jac_approx2} množi inverzom matrice $\mathbf{J}$.
+Razliku referentnog i stvarnog vektora konfiguracije alata sustav množi se prema izrazima \ref{jac_approx2}, \ref{jacob3} ili \ref{dlq2}.
 Kao rezultat množenja dobivamo potrebne zakrete zglobova $\Delta \mathbf{q}$.
-Pri praćenju putanje manipulator nikad neće biti daleko od tražene pozicije, čime bez gubitka općenitosti dobivene potrebne pomake također možemo tretirati kao brzine.
+Pri praćenju putanje manipulator nikad neće biti daleko od tražene pozicije, čime bez gubitka općenitosti dobivene potrebne pomake nakon skaliranja također možemo tretirati kao brzine.
 \begin{equation}
 \Delta \mathbf{q} \approx \bm{\omega}
 \end{equation}
 
 Vektor funkcija $\mathbf{f}$ u ovom slučaju označava preračunavanje kuteva očitanih sa manipulatora ruke $\bm{\theta_r}$ u kuteve koji odgovaraju postavljenom matematičkom modelu $\bm{\theta}$. 
 Dobivene kuteve koristimo kako bi osvježili matricu $\mathbf{J}$ i kako bi dobili trenutni vektor konfiguracije alata $\mathbf{w}$. 
-Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora. 
+Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora u nadređenoj i/ili podređenoj petlji. 
 
 \subsection{Provjera sustava}\label{provjera}
 Zamišljenu upravljačku shemu sustava prikazanu na slici \ref{petlja} provjeravamo u Matlabu.

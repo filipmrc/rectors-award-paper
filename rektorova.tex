@@ -10,7 +10,7 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{subcaption}
-\usepackage[font = small]{caption}
+\usepackage[font = footnotesize]{caption}
 \usepackage{fancyhdr}
 \usetikzlibrary{shapes,arrows}
 \graphicspath{ {images/} }
@@ -32,7 +32,7 @@
 %\thesisnumber{3962}
 
 % TODO: Navedite naslov rada.
-\title{Univerzalni sustav teleoperacije manipulatora kretnjama ljudske ruke}
+\title{Intuitivni sustav teleoperacije robotskog manipulatora korištenjem dubinske kamere}
 
 % TODO: Navedite vaše ime i prezime.
 \author{Filip Marić \\ Ivan Jurin}
@@ -116,11 +116,16 @@ Pomicanjem dlana korisnika izvan sfere, upravljački algoritam pomiče vrh manip
 %\includegraphics[scale=0.3]{koncept22}
 %\caption{Prikaz \textit{joystick} načina upravljanja.}
 %\end{figure}
+Dva navedena pristupa svojom funkcionalnošću podređeni su ograničenjima detekcije i izvođenju u stvarnom vremenu.
+Velika prednost razvijene detekcije leži u činjenici da se prati samo ljudska šaka te konkretno prenošenje kretnji na zglobove robota ne ovisi o ruci korisnika.
+Prenosi se samo konačni "cilj" kretanja, dok se način postizanja prilagođava građi manipulatora.
 
-Zajednička funkcija kod oba pristupa vezana je uz otvaranje i zatvaranje alata (izvršnog člana). 
+Zajednička funkcija kod ovih pristupa vezana je uz otvaranje i zatvaranje alata (izvršnog člana). 
 Otvaranje šake korisnika upravljački algoritam interpretira kao naredbu otvaranja alata manipulaotra, dok se zatvorena šaka interpretira kao naredba zatvaranja.
 Ova funkcija naravno ovisi o tipu alata na kraju manipulatora, no mapiranje otvaranja i zatvaranja šake na neku drugu funkciju ne predstavlja problem radi separabilnosti dijela upravljačke petlje vezane uz izvršni član.
 U ovom radu većinom ćemo se baviti prvim i složenijim načinom upravljanja, jer svi sustavi razvijeni za njega mogu ostvariti \textit{joystick} način rada.
+
+
 
 \section{Struktura sustava upravljanja}
 Sustav upravljanja na najvišoj se razini sastoji od 4 komponente:
@@ -485,22 +490,28 @@ Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovi
 \caption{Model Jaco robotske ruke sa označenim parametrima} \label{h}
 \end{figure}
 
-U idealnom slučaju, rješavanje problema kinematike manipulatora sa do 6 stupnjeva slobode zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
+U idealnom slučaju, rješavanje problema direktne kinematike manipulatora sa do 6 stupnjeva slobode zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
 Iz članova dobivene matrice potom analitički dobivamo izraze za Kartezijsku poziciju i orijentaciju alata u ovisnosti o zakretima zglobova.
 Sintezu direktne kinematike započinjemo D-H postupkom \cite{uicker1964iterative} postavljanja koordinatnih sustava vezanih uz zglobove.
 Određivanjem matrica homogenih transformacija između tih sustava dobivamo surjektivnu\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkciju koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
 
 Problem inverzne kinematike znatno je složeniji jer zahtjeva rješavanje sustava nelinearnih jednadžbi s više nepoznanica.
-Za složenije manipulatore ovaj problem je netrivijalan te rješenje nije uvijek moguće pronaći.
+Za složenije manipulatore  ovaj problem je netrivijalan, a analitička rješenja postoje tek u specijalnim slučajevima gdje su osi zglobova međusobno okomite.
 Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješenja često biti višestruka, a pronalaženje odgovarajućeg ovisi o konstrukciji i poziciji manipulatora.
+Kod redundantnih manipulatora ovaj problem je još složeniji jer za svaku zadanu konfiguraciju postoji beskonačno mnogo rješenja.
 
-Analitička rješenja problema ne postoje za većinu konfiguracija sa 6 stupnjeva slobode \cite{grochow2004style}, a klasični pristupi aproksimiranju rješenja sustava nelinearnih jednadžbi \cite{broyden1965class}\cite{bi2009three} zahtjevaju složen račun.
+Analitička rješenja problema ne postoje za većinu konfiguracija sa 6 stupnjeva slobode \cite{grochow2004style}, a klasični pristupi aproksimiranju rješenja sustava nelinearnih jednadžbi \cite{broyden1965class}\cite{bi2009three} zahtjevaju složen račun neprikladan za izvođenje u stvarnom vremenu.
 Pronašli smo da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju inverza matrice Jakobijana manipulatora \cite{buss2004introduction}, koja je puno prikladnija za programsku izvedbu.
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.35]{jacoDH1}
+\caption{Model Jaco robotske ruke sa označenim parametrima korištenim pri sintezi DH parametara} \label{jacoparam}
+\end{figure}
 
-U prvom odlomku opisati ćemopreskočiti pojedinosti D-H postupka i izvod matrica homogene transformacije.
+U prvom odlomku se preskaču pojedinosti D-H postupka i pomoću gotovih parametara izvodi se matrica homogene transformacije.
 Drugi odlomak sadrži opis ideje rješenja inverzne kinematike osnovne postupke rješavanja kinematičkog problema na primjeru Jaco robotske ruke.
-Pri tome ćemo radi sažetosti izlaganja  koje koristimo u računalnom algoritmu.
-Rezultate zamišljenog postupka potom ispitujemo koristeći Matlab.
+Pri tome su radi sažetosti izlaganja metode korištene u konačnom algoritmu opisane samo okvirno.
+Rezultati zamišljenog postupka potom se ispituju na matematičkom modelu korištenjem Matlab programskog okruženja.
 
 \section{Direktna i inverzna kinematika Jaco robotske ruke}\label{direkt i inverz}
 \subsection{Direktna kinematika}
@@ -512,11 +523,6 @@ Množenjem dobivenih matrica dobivamo matricu koja izražava poziciju i orijenta
 Pri sintezi matrica transformacije ruke korišteni su D-H parametri iz službene dokumentacije za Jaco robotsku ruku prikazani u tablici \ref{JacoDH}. 
 Za sintezu D-H parametara koristimo duljine članaka kao i parametre koji su iz njih izvedeni, prikazani su na slici \ref{jacoparam}.
 Parametre $d_{4b}$, $d_{5b}$ i $d_{6b}$ određujemo iz izraza \ref{d4b}, \ref{d5b}, \ref{d6b}.
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.35]{jacoDH1}
-\caption{Model Jaco robotske ruke sa označenim parametrima} \label{jacoparam}
-\end{figure}
 
 \begin{table}[h!]
     \centering
@@ -537,18 +543,18 @@ Parametre $d_{4b}$, $d_{5b}$ i $d_{6b}$ određujemo iz izraza \ref{d4b}, \ref{d5
     \caption{Konstrukcijski parametri Jaco robotske ruke}
 \end{table}
 
-\begin{equation}
-d_{4b}=D_{3}+D_{4}\frac{1}{2\cdot\cos(a)}=D_{3}+D_{4}\frac{\sin(a)}{\sin(2a)}
-\label{d4b}
-\end{equation}
-\begin{equation}
-d_{5b}=D_{4}+D_{5}\frac{1}{2\cdot\cos(a)}=D_{4}+D_{5}\frac{\sin(a)}{\sin(2a)}
-\label{d5b}
-\end{equation}
-\begin{equation}
-d_{6b}=D_{6}+D_{5}\frac{1}{2\cdot\cos(a)}=D_{6}+D_{5}\frac{\sin(a)}{\sin(2a)}. 
-\label{d6b}
-\end{equation}
+%\begin{equation}
+%d_{4b}=D_{3}+D_{4}\frac{1}{2\cdot\cos(a)}=D_{3}+D_{4}\frac{\sin(a)}{\sin(2a)}
+%\label{d4b}
+%\end{equation}
+%\begin{equation}
+%d_{5b}=D_{4}+D_{5}\frac{1}{2\cdot\cos(a)}=D_{4}+D_{5}\frac{\sin(a)}{\sin(2a)}
+%\label{d5b}
+%\end{equation}
+%\begin{equation}
+%d_{6b}=D_{6}+D_{5}\frac{1}{2\cdot\cos(a)}=D_{6}+D_{5}\frac{\sin(a)}{\sin(2a)}. 
+%\label{d6b}
+%\end{equation}
 
 Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodajemo i razlike u orijentaciji rotacijskih osi zglobova $\alpha$. Konačni parametri prikazani su u tablici \ref{JacoDH}.
  \begin{table}[h!]
@@ -907,8 +913,6 @@ Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijenta
 Radna frekvencija detekcije kreće se oko 30 Hz , a matricu Jakobijana planiramo osvježavati oko 200 puta u sekundi.
 Iz ovih smjernica uzimamo kako ćemo pri testiranju osvježavati matricu Jakobijana 6 puta pri izvršavanju kretanja.
 Iz grafa \ref{P1} vidljivo je kako pri čistom translacijskom kretanju upravljačka petlja sa P regulatorom ostvaruje željenu konfiguraciju  bez oscilacija u kretanju.
-%ubaci vremena
-
 Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za metodu baziranu na korištenju običnog inverza Jakobijana.
 \begin{figure}[h!]
 \centering
@@ -1385,5 +1389,11 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 \chapter{Zaključak}
 \bibliography{literatura}
 \bibliographystyle{fer}
+\begin{sazetak}
+U ovom radu razvijena je metoda upravljanja robotskim manipulatorom baziranu na imitiranju pokreta ljudske ruke. Pokrete i lokacija ruke korisnika detektirana je koristeći 3-d kameru i vlastite algoritme bazirane na strojnom učenju. Algoritam za detekciju dlana razvijen je za uporabu u stvarnom vremenu i postižemo dvije efikasne varijante. Sustav je zamišljen kao univerzalan i modularan, što ga čini primjenjivim na velikom broju manipulatora uz minimalne modifikacije. Pretpostavljen je manipulator bez ugrađenih naprednih kinematičkih funkcija, te se istražuje problematika rješavanja kinematike manipulatora u općem slučaju. Dobiveni sustav upravljanja prvo se ispituje na simulaciji Jaco robotske ruke, a potom i na stvarnoj robotskoj ruci iste vrste. Rezultati se izlažu u obliku slika, grafova i videozapisa. Komentira se intuitivnost sustava i kvaliteta praćenja korisnikovih kretnji. 
+\end{sazetak}
 
+\begin{abstract}
+In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and reasearch methods of solving manipulator kinematics in the general case. The resulting contol system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analized for quality of control and simplicity of use.
+\end{abstract}
 \end{document}

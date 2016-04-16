@@ -973,7 +973,7 @@ U ovom preliminarnom testiranju nismo uključivali model motora i dinamike manip
 \chapter{Detekcijski algoritam}\label{Detekcijski algoritam}
 Postoje mnogobrojni načini kojima se može upravljati pokretima ruke. U ovom radu koristi se dubinska kamera koja omogućuje snimanje pokreta ljudske ruke, a zatim se svaka snimljena slika prevodi u informaciju. Tako dobivena informacija govori o trenutnoj lokaciji i orijentaciji ruke u trodimenzionalnom prostoru promatranom dubinskom kamerom.
 
-Problem detekcije položaja ruke relativno uspješno je riješen i kod klasičnih slika (npr. //todo 3 citata), ali je taj pristup obilježen prevelikom ovisnošću o svjetlosnim parametrima slike te potrebom za većim računalnim resursima. Takvi zahtjevi uvelike otežavaju detekciju u stvarnom vremenu na osobnom računalu.
+Problem detekcije položaja ruke relativno uspješno je riješen i kod klasičnih slika (npr. \cite{de2011model}, \cite{stenger2001model} ili \cite{rehg1994visual}), ali je taj pristup obilježen prevelikom ovisnošću o svjetlosnim parametrima slike te potrebom za većim računalnim resursima. Takvi zahtjevi uvelike otežavaju detekciju u stvarnom vremenu na osobnom računalu.
 
 U detekciji objekata kod dubinske slike, prikladna je većina pristupa detekciji objekata kao kod klasične slike s intenzitetom svjetlosti u pojedinim točkama. Pri tome dubinsku sliku možemo promatrati kao klasičnu sivu sliku te raditi detekcije nad istom, ali ne smijemo zaboraviti da informacija koju sadrži pojedini slikovni element ne odgovara intenzitetu, već je mjera udaljenosti. Također uobičajena crno-bijela slika se sastoji od 8-bitnih vrijednosti što polučuje 256 različitih slikovnih elemenata te u velikom broju slučajeva možemo biti zadovoljni s tim. Za razliku od uobičajene crno-bijele slike, kod dubinske slike sa 256 različitih slikovnih elemenata sposobni smo detektirati 256 različitih dubina, što nije dovoljno ukoliko želimo detekciju na većem rasponu ($1m$) uz veliku preciznost ($1mm$). Stoga je u slučaju dubinske slike uobičajen zapis pomoću 2 okteta ili broja s jednostrukom preciznosti po IEEE 754 standardu. Ovaj potonji zapis kompatibilan je s korištenom OpenCV bibliotekom.
 
@@ -1095,14 +1095,19 @@ Na slici \ref{convex_hull} je običnoj binarnoj slici sivom bojom pridodana razl
 \section{Određivanje poze dlana}
 
 \subsection{Slične metode}
-Različiti radovi predlažu različite metode određivanja poze u kojoj se nalazi ruka, ali i u različitom opsegu preciznosti.\\\\
-Qian i suradnici u svom radu \cite{qian2014realtime} su modelirali prosječnu ruku pomoću 48 sfera uz 26 stupnjeva slobode. Pretražuju ekstreme u području dlana te im oni služe kao kandidati za vrhove prstiju i zapešće. Pomoću inverzne kinematike nad modelom generiraju moguće položaje ruke te svaki od njih ocjenjuju s obzirom na sličnost s dubinskom slikom. Najbolji model je proglašen trenutnim položajem ruke.\\\\
-Thompson i suradnici u svojem radu \cite{tompson2014real} koriste naučenu kaskadu konvolucijskih neuronskih mreža. Učenje je izvršeno na 70 000 označenih slika. Mreže na izlazu daju dvodimenzionalnu Gaussovu razdiobu vjerojatnosti da se na određenoj lokaciji nalazi jedna od 36 označenih lokacija na ruci (npr. vrh malog prsta). I u ovom radu inverznom kinematikom se traži model ruke koji najviše odgovara razdiobama. Pri tome je rabljen često korišten model ruke otvorenog koda \textit{libhand} \cite{libhand}.\\\\
+Različiti radovi predlažu različite metode određivanja poze u kojoj se nalazi ruka, ali i u različitom opsegu preciznosti.
+
+Qian i suradnici u svom radu \cite{qian2014realtime} su modelirali prosječnu ruku pomoću 48 sfera uz 26 stupnjeva slobode. Pretražuju ekstreme u području dlana te im oni služe kao kandidati za vrhove prstiju i zapešće. Pomoću inverzne kinematike nad modelom generiraju moguće položaje ruke te svaki od njih ocjenjuju s obzirom na sličnost s dubinskom slikom. Najbolji model je proglašen trenutnim položajem ruke.
+
+Thompson i suradnici u svojem radu \cite{tompson2014real} koriste naučenu kaskadu konvolucijskih neuronskih mreža. Učenje je izvršeno na 70 000 označenih slika. Mreže na izlazu daju dvodimenzionalnu Gaussovu razdiobu vjerojatnosti da se na određenoj lokaciji nalazi jedna od 36 označenih lokacija na ruci (npr. vrh malog prsta). I u ovom radu inverznom kinematikom se traži model ruke koji najviše odgovara razdiobama. Pri tome je rabljen često korišten model ruke otvorenog koda \textit{libhand} \cite{libhand}.
+
 Valja napomenuti kako su navedene metode sposobne prepoznati ruku u jednoj dubinskoj slici te im ne treba niz slika.
 
 \subsection{Razvijena brza metoda određivanja zatvorenosti dlana} \label{brza-metoda}
-Zatvorenost dlana je apstraktan pojam te ga treba pobliže definirati. Prilično je intuitivan pojam otvoreni dlan koji predstavlja dlan u planarnom položaju, pri čemu kutevi između članaka teže nuli (Slika \ref{fig:successful_palm_isolation} a). Isto tako je jasan je pojam zatvorenog dlana (Slika \ref{fig:successful_palm_isolation} d). Teško je pak definirati stupanj zatvorenosti prilikom neke geste, pri kojoj dlan nije ni potpuno otvoren ni zatvoren, pogotovo ako je svaki prst pod svojim kutom. Tako se u ovom radu stupanj zatvorenosti određuje binarno pri čemu \textit{0} predstavlja zatvoren dlan, a \textit{1} sve ostale položaje.\\\\
-Navedeni pristup sasvim je dovoljan pri kontroli željenog robota jer takav klasifikator nam određuje hoće li se prsti robotske ruke skupiti ili ne. Naime, iako robot posjeduje prste, nezgrapno bi bilo odrediti parametar zatvorenosti za svaki prst kako broj robotskih prstiju (3) ne korespondira broju ljudskih.\\\\
+Zatvorenost dlana je apstraktan pojam te ga treba pobliže definirati. Prilično je intuitivan pojam otvoreni dlan koji predstavlja dlan u planarnom položaju, pri čemu kutevi između članaka teže nuli (Slika \ref{fig:successful_palm_isolation} a). Isto tako je jasan je pojam zatvorenog dlana (Slika \ref{fig:successful_palm_isolation} d). Teško je pak definirati stupanj zatvorenosti prilikom neke geste, pri kojoj dlan nije ni potpuno otvoren ni zatvoren, pogotovo ako je svaki prst pod svojim kutom. Tako se u ovom radu stupanj zatvorenosti određuje binarno pri čemu \textit{0} predstavlja zatvoren dlan, a \textit{1} sve ostale položaje.
+
+Navedeni pristup sasvim je dovoljan pri kontroli željenog robota jer takav klasifikator nam određuje hoće li se prsti robotske ruke skupiti ili ne. Naime, iako robot posjeduje prste, nezgrapno bi bilo odrediti parametar zatvorenosti za svaki prst kako broj robotskih prstiju (3) ne korespondira broju ljudskih.
+
 Klasifikator je napravljen jednostavno i empirijski. Izračuna se površina binarne slike zahvaćena konturom dlana ($ P_{k}(\mathbf{s}) $) i površina obujmice iste konture ($ P_{o}(\mathbf{s}) $). Generira se značajka koja predstavlja omjer površine konture i obujmice (\ref{eq:closure_feature_1}).
 \begin{equation}\label{eq:closure_feature_1}
 f_{1}(\mathbf{s})=\frac{P_{k}(\mathbf{s})}{ P_{o}(\mathbf{s})} 
@@ -1132,6 +1137,78 @@ Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od koji
 U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvije klase, zatvorene i otvorene dlanove s greškom od 3.4\%. Težilo se preciznijoj detekciji zatvorenog dlana, što je uzrokovalo gubitak u preciznosti detekcije otvorenog dlana. Takav pristup je vođen pretpostavkom da prilikom upravljanja robotskom rukom zatvoreni dlan podrazumijeva kako ruka drži neki objekt te želimo biti sigurni kako ga neće olako ispustiti bez naše volje. Iako za neki teži problem ovakav pristup detekciji otvorenosti dlana ne bi bio dobar te bismo se trebali okrenuti naprednijim metodama, u ovom slučaju rezultat je sasvim zadovoljavajuć s obzirom na poprilično jasnu distinkciju između dviju klasa.
 
 Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u detektoru prilikom određivanja zatvorenosti dlana.
+
+\subsubsection{Rezultati}
+\label{sec:tuning}
+Posjedovanjem slijednih slika možemo ublažiti utjecaje mogućih oscilacija na detekciju.
+
+Prilikom određivanja zatvorenosti dlana dobivena vrijednost omjera (Izraz \ref{eq:closure_feature_1}) se sprema u vektor koji sadrži prethodnih $ n $  omjera iz prethodnih $n$ slika te se u pojedinom trenutku $t$ vrijednost može odrediti pomoću težinskog prosjeka vrijednosti u vektoru.
+\begin{equation}\label{eq:advanced_closure_feature}
+F_{1}(\mathbf{s}(t))=\sum_{0}^{n-1} w_{i}f_{z}(\mathbf{s}(t-i))
+\end{equation}
+Iako inicijalno je razmatrana mogućnost Gaussove raspodjele težina ($w_{i}$), ipak dovoljno dobrim klasifikatorom se iskazala aritmetička sredina zadnjih $n=7$ slika. Sasvim analogno se pristupa s drugom značajkom (Izraz \ref{eq:closure_feature_2}).
+
+Ispitana je brzina pojedine detekcije detektora. Ako izuzmemo vrijeme koje je potrebno Kinectu da dostavi sliku, vrijeme detekcije implementacije detektora neoptimiziranom Python skriptom je $(7.7 \pm 1.6) ms$ ispitano na procesoru porodice \textit{Intel Core i5}. Takva brza detekcija posljedica je jednostavne metode koji ne sadrži računski zahtjevne algoritme. Kako je Kinect u mogućnosti generirati oko 25 slika u sekundi, a algoritam radi brzinom većom od 125 slika u sekundi, postoji veliki prostor za nadogradnju mogućnosti algoritma.
+
+Ispitivanje točnosti detektora može se izvesti na dva načina. Kako detektor vrši detekciju na jednoj slici, a koristi slijedne slike za ispravak mogućih nepravilnosti može se očekivati da će u slijednim slikama detektor raditi bolje.
+
+Uz pretpostavku da se dlan nalazi na najbližoj dubini u slici promatrati uspješnost detekcije lokacije dlana bi se svelo na promatranje uspješnosti dubinske kamere u određivanju dubinske slike o čemu ovdje neće biti riječ.
+
+Preostaje nam ispitati klasifikator zatvorenosti dlana. U oba slučaja vršit će se ispitivanje nad istim slikama s time da će u slučaju slijednih slika značajke ovisiti i o prethodnim slikama (vidi \ref{sec:tuning}).
+
+Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa zatvorenim dlanom. U oba slučaja se ispitivao udio ispravno određenih slika. Kako je klasifikator binarni, udio lažno pozitivnih slika zatvorenog dlana biti će jednak udjelu lažno negativnih slika otvorenog dlana i obrnuto. Za razliku od učenja koje je provođeno na jednoj osobi, u ispitivanju su sudjelovale tri osobe.
+\begin{figure}[h]
+\centering
+\begin{tabular}{ l || c c || r }
+	& Ispravno  & Neispravnih &Ukupno\\\hline
+	Broj primjeraka & 1203 & 120 &1323\\
+	Udio&90.9\%&9.1\%
+\end{tabular}
+\renewcommand{\figurename}{Tablica}
+	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u pojedinoj slici}
+	\label{fig:single_img_open}
+\end{figure}
+\begin{figure}[h]
+\centering
+\begin{tabular}{ l || c c || r }
+	& Ispravno  & Neispravnih &Ukupno\\\hline
+	Broj primjeraka & 1728 & 57 &1785\\
+	Udio&96.8\%&3.2\%
+\end{tabular}
+\renewcommand{\figurename}{Tablica}
+	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u pojedinoj slici}
+	\label{fig:single_img_close}
+\end{figure}
+\begin{figure}[h]
+\centering
+\begin{tabular}{ l || c c || r }
+	& Ispravno  & Neispravnih &Ukupno\\\hline
+	Broj primjeraka & 1256 & 67 &1323\\
+	Udio&94.9\%&5.1\%
+\end{tabular}
+\renewcommand{\figurename}{Tablica}
+	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u slijednim slikama}
+	\label{fig:multi_img_open}
+\end{figure}
+\begin{figure}[h]
+\centering
+\begin{tabular}{ l || c c || r }
+	& Ispravno  & Neispravnih &Ukupno\\\hline
+	Broj primjeraka & 1740 & 45 &1785\\
+	Udio&97.5\%&2.5\%
+\end{tabular}
+\renewcommand{\figurename}{Tablica}
+	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u slijednim slikama}
+	\label{fig:multi_img_close}
+\end{figure}
+\clearpage
+\paragraph{Rezultati ispitivanja detekcija u pojedinoj slici}\mbox{}\\
+U slučaju ispitivanja klasifikacije otvorenog dlana (Tablica \ref{fig:single_img_open}) klasifikator je uspio ispravno prepoznati otvoreni dlan u 90.9\% slučajeva, dok je kod klasifikacije zatvorenog dlana (Tablica \ref{fig:single_img_close}) zatvoreni dlan uspješno prepoznat u 96.8\% slučajeva što je zadovoljavajući rezultat.
+\paragraph{Rezultati ispitivanja detekcija u slijednim slikama}\mbox{}\\
+U slučaju ispitivanja klasifikacije otvorenog dlana (Tablica \ref{fig:multi_img_open}) klasifikator je uspio ispravno prepoznati otvoreni dlan u 94.9\% slučajeva, dok je kod klasifikacije zatvorenog dlana (Tablica \ref{fig:multi_img_close}) uspio prepoznati zatvoreni dlan u 97.5\% slučajeva što je zadovoljavajući rezultat.
+\paragraph{Usporedba ispitivanja}\mbox{}\\
+Kao što se može primijetiti, klasifikator je bolji u detekciji zatvorenih dlanova i u slijednim slikama i u pojedinoj slici, što je i bio cilj modeliranja klasifikatora, ali se isto može objasniti i time da zatvoreni dlan izgleda poprilično jednako iz bilo kojeg kuta, što nije slučaj za otvoreni dlan.\\\\
+Isto tako, ispitivanjem je potvrđena opravdanost korištenja informacija iz prethodnih slika kojima se može znatno poboljšati detekcija smanjenjem oscilacija uprosječivanjem vremenski susjednih detekcija. U našim primjerima je postignuto smanjenje neispravnih detekcija u rasponu od 1.3 do čak 2 puta. 
 
 \newpage
 \subsection{Razvijena metoda primjenom dubokih konvolucijskih neuronskih mreža}

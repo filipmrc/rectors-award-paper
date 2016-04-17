@@ -194,13 +194,19 @@ Također, manipulator mora biti opermljen senzorima pozicije i/ili brzine koje j
 
 \chapter{Sklopovska podrška}
 Sustav je dizajniran da bude univerzalan s obzirom na manipulator i detekcijski uređaj, ali pri svim testiranjima koristili smo Kinova Jaco robotsku ruku i Microsoft Kinect 3d kameru.
-\section{Microsoft Kinect 3d kamera}
-[//TODO slika Kinecta]
+\section{Microsoft Kinect 3d kamera}\label{sec:kinect}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{detekcija/kinect}
+	\caption{Dubinska kamera Kinect for Xbox 360}
+	\label{fig:kinect}
+\end{figure}
+
 Moderni senzori su u mogućnosti prikazati sliku uz submilimetarsku preciznost. Takvu preciznost nam ne nudi Kinect, ali nudi sasvim prihvatljivu preciznost od nekoliko milimetara (ovisno o udaljenosti objekta).
 
 Kinect je naziv za liniju Microsoftovih senzora pokreta razvijenih primarno za potrebe igraćih konzola, ali u širokoj uporabi u području računalnog vida. Sastoji se od dubinske kamere, klasične kamere te niza mikrofona pomoću kojih je u mogućnosti izvršavati kompleksne zadatke prepoznavanja i praćenja kao što je praćenje ljudskih pokreta.
 
-U ovom radu je korišten \textit{Kinect for Xbox 360} \cite{kinect} te se ne razmatraju parametri drugih Kinect senzora.
+U ovom radu je korišten \textit{Kinect for Xbox 360} \cite{kinect} (Slika \ref{fig:kinect}) te se ne razmatraju parametri drugih Kinect senzora.
 
 Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira pseudoslučajne uzorke točaka u Kinectov vidokrug. Infracrvena kamera koja se nalazi na znanoj udaljenosti snimi položaj točaka, po kodiranom uzorku zna pod kojim kutom je uzorak generiran te jednostavnom triangulacijom izračuna dubinu u danoj točki prostora. Kako postoji određena udaljenost između senzora i emitera, na nekim mjestima Kinect neće biti sposoban odrediti dubinu zbog okluzije (Slika \ref{fig:oculsion}).
 
@@ -1052,7 +1058,7 @@ U nekim slučajevima detekcija nije ispravna, ali je u granicama otpornosti kasn
 
 Oba slučaja većinom ne predstavljaju prevelik problem, no postoje i neke iznimke. Naime, ako je podlaktica u razini dlana, detektor neće biti sposoban razlučiti dlan od podlaktice (Slika \ref{poor_palm_isolation}). Takav slučaj predstavlja problem za detektor, ali takav slučaj ne predstavlja problem u korištenju detektora ako je osoba koja ga koristi svjesna takvog nedostatka.
 
-Rezultat izolacije dlana uz sliku na kojoj se nalazi samo dlan je i $(x,y,z)$ koordinata središta dlana u prostoru. Središte je dobiveno pronalaskom konture dlana te izlučivanjem njenog središta. Prije pronalaska konture na binarnoj slici se izvodi morfološka operacija zatvaranja s jezgrom veličine u radijusu od 2 susjedna slikovna elementa (Manhattan udaljenost). U slučaju da je središte konture izvan konture pa samim time i dlana, takva detekcija biva odbačena. Iako postoje položaji ruke gdje je to slučaj, takve položaje u većini slučajeva Kinect nije sposoban registrirati (Poglavlje \ref{sec:kinect_depth}).
+Rezultat izolacije dlana uz sliku na kojoj se nalazi samo dlan je i $(x,y,z)$ koordinata središta dlana u prostoru. Središte je dobiveno pronalaskom konture dlana te izlučivanjem njenog središta. Prije pronalaska konture na binarnoj slici se izvodi morfološka operacija zatvaranja s jezgrom veličine u radijusu od 2 susjedna slikovna elementa (Manhattan udaljenost). U slučaju da je središte konture izvan konture pa samim time i dlana, takva detekcija biva odbačena. Iako postoje položaji ruke gdje je to slučaj, takve položaje u većini slučajeva Kinect nije sposoban registrirati (vidi \ref{sec:kinect}).
 
 Jednom kada je dlan segmentiran od pozadine znatno se olakšavaju daljnje operacije. Za razliku od spomenutih naprednijih radova ovdje se neće razmatrati određivanje precizne lokacije ruke u vidu modela od više od 20 stupnjeva slobode. Naime, uzevši u obzir primjenu detektora za upravljanje robotskom rukom, prihvatljiva doza informacije sastoji se od binarne informacije o stupnju zatvorenosti dlana i radij vektora lokacije dlana te eventualno orijentacija dlana u smjeru x-osi definiranog koordinatnog sustava.
 
@@ -1104,7 +1110,7 @@ Thompson i suradnici u svojem radu \cite{tompson2014real} koriste naučenu kaska
 Valja napomenuti kako su navedene metode sposobne prepoznati ruku u jednoj dubinskoj slici te im ne treba niz slika.
 
 \subsection{Razvijena brza metoda određivanja zatvorenosti dlana} \label{brza-metoda}
-Zatvorenost dlana je apstraktan pojam te ga treba pobliže definirati. Prilično je intuitivan pojam otvoreni dlan koji predstavlja dlan u planarnom položaju, pri čemu kutevi između članaka teže nuli (Slika \ref{fig:successful_palm_isolation} a). Isto tako je jasan je pojam zatvorenog dlana (Slika \ref{fig:successful_palm_isolation} d). Teško je pak definirati stupanj zatvorenosti prilikom neke geste, pri kojoj dlan nije ni potpuno otvoren ni zatvoren, pogotovo ako je svaki prst pod svojim kutom. Tako se u ovom radu stupanj zatvorenosti određuje binarno pri čemu \textit{0} predstavlja zatvoren dlan, a \textit{1} sve ostale položaje.
+Zatvorenost dlana je apstraktan pojam te ga treba pobliže definirati. Prilično je intuitivan pojam otvoreni dlan koji predstavlja dlan u planarnom položaju, pri čemu kutevi između članaka teže nuli (Slika \ref{successful_palm_isolation} a). Isto tako je jasan je pojam zatvorenog dlana (Slika \ref{successful_palm_isolation} d). Teško je pak definirati stupanj zatvorenosti prilikom neke geste, pri kojoj dlan nije ni potpuno otvoren ni zatvoren, pogotovo ako je svaki prst pod svojim kutom. Tako se u ovom radu stupanj zatvorenosti određuje binarno pri čemu \textit{0} predstavlja zatvoren dlan, a \textit{1} sve ostale položaje.
 
 Navedeni pristup sasvim je dovoljan pri kontroli željenog robota jer takav klasifikator nam određuje hoće li se prsti robotske ruke skupiti ili ne. Naime, iako robot posjeduje prste, nezgrapno bi bilo odrediti parametar zatvorenosti za svaki prst kako broj robotskih prstiju (3) ne korespondira broju ljudskih.
 
@@ -1124,14 +1130,15 @@ Z(\mathbf{s})=\left\{\begin{matrix}
 \end{matrix}\right.
 \end{equation}
 \subsubsection{Učenje klasifikatora}
-Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od kojih 1239 s otvorenim dlanom i 1320 sa zatvorenim dlanom. Grafikon \ref{scatter_graph_lbl} prikazuje točke koje predstavljaju slike u ravnini određenoj značajkama $f_{1}$ i $f_{2}$ s time da zatvoreni dlanovi su prikazani zelenom bojom, a otvoreni crvenom.
+Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od kojih 1239 s otvorenim dlanom i 1320 sa zatvorenim dlanom. Grafikon \ref{scatter_me} prikazuje točke koje predstavljaju slike u ravnini određenoj značajkama $f_{1}$ i $f_{2}$ s time da zatvoreni dlanovi su prikazani zelenom bojom, a otvoreni crvenom.
 
 \begin{figure}[h!]
-\label{scatter_graph_lbl}
+
 \centering
-\input{scatter_graph}
+%\input{scatter_graph}
 \renewcommand{\figurename}{Grafikon}
 	\caption{Skup za učenje (crveno - slike zatvorenih dlanova, zeleno - slike otvorenih dlanova)}
+\label{scatter_me}
 \end{figure}
 
 U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvije klase, zatvorene i otvorene dlanove s greškom od 3.4\%. Težilo se preciznijoj detekciji zatvorenog dlana, što je uzrokovalo gubitak u preciznosti detekcije otvorenog dlana. Takav pristup je vođen pretpostavkom da prilikom upravljanja robotskom rukom zatvoreni dlan podrazumijeva kako ruka drži neki objekt te želimo biti sigurni kako ga neće olako ispustiti bez naše volje. Iako za neki teži problem ovakav pristup detekciji otvorenosti dlana ne bi bio dobar te bismo se trebali okrenuti naprednijim metodama, u ovom slučaju rezultat je sasvim zadovoljavajuć s obzirom na poprilično jasnu distinkciju između dviju klasa.
@@ -1266,7 +1273,7 @@ Vrsta skupa & Točnost otvorenosti & Točnost orijentacije & Ukupna točnost \\ 
 
 Kao što se vidi u tablici \ref{rezultati-mreze} ukupna točnost mreže prelazi 92\% prilikom klasifikacije na pojedinačnoj slici. Klasifikacija se dodatno poboljšava uprosječavanjem zadnjih $7$ slika dubinske kamere, kao i u odlomku \ref{brza-metoda} te tako točnost raste na 96\%. Kao što je bilo i očekivano, klasifikacija otvorenosti dlana je puno lakši problem od orijentacije te u pojedinačnim slikama je dobivena točnost od 97\%.
 
-Za vizualizaciju dobivenih visokodimenzionalnih podataka korištena je dobro poznata metoda redukcije dimenzionalnosti t-SNE \ref{van2008visualizing} pomoću koje je vizualiziran izlaz zadnjeg potpuno povezanog sloja neuronske mreže. Metoda pokušava očuvati euklidsku udaljenost između vektora u višedimenzionalnom prostoru pri prenošenju u nižedimenzionalni prostor (u ovom slučaju dvije dimenzije). Metoda je iterativna te pokušava minimizirati pogrešku euklidske udaljenosti među primjerima.
+Za vizualizaciju dobivenih visokodimenzionalnih podataka korištena je dobro poznata metoda redukcije dimenzionalnosti t-SNE \cite{van2008visualizing} pomoću koje je vizualiziran izlaz zadnjeg potpuno povezanog sloja neuronske mreže. Metoda pokušava očuvati euklidsku udaljenost između vektora u višedimenzionalnom prostoru pri prenošenju u nižedimenzionalni prostor (u ovom slučaju dvije dimenzije). Metoda je iterativna te pokušava minimizirati pogrešku euklidske udaljenosti među primjerima.
 
 Pretpostavka dobro naučenog modela je ta da na toj razini je mreža dovoljno dobro naučena da obični linearni višeklasni klasifikator može razdvojiti primjere. To ne znači nužno da u t-SNE vizualizaciji će primjeri biti linearno odvojivi već kako se primjeri istih klasa nalaze na međusobno relativno bliskoj udaljenosti.
 

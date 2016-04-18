@@ -1,4 +1,4 @@
-\begin{thebibliography}{18}
+\begin{thebibliography}{21}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -30,6 +30,12 @@ Samuel~R Buss i Jin-Su Kim.
 \newblock Selectively damped least squares for inverse kinematics.
 \newblock \emph{journal of graphics, gpu, and game tools}, 10\penalty0
   (3):\penalty0 37--49, 2005.
+
+\bibitem[de~La~Gorce et~al.(2011)de~La~Gorce, Fleet, i Paragios]{de2011model}
+Martin de~La~Gorce, David~J Fleet, i Nikos Paragios.
+\newblock Model-based 3d hand pose estimation from monocular video.
+\newblock \emph{Pattern Analysis and Machine Intelligence, IEEE Transactions
+  on}, 33\penalty0 (9):\penalty0 1793--1805, 2011.
 
 \bibitem[Grochow et~al.(2004)Grochow, Martin, Hertzmann, i
   Popovi{\'c}]{grochow2004style}
@@ -68,6 +74,12 @@ Chen Qian, Xiao Sun, Yichen Wei, Xiaoou Tang, i Jian Sun.
 \newblock U \emph{Computer Vision and Pattern Recognition (CVPR), 2014 IEEE
   Conference on}, stranice 1106--1113. IEEE, 2014.
 
+\bibitem[Rehg i Kanade(1994)]{rehg1994visual}
+James~M Rehg i Takeo Kanade.
+\newblock Visual tracking of high dof articulated structures: an application to
+  human hand tracking.
+\newblock U \emph{Computer Vision—ECCV'94}, stranice 35--46. Springer, 1994.
+
 \bibitem[Shotton et~al.(2013)Shotton, Sharp, Kipman, Fitzgibbon, Finocchio,
   Blake, Cook, i Moore]{shotton2013real}
 Jamie Shotton, Toby Sharp, Alex Kipman, Andrew Fitzgibbon, Mark Finocchio,
@@ -81,6 +93,14 @@ Jamie Shotton, Toby Sharp, Alex Kipman, Andrew Fitzgibbon, Mark Finocchio,
 Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani, i Giuseppe Oriolo.
 \newblock \emph{Robotics: modelling, planning and control}.
 \newblock Springer Science \& Business Media, 2010.
+
+\bibitem[Stenger et~al.(2001)Stenger, Mendon{\c{c}}a, i
+  Cipolla]{stenger2001model}
+Bjoern Stenger, Paulo~RS Mendon{\c{c}}a, i Roberto Cipolla.
+\newblock Model-based 3d tracking of an articulated hand.
+\newblock U \emph{Computer Vision and Pattern Recognition, 2001. CVPR 2001.
+  Proceedings of the 2001 IEEE Computer Society Conference on}, svezak~2,
+  stranice II--310. IEEE, 2001.
 
 \bibitem[Tompson et~al.(2014)Tompson, Stein, Lecun, i Perlin]{tompson2014real}
 Jonathan Tompson, Murphy Stein, Yann Lecun, i Ken Perlin.

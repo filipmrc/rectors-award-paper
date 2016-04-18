@@ -197,7 +197,7 @@ Sustav je dizajniran da bude univerzalan s obzirom na manipulator i detekcijski 
 \section{Microsoft Kinect 3d kamera}\label{sec:kinect}
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.75\textwidth]{detekcija/kinect}
+    \includegraphics[width=0.5\textwidth]{detekcija/kinect}
 	\caption{Dubinska kamera Kinect for Xbox 360}
 	\label{fig:kinect}
 \end{figure}
@@ -212,22 +212,23 @@ Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira pseu
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.75\textwidth]{detekcija/okluzija}
-	\caption{Okluzija u dubinskoj slici}
+    \includegraphics[width=0.49\textwidth]{detekcija/okluzija}    
+    \includegraphics[width=0.49\textwidth]{detekcija/gubitak-malih-objekata}
+	\caption{a) Okluzija u dubinskoj slici. b) Gubitak malih objekata.}
 	\label{fig:oculsion}
 \end{figure}
 
-Okluzija se pojavljuje kao posljedica razmaka između emitera infracrvene svjetlosti i kamere. Kako kamera promatra prostor s neke udaljenosti od emitera, vidi neke dijelove prostora koje emiter nije mogao obasjati jer su bili pokriveni drugim objektima. Tako na slici \ref{fig:oculsion} bijelom bojom vidimo sjenu koju dubinska slika ruke ostavlja za sobom. Iz položaja sjene i ruke jasno se vidi kako emiter emitira infracrvenu svjetlost s desne strane kamere što i je slučaj ako pogledamo arhitekturu senzora gdje se emiter nalazi s desne strane.
+Okluzija se pojavljuje kao posljedica razmaka između emitera infracrvene svjetlosti i kamere. Kako kamera promatra prostor s neke udaljenosti od emitera, vidi neke dijelove prostora koje emiter nije mogao obasjati jer su bili pokriveni drugim objektima. Tako na slici \ref{fig:oculsion} a) bijelom bojom vidimo sjenu koju dubinska slika ruke ostavlja za sobom. Iz položaja sjene i ruke jasno se vidi kako emiter emitira infracrvenu svjetlost s desne strane kamere što i je slučaj ako pogledamo arhitekturu senzora gdje se emiter nalazi s desne strane.
 
 Okluzije predstavljaju znatni problem u detektiranjima. U detekciji dlana, dlan može biti u takvom položaju da jedan dio dlana zasjeni drugi te ćemo dobiti maksimalnu moguću dubinu na tom području. Takvi slučajevi mogu prevariti detektor te zato valja imati na umu učinak okluzije prilikom konstrukcije detektora.
 
-Jedan kvalitetan pristup detekciji dlana koristi sintetizirane slike dlana na kojima simulira i okluziju kako bi detektor bio što bolje naučen na prave slike \citep{xu2013efficient}. U istom radu Xu i Cheng su simulirali i neuspješne detekcije malih površina. Jedan takav primjer vidimo na slici \ref{fig:loss-of-little-objects}, gdje je kažiprst okrenut u smjeru kamere te ne uspijeva biti detektiran. Razlog takvih neuspješnih detekcija nalazimo u načinu na koji Kinect određuje kut pod kojim je površina obasjana. Kako je već spomenuto, Kinect generira pseudoslučajne uzorke ovisno o kutu pod kojim su oni projicirani te tako kamera uspoređivanjem uzoraka može znati pod kojim kutom je predmet obasjan. Ako je predmet dovoljno male površine, uzorak neće biti potpun. Kinect pri tome pristupa na isti način kao i kod okluzije, dubinu na tom području postavlja na maksimalnu moguću dubinu.
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.75\textwidth]{detekcija/gubitak-malih-objekata}
-	\caption{Gubitak malih objekata}
-	\label{fig:loss-of-little-objects}
-\end{figure}
+Jedan kvalitetan pristup detekciji dlana koristi sintetizirane slike dlana na kojima simulira i okluziju kako bi detektor bio što bolje naučen na prave slike \citep{xu2013efficient}. U istom radu Xu i Cheng su simulirali i neuspješne detekcije malih površina. Jedan takav primjer vidimo na slici \ref{fig:oculsion} b), gdje je kažiprst okrenut u smjeru kamere te ne uspijeva biti detektiran. Razlog takvih neuspješnih detekcija nalazimo u načinu na koji Kinect određuje kut pod kojim je površina obasjana. Kako je već spomenuto, Kinect generira pseudoslučajne uzorke ovisno o kutu pod kojim su oni projicirani te tako kamera uspoređivanjem uzoraka može znati pod kojim kutom je predmet obasjan. Ako je predmet dovoljno male površine, uzorak neće biti potpun. Kinect pri tome pristupa na isti način kao i kod okluzije, dubinu na tom području postavlja na maksimalnu moguću dubinu.
+%\begin{figure}[h!]
+%    \centering
+%    \includegraphics[width=0.5\textwidth]{detekcija/gubitak-malih-objekata}
+%	\caption{Gubitak malih objekata}
+%	\label{fig:loss-of-little-objects}
+%\end{figure}
 
 \newpage
 \section{Kinova Jaco robotska ruka}
@@ -532,10 +533,10 @@ Problem direktne kinematike rješavamo tako da prvo postavimo koordinatne sustav
 Iz međusobnih udaljenosti i razlika u orijentaciji ovih zglobova porizlaze D-H parametri koje koristimo za sintezu matrica homogenih transformacija.
 Množenjem dobivenih matrica dobivamo matricu koja izražava poziciju i orijentaciju alata izražene Kartezijevim koordinatama u ovisnosti o zakretu zglobova.
  
-\subsubsection{DH Parametri}
+\subsubsection{D-H Parametri}
+D-H parametri standardizirani su način prikaza kinematičkog lanca u robotici.
 Pri sintezi matrica transformacije ruke korišteni su D-H parametri iz službene dokumentacije za Jaco robotsku ruku prikazani u tablici \ref{JacoDH}. 
 Za sintezu D-H parametara koristimo duljine članaka kao i parametre koji su iz njih izvedeni, prikazani su na slici \ref{jacoparam}.
-Parametre $d_{4b}$, $d_{5b}$ i $d_{6b}$ određujemo iz izraza \ref{d4b}, \ref{d5b}, \ref{d6b}.
 
 \begin{table}[h!]
     \centering
@@ -569,7 +570,7 @@ Parametre $d_{4b}$, $d_{5b}$ i $d_{6b}$ određujemo iz izraza \ref{d4b}, \ref{d5
 %\label{d6b}
 %\end{equation}
 
-Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodajemo i razlike u orijentaciji rotacijskih osi zglobova $\alpha$. Konačni parametri prikazani su u tablici \ref{JacoDH}.
+Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodajemo i razlike u orijentaciji rotacijskih osi zglobova $\alpha$. Konačni parametri prikazani su u tablici \ref{JacoDH}. 
  \begin{table}[h!]
 \centering
 \begin{tabular}{c c c c c}
@@ -1164,7 +1165,8 @@ Uz pretpostavku da se dlan nalazi na najbližoj dubini u slici promatrati uspje�
 Preostaje nam ispitati klasifikator zatvorenosti dlana. U oba slučaja vršit će se ispitivanje nad istim slikama s time da će u slučaju slijednih slika značajke ovisiti i o prethodnim slikama (vidi \ref{sec:tuning}).
 
 Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa zatvorenim dlanom. U oba slučaja se ispitivao udio ispravno određenih slika. Kako je klasifikator binarni, udio lažno pozitivnih slika zatvorenog dlana biti će jednak udjelu lažno negativnih slika otvorenog dlana i obrnuto. Za razliku od učenja koje je provođeno na jednoj osobi, u ispitivanju su sudjelovale tri osobe.
-\begin{figure}[h]
+\clearpage
+\begin{figure}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1175,7 +1177,7 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u pojedinoj slici}
 	\label{fig:single_img_open}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1186,7 +1188,7 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u pojedinoj slici}
 	\label{fig:single_img_close}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1197,7 +1199,7 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_open}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1208,7 +1210,7 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_close}
 \end{figure}
-\clearpage
+
 \paragraph{Rezultati ispitivanja detekcija u pojedinoj slici}\mbox{}\\
 U slučaju ispitivanja klasifikacije otvorenog dlana (Tablica \ref{fig:single_img_open}) klasifikator je uspio ispravno prepoznati otvoreni dlan u 90.9\% slučajeva, dok je kod klasifikacije zatvorenog dlana (Tablica \ref{fig:single_img_close}) zatvoreni dlan uspješno prepoznat u 96.8\% slučajeva što je zadovoljavajući rezultat.
 \paragraph{Rezultati ispitivanja detekcija u slijednim slikama}\mbox{}\\
@@ -1217,7 +1219,6 @@ U slučaju ispitivanja klasifikacije otvorenog dlana (Tablica \ref{fig:multi_img
 Kao što se može primijetiti, klasifikator je bolji u detekciji zatvorenih dlanova i u slijednim slikama i u pojedinoj slici, što je i bio cilj modeliranja klasifikatora, ali se isto može objasniti i time da zatvoreni dlan izgleda poprilično jednako iz bilo kojeg kuta, što nije slučaj za otvoreni dlan.\\\\
 Isto tako, ispitivanjem je potvrđena opravdanost korištenja informacija iz prethodnih slika kojima se može znatno poboljšati detekcija smanjenjem oscilacija uprosječivanjem vremenski susjednih detekcija. U našim primjerima je postignuto smanjenje neispravnih detekcija u rasponu od 1.3 do čak 2 puta. 
 
-\newpage
 \subsection{Razvijena metoda primjenom dubokih konvolucijskih neuronskih mreža}
 
 Inicijalna estimacija lokacije dlana u slici ne traje dugo te daljnja procjena poze dlana može trajati puno duže. Već i gore navedena brza metoda određivanja zatvorenosti dlana i na najslabijim uređajima ostavlja poprilično procesorsko vrijeme neiskorišteno. Odlučeno je dakle iskoristiti do tada neiskorišteno procesorsko vrijeme kako bi detektor dao bolji opis poze u kojoj se dlan nalazi.

@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: rektorova.aux
 The style file: fer.bst
 Database file #1: literatura.bib
-You've used 18 entries,
+You've used 21 entries,
             2773 wiz_defined-function locations,
-            713 strings with 7971 characters,
-and the built_in function-call counts, 8568 in all, are:
-= -- 779
-> -- 465
-< -- 15
-+ -- 159
-- -- 141
-* -- 667
-:= -- 1294
-add.period$ -- 60
-call.type$ -- 18
-change.case$ -- 99
-chr.to.int$ -- 18
-cite$ -- 36
-duplicate$ -- 392
-empty$ -- 719
-format.name$ -- 169
-if$ -- 1818
+            732 strings with 8602 characters,
+and the built_in function-call counts, 10259 in all, are:
+= -- 943
+> -- 546
+< -- 19
++ -- 186
+- -- 165
+* -- 800
+:= -- 1533
+add.period$ -- 71
+call.type$ -- 21
+change.case$ -- 116
+chr.to.int$ -- 21
+cite$ -- 42
+duplicate$ -- 475
+empty$ -- 864
+format.name$ -- 198
+if$ -- 2194
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 17
-newline$ -- 101
-num.names$ -- 72
-pop$ -- 211
+missing$ -- 20
+newline$ -- 116
+num.names$ -- 84
+pop$ -- 248
 preamble$ -- 1
-purify$ -- 83
+purify$ -- 97
 quote$ -- 0
-skip$ -- 309
+skip$ -- 372
 stack$ -- 0
-substring$ -- 351
-swap$ -- 53
-text.length$ -- 4
+substring$ -- 439
+swap$ -- 72
+text.length$ -- 7
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 188
+type$ -- 221
 warning$ -- 0
-while$ -- 81
+while$ -- 98
 width$ -- 0
-write$ -- 246
+write$ -- 288

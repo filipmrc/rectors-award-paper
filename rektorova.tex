@@ -1539,9 +1539,11 @@ Ovo je posljedica činjenice da manipulatori imaju tzv. singularne konfiguracije
 U ovakvim konfiguracijama male kartezijske promjene zahtjevaju neizvedivo brze rotacije zglobova, čime sustav postaje nestabilan.
 
 Metoda provođenja kinematičkog računa unutar KDL biblioteka "ublažava" singularitete tako da spriječava ulazak vrijednosti u beskonačnost te osigurava kontinuiran rad sustava.
+Veličinu $\lambda$ u idealnom slučaju potrebno je birati dinamički, dajući joj vrijednost različitu od $0$ blizu singulariteta.
 Pronalazak svih singularnih konfiguracija u slučaju metode prigušenih najmanjih kvadrata zahtjeva pronalaženje svih zakreta zglobova koji zadovoljavaju identitet \ref{singularity}:
 \begin{equation}
-\det \mathbf{\mathbf{J}^{\dagger} \mathbf{J}} = \mathbf{0} \label{singularity}
+\det \left(\mathbf{J}^{\dagger} \mathbf{J} + \lambda^2\mathbf{I}\right) =0
+\label{singularity}
 \end{equation}
 
 Iako pronalaženje svih jedinstvenih rješenja ovog identiteta programski nije pretjerano složeno, izbjegavanje ovakvih konfiguracija složeniji je problem.
@@ -1551,8 +1553,6 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 
 \chapter{Rezultati}
 
-
-\chapter{Rasprava}
 \chapter{Zaključak}
 \bibliography{literatura}
 \bibliographystyle{fer}

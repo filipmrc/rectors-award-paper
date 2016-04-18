@@ -433,9 +433,13 @@ Za dobar dio robota ovo sučelje već postoji radi open-source karaktera ROS eko
 \caption{Mathworks Matlab logo}
 \end{figure}
 Matlab je računalno okruženje namjenjeno rješavanju širokog spektra tehničkih, računalnih i znanstvenih problema.
+
 U užem smislu Matlab je viši programski jezik četvrte generacije koji omogućava manipulaciju matricama, numeričko računanje, iscrtavanje funkcija i još velik broj korisnih aplikacija.
-Unutar Matlaba nalazi se veliki broj programskih paketa koji se koriste za specifične probleme, a nama je bitan paket za simbolički račun.
-U ovom radu Matlab koristimo pri razvoju rješenja kinematike manipulatora za preliminarno testiranje matematičke provedivosti zamišljenog koncepta upravljačke petlje.
+Unutar Matlaba nalazi se veliki broj programskih paketa koji se koriste za specifične probleme.
+Nama je bitan paket za simnolički račun, kao i paketi za čitanje podataka spremljenih unutar ROS operacijskog sustava.
+Za svrhe testiranja nam je također bitna mogućnost pretvaranja Matlab koda u C, čime se znatno ubrzava izvođenje te omogućuje testiranje matematičkog modela.
+
+U ovom radu Matlab koristimo pri razvoju rješenja kinematike manipulatora za preliminarno testiranje matematičke provedivosti zamišljene upravljačke petlje.
 
 \section{OpenCV}
 \begin{figure}[h!]
@@ -446,7 +450,7 @@ U ovom radu Matlab koristimo pri razvoju rješenja kinematike manipulatora za pr
 OpenCV je biblioteka otvorenog koda koja je revolucionarizirala područje računalnog vida. Mnogobrojnim ugrađenim funkcijama koje su dobro dokumentirane omogućava početnicima lagani početak bavljenja računalnim vidom. U ovom radu korištene su ugrađene funkcije dostupne u biblioteci za obradu slike od kojih valja izdvojiti brze izvedbe algoritma za pronalaženje kontura na slici, određivanje obujmica kontura te implementacije morfoloških operacija nad slikom.
 
 \section{OpenKinect/libfreenect}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{logo_openkinect}
 \caption{OpenKinect logo}
@@ -467,7 +471,7 @@ Nama je vrlo korisna mogućnost konstrukcije Jacobijeve matrice manipulatora (de
 KDL također vodi računa o izbjegavanju singulariteta u matricama, čime je osiguran kontinuiran rad upravljačkog algoritma.
 
 \section{Gazebo}
-\begin{figure}[h!]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{gazebo_1}
 \caption{Gazebo logo}

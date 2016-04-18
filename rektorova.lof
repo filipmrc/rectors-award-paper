@@ -1,0 +1,44 @@
+\select@language {croatian}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Blok dijagram izvedbe sustava\relax }}{5}{figure.caption.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Dubinska kamera Kinect for Xbox 360\relax }}{7}{figure.caption.7}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces a) Okluzija u dubinskoj slici. b) Gubitak malih objekata.\relax }}{8}{figure.caption.8}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Kinova Jaco robotska ruka\relax }}{9}{figure.caption.9}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces a) aktuator K-75+ b) aktuator K-58\relax }}{10}{figure.caption.13}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces ROS logotip\relax }}{13}{figure.caption.18}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces \IeC {\v C}vor A i \IeC {\v c}vor B ostvaruju jednosmjernu komunikaciju koriste\IeC {\'c}i topic\relax }}{14}{figure.caption.19}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Mathworks Matlab logo\relax }}{16}{figure.caption.22}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces OpenCV logo\relax }}{16}{figure.caption.23}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces OpenKinect logo\relax }}{17}{figure.caption.24}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Gazebo logo\relax }}{18}{figure.caption.25}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Model Jaco robotske ruke sa ozna\IeC {\v c}enim parametrima\relax }}{19}{figure.caption.26}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Model Jaco robotske ruke sa ozna\IeC {\v c}enim parametrima kori\IeC {\v s}tenim pri sintezi DH parametara\relax }}{20}{figure.caption.27}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Blok dijagram izvedbe upravlja\IeC {\v c}e petlje manipulatora\relax }}{27}{figure.caption.32}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Promjena pozicije inverzom Jakobijana. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava u Eulerovim kutevima.\relax }}{29}{figure.caption.33}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Promjena orijentacije inverzom Jakobijana. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava u Eulerovim kutevima.\relax }}{29}{figure.caption.34}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Promjena orijentacije metodom prigu\IeC {\v s}enih najmanjih kvadrata. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava u Eulerovim kutevima.\relax }}{30}{figure.caption.35}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Promjena vektora konfiguraciije metodom prigu\IeC {\v s}enih najmanjih kvadrata. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava predstavljene u Eulerovim kutevima.\relax }}{30}{figure.caption.36}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Uspje\IeC {\v s}no izoliranje dlana na slici. Slika (a) (lijevo gore) predstavlja izoliranje uspravnog dlana, slika (b) (desno gore) izoliranje dorzalne strane dlana, slika (c) (lijevo dolje) izoliranje dlana u vodoravnoj ravnini, slika (d) (desno dolje) izoliranje \IeC {\v s}ake\relax }}{34}{figure.caption.37}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Prihvatljivo izoliranje dlana na slici. Slika (a) (lijevo) predstavlja izostavljanje karpalnog predjela dlana, slika (b) (desno) zahva\IeC {\'c}ena podlaktica\relax }}{34}{figure.caption.38}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Pogre\IeC {\v s}na izolacija dlana, zahva\IeC {\'c}en i dio podlaktice\relax }}{35}{figure.caption.39}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Segmentacija slike na osnovu praga, lijevo ulazna dubinska slika i desno generirana maska\relax }}{36}{figure.caption.40}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Morfolo\IeC {\v s}ka transformacija binarne slike operacijom zatvaranja, s lijeva na desno ulazna slika, me\IeC {\dj }ukorak te slika nakon transfomracije\relax }}{37}{figure.caption.41}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Obujmica i kontura ruke na slici\relax }}{37}{figure.caption.42}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Skup za u\IeC {\v c}enje (crveno - slike zatvorenih dlanova, zeleno - slike otvorenih dlanova)\relax }}{39}{figure.caption.44}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Neki od prikupljenih ozna\IeC {\v c}enih podataka\relax }}{43}{figure.caption.54}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje grupiranih po ozna\IeC {\v c}enoj otvorenosti.\relax }}{45}{figure.caption.58}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje grupiranih po ozna\IeC {\v c}enom kutu dlana.\relax }}{46}{figure.caption.59}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje.\relax }}{47}{figure.caption.60}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Upravlja\IeC {\v c}ka shema\relax }}{48}{figure.caption.61}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Prikaz zadane putanje u yz-ravnini (crveno) i njene izvedbe (plavo). \textbf {Lijevo}: prikaz u xz-ravnini, \textbf {Desno}: prikaz u yz-ravnini.\relax }}{54}{figure.caption.64}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Prikaz zadane putanje u xz-ravnini (crveno) i njene izvedbe (plavo). \textbf {Lijevo}: prikaz u xz-ravnini, \textbf {Desno}: prikaz u yz-ravnini.\relax }}{55}{figure.caption.65}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces Prikaz zadane prostorne putanje (crveno) i njene izvedbe (plavo) u Kartezijevom koordinatnom sustavu.\relax }}{55}{figure.caption.66}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Prikaz izvedbe iste putanje sa dvije razli\IeC {\v c}ite po\IeC {\v c}etne konfiguracije. Gornji red sadr\IeC {\v z}i \IeC {\v z}eljenu (crveno) i izvedenu (plavo) putanju . Donji red sadr\IeC {\v z}i prikaz po\IeC {\v c}etne konfiguracije putanje iznad.\relax }}{56}{figure.caption.67}
+\addvspace {10\p@ }
+\addvspace {10\p@ }

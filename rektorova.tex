@@ -389,7 +389,7 @@ Osnovna komunikacija u ROS-u može se vizualizirati u obliku grafa povezanih čv
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=\textwidth]{ros_shema}
-\caption{Čvor A i čode B ostvaruju jednosmjernu komunikaciju koristeći topic}
+\caption{Čvor A i čvor B ostvaruju jednosmjernu komunikaciju koristeći topic}
 \end{center}
 \end{figure}
 
@@ -1178,7 +1178,7 @@ Preostaje nam ispitati klasifikator zatvorenosti dlana. U oba slučaja vršit ć
 
 Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa zatvorenim dlanom. U oba slučaja se ispitivao udio ispravno određenih slika. Kako je klasifikator binarni, udio lažno pozitivnih slika zatvorenog dlana biti će jednak udjelu lažno negativnih slika otvorenog dlana i obrnuto. Za razliku od učenja koje je provođeno na jednoj osobi, u ispitivanju su sudjelovale tri osobe.
 \clearpage
-\begin{figure}[h!]
+\begin{table}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1188,8 +1188,8 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 \renewcommand{\figurename}{Tablica}
 	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u pojedinoj slici}
 	\label{fig:single_img_open}
-\end{figure}
-\begin{figure}[h!]
+\end{table}
+\begin{table}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1199,8 +1199,8 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 \renewcommand{\figurename}{Tablica}
 	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u pojedinoj slici}
 	\label{fig:single_img_close}
-\end{figure}
-\begin{figure}[h!]
+\end{table}
+\begin{table}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1210,8 +1210,8 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 \renewcommand{\figurename}{Tablica}
 	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_open}
-\end{figure}
-\begin{figure}[h!]
+\end{table}
+\begin{table}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1221,7 +1221,7 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 \renewcommand{\figurename}{Tablica}
 	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_close}
-\end{figure}
+\end{table}
 
 \paragraph{Rezultati ispitivanja detekcija u pojedinoj slici}\mbox{}\\
 U slučaju ispitivanja klasifikacije otvorenog dlana (Tablica \ref{fig:single_img_open}) klasifikator je uspio ispravno prepoznati otvoreni dlan u 90.9\% slučajeva, dok je kod klasifikacije zatvorenog dlana (Tablica \ref{fig:single_img_close}) zatvoreni dlan uspješno prepoznat u 96.8\% slučajeva što je zadovoljavajući rezultat.
@@ -1571,4 +1571,7 @@ U ovom radu razvijena je metoda upravljanja robotskim manipulatorom baziranu na 
 \begin{abstract}
 In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and reasearch methods of solving manipulator kinematics in the general case. The resulting contol system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analized for quality of control and simplicity of use.
 \end{abstract}
+
+\listoffigures
+\listoftables
 \end{document}

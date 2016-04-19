@@ -3,7 +3,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Blok dijagram izvedbe sustava\relax }}{5}{figure.caption.2}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Dubinska kamera Kinect for Xbox 360\relax }}{7}{figure.caption.7}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces RGB-Dubinska kamera Kinect for Xbox 360\relax }}{7}{figure.caption.7}
 \contentsline {figure}{\numberline {3.2}{\ignorespaces a) Okluzija u dubinskoj slici. b) Gubitak malih objekata.\relax }}{8}{figure.caption.8}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Kinova Jaco robotska ruka\relax }}{9}{figure.caption.9}
 \contentsline {figure}{\numberline {3.4}{\ignorespaces a) aktuator K-75+ b) aktuator K-58\relax }}{10}{figure.caption.13}
@@ -29,9 +29,9 @@
 \contentsline {figure}{\numberline {6.4}{\ignorespaces Segmentacija slike na osnovu praga, lijevo ulazna dubinska slika i desno generirana maska\relax }}{36}{figure.caption.40}
 \contentsline {figure}{\numberline {6.5}{\ignorespaces Morfolo\IeC {\v s}ka transformacija binarne slike operacijom zatvaranja, s lijeva na desno ulazna slika, me\IeC {\dj }ukorak te slika nakon transfomracije\relax }}{37}{figure.caption.41}
 \contentsline {figure}{\numberline {6.6}{\ignorespaces Obujmica i kontura ruke na slici\relax }}{37}{figure.caption.42}
-\contentsline {figure}{\numberline {6.7}{\ignorespaces Skup za u\IeC {\v c}enje (crveno - slike zatvorenih dlanova, zeleno - slike otvorenih dlanova)\relax }}{39}{figure.caption.44}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Skup za u\IeC {\v c}enje (crveno - slike zatvorenih dlanova, zeleno - slike otvorenih dlanova)\relax }}{40}{figure.caption.44}
 \contentsline {figure}{\numberline {6.8}{\ignorespaces Neki od prikupljenih ozna\IeC {\v c}enih podataka\relax }}{43}{figure.caption.54}
-\contentsline {figure}{\numberline {6.9}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje grupiranih po ozna\IeC {\v c}enoj otvorenosti.\relax }}{45}{figure.caption.58}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje grupiranih po ozna\IeC {\v c}enoj otvorenosti.\relax }}{46}{figure.caption.58}
 \contentsline {figure}{\numberline {6.10}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje grupiranih po ozna\IeC {\v c}enom kutu dlana.\relax }}{46}{figure.caption.59}
 \contentsline {figure}{\numberline {6.11}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje.\relax }}{47}{figure.caption.60}
 \addvspace {10\p@ }
@@ -41,4 +41,8 @@
 \contentsline {figure}{\numberline {7.4}{\ignorespaces Prikaz zadane prostorne putanje (crveno) i njene izvedbe (plavo) u Kartezijevom koordinatnom sustavu.\relax }}{55}{figure.caption.66}
 \contentsline {figure}{\numberline {7.5}{\ignorespaces Prikaz izvedbe iste putanje sa dvije razli\IeC {\v c}ite po\IeC {\v c}etne konfiguracije. Gornji red sadr\IeC {\v z}i \IeC {\v z}eljenu (crveno) i izvedenu (plavo) putanju . Donji red sadr\IeC {\v z}i prikaz po\IeC {\v c}etne konfiguracije putanje iznad.\relax }}{56}{figure.caption.67}
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe (plavo).\relax }}{58}{figure.caption.68}
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Prikaz naredbe orijentacije zadane RGB-Dubinskom kamerom te odziva simulacije.\relax }}{59}{figure.caption.69}
+\contentsline {figure}{\numberline {8.3}{\ignorespaces Uspje\IeC {\v s}na manipulacija objektom u prvom ispitnom scenariju.\relax }}{60}{figure.caption.70}
+\contentsline {figure}{\numberline {8.4}{\ignorespaces Uspje\IeC {\v s}na manipulacija objektom u drugom ispitnom scenariju.\relax }}{60}{figure.caption.71}
 \addvspace {10\p@ }

@@ -206,7 +206,7 @@ Sustav je dizajniran da bude univerzalan s obzirom na manipulator i detekcijski 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{detekcija/kinect}
-	\caption{Dubinska kamera Kinect for Xbox 360}
+	\caption{RGB-Dubinska kamera Kinect for Xbox 360}
 	\label{fig:kinect}
 \end{figure}
 
@@ -216,7 +216,7 @@ Kinect je naziv za liniju Microsoftovih senzora pokreta razvijenih primarno za p
 
 U ovom radu je korišten \textit{Kinect for Xbox 360} \cite{kinect} (Slika \ref{fig:kinect}) te se ne razmatraju parametri drugih Kinect senzora.
 
-Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira pseudoslučajne uzorke točaka u Kinectov vidokrug. Infracrvena kamera koja se nalazi na znanoj udaljenosti snimi položaj točaka, po kodiranom uzorku zna pod kojim kutom je uzorak generiran te jednostavnom triangulacijom izračuna dubinu u danoj točki prostora. Kako postoji određena udaljenost između senzora i emitera, na nekim mjestima Kinect neće biti sposoban odrediti dubinu zbog okluzije (Slika \ref{fig:oculsion}).
+RGB-Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira pseudoslučajne uzorke točaka u Kinectov vidokrug. Infracrvena kamera koja se nalazi na znanoj udaljenosti snimi položaj točaka, po kodiranom uzorku zna pod kojim kutom je uzorak generiran te jednostavnom triangulacijom izračuna dubinu u danoj točki prostora. Kako postoji određena udaljenost između senzora i emitera, na nekim mjestima Kinect neće biti sposoban odrediti dubinu zbog okluzije (Slika \ref{fig:oculsion}).
 
 \begin{figure}[h!]
     \centering
@@ -990,7 +990,7 @@ U ovom preliminarnom testiranju nismo uključivali model motora i dinamike manip
 %Ovi parametri također ovise o Jakobijanu korištenog manipulatora i raznim mehaničkim karakteristikama, ali rezultati optimiranja mogu poslužiti kao dobra polazna točka pri sintezi regulatora.
 
 \chapter{Detekcijski algoritam}\label{Detekcijski algoritam}
-Postoje mnogobrojni načini kojima se može upravljati pokretima ruke. U ovom radu koristi se dubinska kamera koja omogućuje snimanje pokreta ljudske ruke, a zatim se svaka snimljena slika prevodi u informaciju. Tako dobivena informacija govori o trenutnoj lokaciji i orijentaciji ruke u trodimenzionalnom prostoru promatranom dubinskom kamerom.
+Postoje mnogobrojni načini kojima se može upravljati pokretima ruke. U ovom radu koristi se RGB-Dubinska kamera koja omogućuje snimanje pokreta ljudske ruke, a zatim se svaka snimljena slika prevodi u informaciju. Tako dobivena informacija govori o trenutnoj lokaciji i orijentaciji ruke u trodimenzionalnom prostoru promatranom dubinskom kamerom.
 
 Problem detekcije položaja ruke relativno uspješno je riješen i kod klasičnih slika (npr. \cite{de2011model}, \cite{stenger2001model} ili \cite{rehg1994visual}), ali je taj pristup obilježen prevelikom ovisnošću o svjetlosnim parametrima slike te potrebom za većim računalnim resursima. Takvi zahtjevi uvelike otežavaju detekciju u stvarnom vremenu na osobnom računalu.
 
@@ -1017,9 +1017,9 @@ Iako je metoda uspješna i relativno brza, pogotovo na grafičkoj kartici za koj
 
 \subsection{Razvijena metoda}
 
-Korištena dubinska kamera stvara dubinsku sliku veličine 640x480 slikovnih elemenata. Vrijednost svakog slikovnog elementa odgovara izračunatom disparitetu na toj poziciji, a pomoću \textit{freenect} biblioteke takav se podatak može pretvoriti u dubinu danu u milimetrima.
+Korištena RGB-Dubinska kamera stvara dubinsku sliku veličine 640x480 slikovnih elemenata. Vrijednost svakog slikovnog elementa odgovara izračunatom disparitetu na toj poziciji, a pomoću \textit{freenect} biblioteke takav se podatak može pretvoriti u dubinu danu u milimetrima.
 
-Definiran je koordinatni sustav sa središtem u očištu kamere i osima $x$ i $y$ s odgovarajućim indeksom $(u+320,v+240)$ slikovnog elementa što omogućuje pomak središta koordinatnog sustava u središte slike. Osi x i y su skalirane na odmak od središta u milimetrima. Os z odgovara dubini slike te je također u milimetrima. Prirodom perspektivne projekcije kakvu daje dubinska kamera, udaljenost od kamere ne odgovara udaljenosti do projekcijske ravnine. To onemogućuje izravno preslikavanje u z-os koordinatnog sustava, ali kako dlan na radnim udaljenostima ne zauzima više od 15\% slike, na tom području je aproksimacija prihvatljiva.
+Definiran je koordinatni sustav sa središtem u očištu kamere i osima $x$ i $y$ s odgovarajućim indeksom $(u+320,v+240)$ slikovnog elementa što omogućuje pomak središta koordinatnog sustava u središte slike. Osi x i y su skalirane na odmak od središta u milimetrima. Os z odgovara dubini slike te je također u milimetrima. Prirodom perspektivne projekcije kakvu daje RGB-Dubinska kamera, udaljenost od kamere ne odgovara udaljenosti do projekcijske ravnine. To onemogućuje izravno preslikavanje u z-os koordinatnog sustava, ali kako dlan na radnim udaljenostima ne zauzima više od 15\% slike, na tom području je aproksimacija prihvatljiva.
 
 Jedna od mogućih aproksimativnih formula za preslikavanje dispariteta u udaljenost od kamere, kakvu koristi \textit{freenect} biblioteka \cite{openkinect} je sljedeća (Izraz \ref{eq:approx_raw_disparity_to_mm}):
 \begin{equation}
@@ -1148,7 +1148,7 @@ Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od koji
 \begin{figure}[h!]
 
 \centering
-%\input{scatter_graph}
+\input{scatter_graph}
 \renewcommand{\figurename}{Grafikon}
 	\caption{Skup za učenje (crveno - slike zatvorenih dlanova, zeleno - slike otvorenih dlanova)}
 \label{scatter_me}
@@ -1177,7 +1177,7 @@ Uz pretpostavku da se dlan nalazi na najbližoj dubini u slici promatrati uspje�
 Preostaje nam ispitati klasifikator zatvorenosti dlana. U oba slučaja vršit će se ispitivanje nad istim slikama s time da će u slučaju slijednih slika značajke ovisiti i o prethodnim slikama (vidi \ref{sec:tuning}).
 
 Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa zatvorenim dlanom. U oba slučaja se ispitivao udio ispravno određenih slika. Kako je klasifikator binarni, udio lažno pozitivnih slika zatvorenog dlana biti će jednak udjelu lažno negativnih slika otvorenog dlana i obrnuto. Za razliku od učenja koje je provođeno na jednoj osobi, u ispitivanju su sudjelovale tri osobe.
-\clearpage
+%\clearpage
 \begin{table}[h!]
 \centering
 \begin{tabular}{ l || c c || r }
@@ -1211,7 +1211,7 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_open}
 \end{table}
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
@@ -1292,7 +1292,7 @@ Pretpostavka dobro naučenog modela je ta da na toj razini je mreža dovoljno do
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width = 1.0\textwidth]{detekcija/train_otvorenost}
+\includegraphics[width = 0.9\textwidth]{detekcija/train_otvorenost}
 \caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje grupiranih po označenoj otvorenosti.} \label{tsne-otvorenost}
 \end{figure}
 
@@ -1300,7 +1300,7 @@ Na grafu \ref{tsne-otvorenost} možemo primjetiti kako su većinom primjeri dobr
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width = 1.0\textwidth]{detekcija/train_kut}
+\includegraphics[width = 0.9\textwidth]{detekcija/train_kut}
 \caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje grupiranih po označenom kutu dlana.} \label{tsne-kut}
 \end{figure}
 
@@ -1309,7 +1309,7 @@ Pojava okluzije u dubinskoj slici oslabljuje kvalitetu detekcije malih površina
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width = 1.0\textwidth]{detekcija/train_all}
+\includegraphics[width = 0.9\textwidth]{detekcija/train_all}
 \caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje.} \label{tsne-all}
 \end{figure}
 
@@ -1513,7 +1513,7 @@ Rezultati su slični kao i kod slučaja sa slike \ref{krug_1}, te su pogreške u
 U praksi zadana putanja nikada neće biti planarna, stoga zadajemo putanju u obliku kružnice postavljene dijagonalno u prostoru.
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.53\textwidth]{xyz_krug3}
+\includegraphics[width=0.55\textwidth]{xyz_krug3}
 \caption{Prikaz zadane prostorne putanje  (crveno) i njene izvedbe (plavo) u Kartezijevom koordinatnom sustavu.} \label{krug_3}
 \end{figure}
 
@@ -1560,18 +1560,89 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 
 
 \chapter{Rezultati}
+Konačni sustav testirali smo na nekoliko načina. 
+Prvo je bilo potrebno uvjeriti se da se upravljačka petlja ponaša na dogovarajuć način pri praćenju putanja zadanih RGB-Dubinskom kamerom.
+Ovo provjeravamo simuliranjem cijelokupnog sustava unutar Gazebo okruženja, što možemo bez dodatnih modifikacija zahvaljujući \texttt{ros\_control} paketu.
+Uvjerivši se u pouzdanost sustava, prelazimo na testiranje na pravoj Jaco robotskoj ruci.
+Tesiranje na stvarnoj ruci prvo provodimo praćenjem fiksnih periodičnih trajektorija, a zatim prelazimo na putanje zadane RGB-Dubinskom kamerom.
+Konačno, ispitujemo korisnost sustava u usporedbi sa konvencionalnim načinom upravljanja robotskog rukom, tako da korisnicima bez prijašnjeg iskustva zadajemo zadatak koji moraju obaviti sa obje metode.
+
+\section{Praćenje putanje u simulaciji}
+Unatoč tome što smo u poglavlju \ref{Upravljački algoritam} dokazali kinematičku stabilnost izvođenja putanje, provjeravamo robusnost sustava pri kretanju ruke korisnika.
+Glavni razlog za vakvo ispitivanje jest nepredvidivost utjecaja stvarne dinamike elektromotora na korištene algoritme.
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.48\textwidth]{kinect_gazebo_stvarni}
+%\includegraphics[width=0.48\textwidth]{kinect_gazebo_zadani}
+%\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe (plavo).}
+%\label{fig:kinectsim}
+%\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{kinect_gazebo_stvarni2}
+\includegraphics[width=0.48\textwidth]{kinect_gazebo_zadani2}
+\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe (plavo).}
+\label{fig:kinectsim}
+\end{figure}
+
+Na slici \ref{fig:kinectsim} prikazan je rezultat simulacije upravljanja.
+Primjećujemo kako je stvarna putanja puno glađa od one zadane, što je rezultat ograničavanja brzine i akceleracije kretanja zglobova kao i tromosti samog manipulatora.
+Pri izvođenju je zamjećeno povremeno zastajkivanje ili zaobilaženje područja radi ograničenja zakreta zglobova ili približavanja sustava singularitetu.
+Ovu situacija izbjegnuta je dinamičkim postavljanjem parametra $\lambda$ na vrijednost $0.02$ ako se u trenutnom ciklusu dogodi ograničavanje akceleracije.
+Nagli skokovi u brzini jedan su od indikatora da bi konfiguracija mogla biti blizu singulariteta, te ovom jednostavnom metodom izbjegavamo većinu zaglavljenja.
+
+Rotaciju detektiranu RGB-Dubinskom kamerom prenosimo u obliku skalara raspona 0 do 1, gdje 0 označava ruku okrenutu prema tlu, a 1 ruku okrenutu prema gore.
+Ovaj  se raspon zatim unutar upravljačkog algoritma skalira na željeni raspon kuteva. 
+Tokom testiranja primjećeno je da se najbolji rezulati dobivaju skaliranjem ove vrijdnosti na valjanje alata u rasponu od $[-45^{\circ} , 45^{\circ}]$.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\textwidth]{rot_gazebo_0002}
+\caption{Prikaz naredbe orijentacije zadane RGB-Dubinskom kamerom te odziva simulacije.}
+\label{fig:kinectsimkut}
+\end{figure}
+
+Slika \ref{fig:kinectsimkut} prikazuje kretanje vrijednosti osi rotacije u baznom koordinatnom sustavu s obzirom na zadanu naredbu rotacije.
+Zadana mjera rotacije vezana je uz odgovarajuću os na alatu manipulatora, Y.
+Na slici je vidljivo kako se projekcija osi Y na bazni koordinatni sustav najmanje mijenja s promjenama naredbe, što je očekivano jer se oko nje vrši rotacija.
+Male promjene u projekciji osi Y uzrokovane su  pomicanjem ruke korisnika pri okretanju dlana.
+
+Provjera ponašanja samog sustava u simulaciji pokazala je kako je sustav robustan na promjene reference te otvara mogućnost primjene na stvarnom manipulatoru.
+
+\section{Praćenje putanje Jaco robotske ruke}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\columnwidth]{video1_2}
+    \includegraphics[width=0.48\columnwidth]{video2_2}
+    \includegraphics[width=0.48\columnwidth]{video3_2}
+    \includegraphics[width=0.48\columnwidth]{video4_2}
+	\caption{Uspješna manipulacija objektom u prvom ispitnom scenariju.}
+	\label{fig:successful_grasp_1}
+\end{figure}
+ \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{video1}
+    \includegraphics[width=0.48\textwidth]{video2}
+    \includegraphics[width=0.48\textwidth]{video3}
+    \includegraphics[width=0.48\textwidth]{video4}
+	\caption{Uspješna manipulacija objektom u drugom ispitnom scenariju.}
+	\label{fig:successful_grasp_2}
+\end{figure}
+
+\section{Ispitivanje}
+
+
+
 
 \chapter{Zaključak}
 \bibliography{literatura}
 \bibliographystyle{fer}
+\listoffigures
+\listoftables
 \begin{sazetak}
 U ovom radu razvijena je metoda upravljanja robotskim manipulatorom baziranu na imitiranju pokreta ljudske ruke. Pokrete i lokacija ruke korisnika detektirana je koristeći 3-d kameru i vlastite algoritme bazirane na strojnom učenju. Algoritam za detekciju dlana razvijen je za uporabu u stvarnom vremenu i postižemo dvije efikasne varijante. Sustav je zamišljen kao univerzalan i modularan, što ga čini primjenjivim na velikom broju manipulatora uz minimalne modifikacije. Pretpostavljen je manipulator bez ugrađenih naprednih kinematičkih funkcija, te se istražuje problematika rješavanja kinematike manipulatora u općem slučaju. Dobiveni sustav upravljanja prvo se ispituje na simulaciji Jaco robotske ruke, a potom i na stvarnoj robotskoj ruci iste vrste. Rezultati se izlažu u obliku slika, grafova i videozapisa. Komentira se intuitivnost sustava i kvaliteta praćenja korisnikovih kretnji.
 \end{sazetak}
 
 \begin{abstract}
-In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and reasearch methods of solving manipulator kinematics in the general case. The resulting contol system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analized for quality of control and simplicity of use.
+In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and research methods of solving manipulator kinematics in the general case. The resulting control system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analysed for quality of control and simplicity of use.
 \end{abstract}
-
-\listoffigures
-\listoftables
 \end{document}

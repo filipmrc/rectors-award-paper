@@ -51,7 +51,9 @@
 \zahvala{Ovaj rad izrađen je na Fakultetu elektrotehnike i računarstva
 Sveučilišta u Zagrebu pod vodstvom prof. dr. sc. Ivana Petrovića i prof.
 dr. sc. Zorana Kalafatića i predan je na natječaj za dodjelu Rektorove
-nagrade u akademskoj godini 2015./2016. \\ \\ Posebno se zahvaljujemo dr. sc. Ivanu Markoviću na podršci i savjetovanju.}
+nagrade u akademskoj godini 2015./2016. \\ \\ 
+Zahvaljujemo se prof. dr. sc Ivanu Petrovići i prof. dr. sc. Zoranu Kalafatiću na ukazanom povjerenju.
+Posebno se zahvaljujemo dr. sc. Ivanu Markoviću na podršci i savjetovanju.}
 
 \tableofcontents
 
@@ -1560,7 +1562,7 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 
 
 \chapter{Rezultati}
-Konačni sustav testirali smo na nekoliko načina. 
+Ukupnu izvedbu upravljačko sučelja temeljito je testirano u nekoliko faza. 
 Prvo je bilo potrebno uvjeriti se da se upravljačka petlja ponaša na dogovarajuć način pri praćenju putanja zadanih RGB-Dubinskom kamerom.
 Ovo provjeravamo simuliranjem cijelokupnog sustava unutar Gazebo okruženja, što možemo bez dodatnih modifikacija zahvaljujući \texttt{ros\_control} paketu.
 Uvjerivši se u pouzdanost sustava, prelazimo na testiranje na pravoj Jaco robotskoj ruci.
@@ -1569,7 +1571,7 @@ Konačno, ispitujemo korisnost sustava u usporedbi sa konvencionalnim načinom u
 
 \section{Praćenje putanje u simulaciji}
 Unatoč tome što smo u poglavlju \ref{Upravljački algoritam} dokazali kinematičku stabilnost izvođenja putanje, provjeravamo robusnost sustava pri kretanju ruke korisnika.
-Glavni razlog za vakvo ispitivanje jest nepredvidivost utjecaja stvarne dinamike elektromotora na korištene algoritme.
+Glavni razlog za ovakvo ispitivanje jest nepredvidivost utjecaja stvarne dinamike elektromotora na korištene algoritme.
 %\begin{figure}
 %\centering
 %\includegraphics[width=0.48\textwidth]{kinect_gazebo_stvarni}
@@ -1579,9 +1581,9 @@ Glavni razlog za vakvo ispitivanje jest nepredvidivost utjecaja stvarne dinamike
 %\end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.48\textwidth]{kinect_gazebo_stvarni2}
-\includegraphics[width=0.48\textwidth]{kinect_gazebo_zadani2}
-\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe (plavo).}
+\includegraphics[width=0.49\textwidth]{kinect_gazebo_stvarni2}
+\includegraphics[width=0.49\textwidth]{kinect_gazebo_zadani2}
+\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe u simulaciji (plavo).}
 \label{fig:kinectsim}
 \end{figure}
 
@@ -1609,6 +1611,54 @@ Male promjene u projekciji osi Y uzrokovane su  pomicanjem ruke korisnika pri ok
 Provjera ponašanja samog sustava u simulaciji pokazala je kako je sustav robustan na promjene reference te otvara mogućnost primjene na stvarnom manipulatoru.
 
 \section{Praćenje putanje Jaco robotske ruke}
+Sustav ima sve potrebne predispozicije za primjenu na stvarnom manipulatoru, te se započinje testiranje na Jaco robotskoj ruci.
+Prvi korak sastoji se od ispitivanja praćenja jednostavnih periodičkih trajektorija u obliku pravokutnika i elipse.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.49\textwidth]{jaco_elipsa}
+\includegraphics[width=0.49\textwidth]{jaco_pravokutnik}
+\caption{Prikaz trajektorija zadanih računalom (crveno) i njene izvedbe Jaco robotskom rukom (plavo).}
+\label{fig:jacooblici}
+\end{figure}
+
+Rezultati prikazani na slici \ref{fig:jacooblici} pokazuju kvalitetno praćenje trajektorije.
+Pri izvođenju pravokutne trajektorije primjećujemo zakrivljenje na kutevima karakteristično za izvođenje pravokutnih putanja, ovo ponašanje opisano je u \ref{simuliranje} i očekivano.
+Praćenje eliptične putanje vrlo je precizno te ima pogrešku reda veličine manjeg od milimetra. 
+Manjak glatkoće u izvedenoj trajektoriji uzrokovan je nelinearnim karakteristikama aktuatora pri niskim brzinama potrebnim da se kompenziraju mala odstupanja od željene konfiguracije.
+Ovaj problem nestaje pri višim brzinama karakterističnim za kretanje ljudske ruke, stoga ovaj rezultat uzimamo kao izrazito pozitivan.
+
+Upravljačko sučelje sada se može ispitati u potpunosti sa svim komponentama na stvarnoj Jaco robotskoj ruci.
+Kutne brzine aktuatora (zglobova) ograničavaju se na 2.5 rad/s, dok akceleracije i ograničenja zakreta ostaju na tvornički postavljenim vrijednostima.
+Otvaranje i zatvaranje šake korisnika vežu se uz otvaranje i zatvaranje "šake" robotske ruke.
+Zatvaranje "šake" robotske ruke odrađuje podređena petlja sa povratnom vezom po sili, gdje se pri velikim protusilama stiskanje šake zaustavlja kako bi se izvršni član zaštitio od oštećenja.
+Upravljačko sučelje prvo se ispituje pri situacijama gdje korisnik miče i rotira ruku bez posebnog cilja, istražujući radni prostor robotske ruke.
+Nakon toga ispituju se situacije gdje je korisniku zadan konkretan zadatak kao što je podizanje objekta ili stavljanje objekta u spremnik.
+Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperimenta ograničen po z osi, kako ne bi došlo do udaranju u podlogu pri ispitivanju.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{jaco_kinect_xy}
+\includegraphics[width=0.45\textwidth]{jaco_kinect_yz}
+\includegraphics[width=0.45\textwidth]{jaco_kinect_xz}
+\includegraphics[width=0.45\textwidth]{jaco_kinect_xyz}
+\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u xy, yz i xz ravninama, te u prostoru.}
+\label{fig:jacok1}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{jaco_kinect2_xy}
+\includegraphics[width=0.45\textwidth]{jaco_kinect2_yz}
+\includegraphics[width=0.45\textwidth]{jaco_kinect2_xz}
+\includegraphics[width=0.45\textwidth]{jaco_kinect2_xyz}
+\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u xy, yz i xz ravninama, te u prostoru.}
+\label{fig:jacok2}
+\end{figure}
+
+Rezultati prve ispitane situacije vidljivi su na grafovima \ref{fig:jacok1} i \ref{fig:jacok2}.
+Uočljivo je kako kretanja prikazana na ove dvije skupine grafova indiciraju različite karaktere kretanja ruke korisnika. 
+Ovakva dva primjera namjerno su izdvojena kako bi mogli prokomentirati ponašanje cjelokupnog sustava u pri različitim tipovima kretanja.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.48\columnwidth]{video1_2}

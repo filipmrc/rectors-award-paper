@@ -1563,7 +1563,7 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 
 \chapter{Rezultati}
 Ukupnu izvedbu upravljačko sučelja temeljito je testirano u nekoliko faza. 
-Prvo je bilo potrebno uvjeriti se da se upravljačka petlja ponaša na dogovarajuć način pri praćenju putanja zadanih RGB-Dubinskom kamerom.
+Prvo je bilo potrebno uvjeriti se da se upravljačka petlja ponaša na odgovarajući način pri praćenju putanja zadanih RGB-Dubinskom kamerom.
 Ovo provjeravamo simuliranjem cijelokupnog sustava unutar Gazebo okruženja, što možemo bez dodatnih modifikacija zahvaljujući \texttt{ros\_control} paketu.
 Uvjerivši se u pouzdanost sustava, prelazimo na testiranje na pravoj Jaco robotskoj ruci.
 Tesiranje na stvarnoj ruci prvo provodimo praćenjem fiksnih periodičnih trajektorija, a zatim prelazimo na putanje zadane RGB-Dubinskom kamerom.
@@ -1610,7 +1610,7 @@ Male promjene u projekciji osi Y uzrokovane su  pomicanjem ruke korisnika pri ok
 
 Provjera ponašanja samog sustava u simulaciji pokazala je kako je sustav robustan na promjene reference te otvara mogućnost primjene na stvarnom manipulatoru.
 
-\section{Praćenje putanje Jaco robotske ruke}
+\section{Praćenje putanje Jaco robotske ruke}\label{pracenje}
 Sustav ima sve potrebne predispozicije za primjenu na stvarnom manipulatoru, te se započinje testiranje na Jaco robotskoj ruci.
 Prvi korak sastoji se od ispitivanja praćenja jednostavnih periodičkih trajektorija u obliku pravokutnika i elipse.
 \begin{figure}[H]
@@ -1679,8 +1679,35 @@ Ovakva dva primjera namjerno su izdvojena kako bi mogli prokomentirati ponašanj
 \end{figure}
 
 \section{Ispitivanje}
+Ispitivanje je provedeno uz pomoć 16 kolega studenata Sveučilišta u Zagrebu. Cilj ispitivanja bilo je istražiti zahtjevnost uporabe razvijenog sustava upravljanja robotskom rukom. Ispitivanjem nad kolegama s drugih fakulteta pokušano je postići bolji dojam o lakoći upravljanja kod pojedinca koji se prethodno nisu susreli s korištenjem uređaja tog tipa.
+
+Studenti su morali izvršiti dva jednostavna zadatka. Podizanje objekta te stavljanja objekta u spremnik pomoću robotske ruke (što je opisano u prethodnom odijeljku \ref{pracenje}).
+
+Pri tome su zadatke morali izvršiti na dva načina. Pomoću igraće palice koja je sastavni dio opreme koja dolazi uz robotsku ruku te pomoću našeg sustava.
+
+Mjerena je brzina izvođenja zadataka prilikom prvog susreta s robotskom rukom te nakon 15 minuta upoznavanja s načinima upravljanja. Htjelo se usporediti vrijeme potrebno za savladavanje oba sustava upravljanja. Prilikom mjerenja od 16 kandidata odbačeni su rezultati najboljih te najgorih, a od ostatka je izračunata aritmetička sredina.
 
 
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{ | l | l | l |}
+    \hline
+     & Igraća palica&Razvijeni sustav\\ \hline
+    Prvi susret & 4:12&1:16\\ \hline
+    Nakon 15 minuta & 2:11&0:31\\ \hline
+    \end{tabular}
+    \caption{Rezultati ispitivanja premještanja objekta igraćom palicom te razvijenim sustavom, trajanje akcija u minutama} \label{ispitivanje-premjestanja}
+\end{table}
+
+Dobiveni rezultati (tablica \ref{ispitivanje-premjestanja}) upućuju na to kako i nakon 15 minuta intenzivnog korištenja upravljanje pomoću igraće palice je skoro dvostruko sporije nego pri prvom susretu s upravljanjem razvijenim sustavom. Također, korištenje razvijenog sustava ubrzava upravljanje robotom čak 4 puta u usporedbi s upravljanjem igraćom palicom.
+
+Valja napomenuti i kako su se studenti doimali vidno sigurniji u upravljanju pokretima vlastite ruke no robotskima, ali da su i u nekim trenucima počeli očekivati i previše od sustava, kao na primjer pokušati pomaknuti robotsku ruku u smjeru gdje ona fizički nije u mogućnosti doći.
+
+Ispitali smo i subjektivno mišljenje studenata te je traženo da subjektivno ocjene iskustvo upravljanja na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka.
+
+Pri korištenju igraće palice studenti navode da „nisu imali u potpunosti osjećaj kontrole nad robotskom rukom“, te da su „neki aspekti u radu igraće palice kontraintuitivni što izaziva osjećaj nesigurnosti“. Traženo je da subjektivno ocjene iskustvo u radu s igraćom palicom na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka. Dobivena je prosječna ocjena 5.9/10.
+
+Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena saznali smo da je studentima „značajno lakše upravljati rukom na ovaj način“. Ponovno je, po istim kriterijima korištenim ranije, traženo da ocjene iskustvo u ovom načinu rada. Dobivena je prosječna ocjena 8.1/10.
 
 
 \chapter{Zaključak}

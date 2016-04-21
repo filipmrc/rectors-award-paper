@@ -20,7 +20,7 @@
     colorlinks=true,
     linkcolor=blue,
     filecolor=magenta,      
-    urlcolor=cyan,
+    urlcolor=blue,
 }
 
 \begin{document}
@@ -1655,11 +1655,30 @@ Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperime
 \label{fig:jacok2}
 \end{figure}
 
-Rezultati prve ispitane situacije vidljivi su na grafovima \ref{fig:jacok1} i \ref{fig:jacok2}.
+Rezultati prvog seta situacija koji uključuje isključivo kretanje bez konkretnih zadataka vidljivi su na grafovima \ref{fig:jacok1} i \ref{fig:jacok2}.
 Uočljivo je kako linije na ove dvije skupine grafova indiciraju različite karaktere kretanja ruke korisnika. 
 Ovakva dva primjera namjerno su izdvojena kako bi mogli prokomentirati ponašanje cjelokupnog sustava u pri različitim tipovima kretanja.
 
 Slika \ref{fig:jacok1} prikazuje brzo kretanje ruke korisnika pri čemu Jaco robotska ruka ne može dostići željenu konfiguraciju na vrijeme.
+Na izraženim krivuljama vidljivo je kako u pri ovakvom kretanju putanja samomg manipulatora zadržava oblik putanje korisnikove ruke.
+Naša metoda upravljanja zahvaljujući struktri upravljačke petlje (\ref{upr_shm}) mijenja ciljanu konfiguraciju svakom iteracijom, čime se ostvaruje djelovanje u stvarnom vremenu.
+Potpuno praćenje putanje stavljanjem naredbi na stog uzrokovalo bi značajno kašnjnje manipulatora za korisnikom, kao i moguća zaglavljenja i oscilacije.
+Kašnjenje u upravljanju jedan je od glavnih faktora kod intuitivnosti i stoga ocjenjujemo ovakav pristup kao boljim od alternative.
+
+Na slici \ref{fig:jacok2} prikazano je kretanje nešto drugačijeg karaktera gdje korisnik zadržava ruku na određenim točkama.
+Lokacije na slici sa većom koncentracijom crvenih točaka nastaju kada korisnik zaustavi kretanje ruke, te translacijska naredba daje približno iste vrijednosti.
+Ovakvo kretanje događa se pri manipulaciji objektima jer korisnik na oređenim točkama objekt hvata ili mijenja orijentaciju.
+Pri ovoj karakteristici korištenja velika brzina zadavanja naredbi između točaka uzrokuje gibanje manipulatora približno po pravcu, što upravljanje čini intuitivnijim jer je lako predviditi putanju same ruke. 
+Na prikazu u xy-ravnini moguće je primjetiti odstupanja od pravocrtnog gibanja u točkama gdje se događa naredba promjene orijentacije, tada se pozicija alata mijenja u vremenu potrebnom za izvršenje naredbe.
+Pri sporijem kretanju moguće je ostvariti potpuno praćenje putanje ruke.
+
+Iz gornjih grafova (kao i iz vlastitog iskustva pri korištenju) zaključujemo da sustav ostvaruje kvalitetno vladanje.
+Pri tome je praktično ograničiti kretanje manipulatora tako da se uvijek nalazi izvan "cilindra" radijusa 5-10 cm formiranog oko njegove baze kako bi se izbjegla većina singulariteta koji smanjuju kvalitetu gibanja.
+Uz ova saznanja moguće je testirati sustav pri konkretnim zadacima kao što su podizanje i spuštanje objekta, te spremanje objekta u spremink.
+Pri ovim zadacima prikazanim na slikama \ref{fig:successful_grasp_1} i \ref{fig:successful_grasp_2} upravljačko sučelje pokazalo se vrlo intuitivnim.
+Rezultati ovih testiranja dostupni su u obliku video zapisa na \href{https://youtu.be/exf7TUviuSg}{ovom linku}.
+Radi činjenice da izvršni član ima samo tri prsta potrebno se ograničiti na klasu predmeta veličine ne manje od teniske loptice, što potpuno odgovara namjenjenoj funkciji Jaco robotske ruke. 
+
 
 
 \begin{figure}[H]
@@ -1694,7 +1713,7 @@ Mjerena je brzina izvođenja zadataka prilikom prvog susreta s robotskom rukom t
     \centering
     \begin{tabular}{ | l | l | l |}
     \hline
-     & Igraća palica&Razvijeni sustav\\ \hline
+     & Upravljačka palica&Razvijeni sustav\\ \hline
     Prvi susret & 4:12&1:16\\ \hline
     Nakon 15 minuta & 2:11&0:31\\ \hline
     \end{tabular}
@@ -1709,8 +1728,19 @@ Ispitali smo i mišljenje studenata te je traženo da subjektivno ocjene iskustv
 Pri korištenju igraće palice studenti navode da „nisu imali u potpunosti osjećaj kontrole nad robotskom rukom“, te da su „neki aspekti u radu igraće palice kontraintuitivni što izaziva osjećaj nesigurnosti“. Traženo je da subjektivno ocjene iskustvo u radu s igraćom palicom na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka. Dobivena je prosječna ocjena 5.9/10.
 Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena saznali smo da je studentima „značajno lakše upravljati rukom na ovaj način“. Ponovno je, po istim kriterijima korištenim ranije, traženo da ocjene iskustvo u ovom načinu rada. Dobivena je prosječna ocjena 8.1/10.
 
-
 \chapter{Zaključak}
+Sustav zamišljen kao intuitivniju alternativu konvencionalnim načinima upravljanja ostvarili smo u potpunosti koristeći metode neovisne o konkretnoj sklopovskoj implementaciji. 
+Smatramo da smo ovakvim pristupom prikazali moguće rješenje problema ovakvog tipa upravljačkog sučelja u općem slučaju.
+
+Problem kinematike detaljno smo obradili kako bi prikazali prepreke na koje se nailazi pri poopćenju.
+Inverznu kinematiku rješili smo iterativno na način primjenjiv za velik broj manipulatora, pritom uzimajući u obzir numeričke karakteristike rješenja te ograničenja matematičkog modela.
+Matematički model zatim smo uspješno testirali i pri tome objasnili potrebu za primjenom numerički robusnijeg algoritma, koji smo potom i ostvarili.
+
+Detekciju pozicije i orijentacije ljudskog dlana također smo ostvarili na dva načina.
+Prvi je način komputacijski vrlo učinkovit no ostavlja prostora za razvoj radi nemogućnosti pronalaženja orijentacije ruke korisnika.
+Drugi, napredniji algoritam koristi više procesorskog vremena kako bi detektirao orijentaciju dlana korisnika korištenjem konvolucijske neuronske mreže.
+
+
 \bibliography{literatura}
 \bibliographystyle{fer}
 \listoffigures

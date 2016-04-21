@@ -529,7 +529,7 @@ Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješen
 Kod redundantnih manipulatora ovaj problem je još složeniji jer za svaku zadanu konfiguraciju postoji beskonačno mnogo rješenja.
 
 Analitička rješenja problema ne postoje za većinu konfiguracija sa 6 stupnjeva slobode \cite{grochow2004style}, a klasični pristupi aproksimiranju rješenja sustava nelinearnih jednadžbi \cite{broyden1965class}\cite{bi2009three} zahtjevaju složen račun neprikladan za izvođenje u stvarnom vremenu.
-Pronašli smo da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju inverza matrice Jakobijana manipulatora \cite{buss2004introduction}, koja je puno prikladnija za programsku izvedbu.
+Pronađeno je da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju inverza matrice Jakobijana manipulatora \cite{buss2004introduction}, koja je puno prikladnija za programsku izvedbu.
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.35]{jacoDH1}
@@ -550,7 +550,7 @@ Množenjem dobivenih matrica dobivamo matricu koja izražava poziciju i orijenta
 \subsubsection{D-H Parametri}
 D-H parametri standardizirani su način prikaza kinematičkog lanca u robotici.
 Pri sintezi matrica transformacije ruke korišteni su D-H parametri iz službene dokumentacije za Jaco robotsku ruku prikazani u tablici \ref{JacoDH}. 
-Za sintezu D-H parametara koristimo duljine članaka kao i parametre koji su iz njih izvedeni, prikazani su na slici \ref{jacoparam}.
+Za sintezu D-H parametara koriste se duljine članaka kao i parametri koji su iz njih izvedeni, prikazani su na slici \ref{jacoparam}.
 
 \begin{table}[h!]
     \centering
@@ -584,7 +584,7 @@ Za sintezu D-H parametara koristimo duljine članaka kao i parametre koji su iz 
 %\label{d6b}
 %\end{equation}
 
-Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodajemo i razlike u orijentaciji rotacijskih osi zglobova $\alpha$. Konačni parametri prikazani su u tablici \ref{JacoDH}. 
+Ne ulazeći u pojedinosti DH metode, potrebno je napomenuti da $d$ i $a$ parametri predstavljaju međusobne odmake koordinatnih sustava zglobova, dok kut $\theta$ predstavlja rotaciju koordinatnih sustava oko vlastite osi rotacije. Navedenim parametrima dodaju se i razlike u orijentaciji rotacijskih osi zglobova $\alpha$. Konačni parametri prikazani su u tablici \ref{JacoDH}. 
  \begin{table}[h!]
 \centering
 \begin{tabular}{c c c c c}
@@ -1656,8 +1656,11 @@ Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperime
 \end{figure}
 
 Rezultati prve ispitane situacije vidljivi su na grafovima \ref{fig:jacok1} i \ref{fig:jacok2}.
-Uočljivo je kako kretanja prikazana na ove dvije skupine grafova indiciraju različite karaktere kretanja ruke korisnika. 
+Uočljivo je kako linije na ove dvije skupine grafova indiciraju različite karaktere kretanja ruke korisnika. 
 Ovakva dva primjera namjerno su izdvojena kako bi mogli prokomentirati ponašanje cjelokupnog sustava u pri različitim tipovima kretanja.
+
+Slika \ref{fig:jacok1} prikazuje brzo kretanje ruke korisnika pri čemu Jaco robotska ruka ne može dostići željenu konfiguraciju na vrijeme.
+
 
 \begin{figure}[H]
     \centering
@@ -1679,13 +1682,12 @@ Ovakva dva primjera namjerno su izdvojena kako bi mogli prokomentirati ponašanj
 \end{figure}
 
 \section{Ispitivanje}
-Ispitivanje je provedeno uz pomoć 16 kolega studenata Sveučilišta u Zagrebu. Cilj ispitivanja bilo je istražiti zahtjevnost uporabe razvijenog sustava upravljanja robotskom rukom. Ispitivanjem nad kolegama s drugih fakulteta pokušano je postići bolji dojam o lakoći upravljanja kod pojedinca koji se prethodno nisu susreli s korištenjem uređaja tog tipa.
+Ispitivanje je provedeno uz pomoć 7 kolega studenata Sveučilišta u Zagrebu. Cilj ispitivanja bilo je istražiti zahtjevnost uporabe razvijenog sustava upravljanja robotskom rukom. Ispitivanjem nad kolegama s drugih fakulteta pokušano je postići bolji dojam o lakoći upravljanja kod pojedinca koji se prethodno nisu susreli s korištenjem uređaja tog tipa.
 
 Studenti su morali izvršiti dva jednostavna zadatka. Podizanje objekta te stavljanja objekta u spremnik pomoću robotske ruke (što je opisano u prethodnom odijeljku \ref{pracenje}).
+Pri tome su zadatke morali izvršiti na dva načina. Pomoću upravljačke palice koja je sastavni dio opreme koja dolazi uz robotsku ruku te pomoću našeg sustava.
 
-Pri tome su zadatke morali izvršiti na dva načina. Pomoću igraće palice koja je sastavni dio opreme koja dolazi uz robotsku ruku te pomoću našeg sustava.
-
-Mjerena je brzina izvođenja zadataka prilikom prvog susreta s robotskom rukom te nakon 15 minuta upoznavanja s načinima upravljanja. Htjelo se usporediti vrijeme potrebno za savladavanje oba sustava upravljanja. Prilikom mjerenja od 16 kandidata odbačeni su rezultati najboljih te najgorih, a od ostatka je izračunata aritmetička sredina.
+Mjerena je brzina izvođenja zadataka prilikom prvog susreta s robotskom rukom te nakon 15 minuta upoznavanja s načinima upravljanja. Htjelo se usporediti vrijeme potrebno za savladavanje oba sustava upravljanja. Prilikom mjerenja od 7 kandidata odbačeni su rezultati najboljih te najgorih, a od ostatka je izračunata aritmetička sredina.
 
 
 \begin{table}[h!]
@@ -1703,10 +1705,8 @@ Dobiveni rezultati (tablica \ref{ispitivanje-premjestanja}) upućuju na to kako 
 
 Valja napomenuti i kako su se studenti doimali vidno sigurniji u upravljanju pokretima vlastite ruke no robotskima, ali da su i u nekim trenucima počeli očekivati i previše od sustava, kao na primjer pokušati pomaknuti robotsku ruku u smjeru gdje ona fizički nije u mogućnosti doći.
 
-Ispitali smo i subjektivno mišljenje studenata te je traženo da subjektivno ocjene iskustvo upravljanja na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka.
-
+Ispitali smo i mišljenje studenata te je traženo da subjektivno ocjene iskustvo upravljanja na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka.
 Pri korištenju igraće palice studenti navode da „nisu imali u potpunosti osjećaj kontrole nad robotskom rukom“, te da su „neki aspekti u radu igraće palice kontraintuitivni što izaziva osjećaj nesigurnosti“. Traženo je da subjektivno ocjene iskustvo u radu s igraćom palicom na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka. Dobivena je prosječna ocjena 5.9/10.
-
 Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena saznali smo da je studentima „značajno lakše upravljati rukom na ovaj način“. Ponovno je, po istim kriterijima korištenim ranije, traženo da ocjene iskustvo u ovom načinu rada. Dobivena je prosječna ocjena 8.1/10.
 
 

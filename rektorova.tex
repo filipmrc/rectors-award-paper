@@ -906,7 +906,7 @@ Zamišljena upravljačka shema sustava prikazana na slici \ref{petlja} provjerav
 Prvi korak je rješavanje direktne kinematike te generiranje funkcije \texttt{jacoFK(q)} koja kao argumente prima zakrete zglobova $\mathbf{q}$,
 a kao rezultat vraća matricu homogene transformacije alata.
 Matrica Jakobijana sastavlja se geometrijskom metodom u funkciji \texttt{JacoJ(q , dw)}, radi boljih performansi od simboličke zamjene.
-Konačno, stvara se upravljačka petlja koja se izvodi sa proizvoljnim brojem koraka.  Uključujemo i funkciju \texttt{skaliranje} koja s obzirom na maksimalnu brzinu skalira pogrešku $e$.
+Konačno, stvara se upravljačka petlja koja se izvodi sa proizvoljnim brojem koraka.  Uključujena je i funkcija \texttt{skaliranje} koja s obzirom na maksimalnu brzinu skalira pogrešku $e$.
 \begin{algorithm}[H]
 \caption{Upravljačka petlja}
 \begin{algorithmic}
@@ -918,7 +918,7 @@ Konačno, stvara se upravljačka petlja koja se izvodi sa proizvoljnim brojem ko
 \STATE{$R := T_{1-3,1-3}$}
 \STATE{$e_{1-3} := w_{1-3} - T_{1-3,4}$}
 \STATE{$e_{4-6} := 0.5\left(R_x\times r_x + R_y\times r_y + R_z\times r_z\right)$}
-\STATE{$e  :=$ skaliraj($e$)}
+\STATE{$e  :=$ skaliranje($e$)}
 \STATE{$J :=$ jacoJ($q$,$e$)}
 \STATE{$dq : = J^{-1}e$}
 \STATE{$q := q + dq$}
@@ -1397,7 +1397,7 @@ Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji 
 Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \texttt{hard -ware\_interface} klase i neće se spajati na neodgovarajuća sučelja.
 
 Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \texttt{velocity\_ controllers/JointGroupVelocityController}. 
-Regulator svoje parametre učitava iz odgovarajuće konfiguracijske YAML\footnote{YAML (engl. YAML Ain't Markup Language) - \texttt{www.yaml.org}} datoteke.
+Regulator svoje parametre učitava iz odgovarajuće konfiguracijske YAML\footnote{\textbf{YAML} (engl. YAML Ain't Markup Language) - \texttt{www.yaml.org}} datoteke.
 U parametre između ostalog ubrajamo imena robota i zglobova, tip sučelja, pojačanja P, I i D komponenti, vremenska ograničenja na izvršenje naredbi, ograničenja zglobova i frekvenciju.
 Pokretanjem regulatora, API naredbe manipulatora postavljaju se kao mrežni resursi unutar ROS "grafa", čime ovaj dio sustava postaje potpuno fizički odvojiv od ostatka.
 Svi podaci sa senzora postaju dostupni na temi \texttt{joint\_states}, postavljanje referentne veličine vrši se slanjem odgovarajuće poruke na temu \texttt{camera\_goal}, a parametri regulatora također su dostupni.
@@ -1470,10 +1470,10 @@ Pri inicijalizaciji kalse unutar glavnog čvora prvo je potrebno konstruirati ki
 Ovaj opis zatim parsiramo pomoću KDL funkcije  \texttt{treeFromString} koja od opisa generira kinematičko stablo tipa \texttt{Tree}.
 Kinematički lanac koji opisuje manipulator iz stabla dohvaćamo pomoću funkcije \texttt{getChain} i spremamo u varijablu tipa \texttt{Chain}.
 
-Pomću kinematičkog lanca inicijaliziramo kalsu \texttt{ChainFkSolverPos\_recur\-sive}, koja iz zakreta zglobova pomoću funkcije \texttt{JntToCart} daje poziciju izvršnog člana u koordinatnom sustavu baze.
-Za kalkulacije potrebnih brzina zglobova inicijaliziramo klasu \texttt{ChainIkSolverVel\_wdls}.
+Pomću kinematičkog lanca inicijalizira se kalsa \texttt{ChainFkSolverPos\_recur\-sive}, koja iz zakreta zglobova pomoću funkcije \texttt{JntToCart} daje vektor konfiguracije izvršnog člana u koordinatnom sustavu baze.
+Za kalkulacije potrebnih brzina zglobova inicijalizira se klasa \texttt{ChainIkSolverVel\_wdls}.
 Pri pozivu funkcije \texttt{CartToJnt} generira Jakobijan te računa izraz sličan \ref{jac_approx2}, uz određena poopćenja i osiguravanje numeričke stabilnosti (ref).
-Funkcija \texttt{getFK} sadrži proceduru za rješavanje direktne kinematike, dok \texttt{getIKvel} sadrži računa vezan uz dobivanje potrebnih pomaka zglobova.
+Funkcija \texttt{getFK} sadrži proceduru za rješavanje direktne kinematike, dok \texttt{getIKvel} sadrži račun vezan uz dobivanje potrebnih pomaka zglobova.
 
 Poznavajući teorijsku pozadinu iza ovakvog sustava, vlastita implementacija algoritma također je moguća.
 Unatoč tome, za KDL biblioteke odlučili smo se radi već rješenih tehničkih problema kao što su upravljanje memorijom i optimiranje performansi.
@@ -1735,7 +1735,7 @@ Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena sazn
 
 \chapter{Zaključak}
 Sustav zamišljen kao intuitivnija alternativa konvencionalnim načinima upravljanja ostvaren je u potpunosti koristeći metode neovisne o konkretnoj sklopovskoj implementaciji. 
-Smatramo da smo ovakvim pristupom prikazali moguće rješenje problema ovakvog tipa upravljačkog sučelja u općem slučaju.
+Ovakvim pristupom prikazano je moguće rješenje problema ovakvog tipa upravljačkog sučelja u općem slučaju.
 
 Problem kinematike detaljno je obrađen kako bi se prikazale prepreke na koje se nailazi pri poopćenju.
 Inverzna kinematika rješena je iterativnom metodom primjenjivom za velik broj manipulatora.

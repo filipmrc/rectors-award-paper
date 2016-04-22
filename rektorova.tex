@@ -1562,15 +1562,15 @@ Ovo zahtjeva dublje ulaženje u problematiku i veliku količinu testiranja te za
 
 
 \chapter{Rezultati}
-Ukupnu izvedbu upravljačko sučelja temeljito je testirano u nekoliko faza. 
-Prvo je bilo potrebno uvjeriti se da se upravljačka petlja ponaša na odgovarajući način pri praćenju putanja zadanih RGB-Dubinskom kamerom.
-Ovo provjeravamo simuliranjem cijelokupnog sustava unutar Gazebo okruženja, što možemo bez dodatnih modifikacija zahvaljujući \texttt{ros\_control} paketu.
-Uvjerivši se u pouzdanost sustava, prelazimo na testiranje na pravoj Jaco robotskoj ruci.
-Tesiranje na stvarnoj ruci prvo provodimo praćenjem fiksnih periodičnih trajektorija, a zatim prelazimo na putanje zadane RGB-Dubinskom kamerom.
-Konačno, ispitujemo korisnost sustava u usporedbi sa konvencionalnim načinom upravljanja robotskog rukom, tako da korisnicima bez prijašnjeg iskustva zadajemo zadatak koji moraju obaviti sa obje metode.
+Ukupna izvedba upravljačkog sučelja temeljito je testirana u nekoliko faza. 
+Prvo je bilo potrebno potvrditi da se upravljačka petlja ponaša na odgovarajuć način pri praćenju putanja zadanih RGB-Dubinskom kamerom.
+Ovo provjeravamo simuliranjem cjelokupnog sustava unutar Gazebo okruženja, što možemo bez dodatnih modifikacija zahvaljujući \texttt{ros\_control} paketu.
+Potvrdom pouzdanosti sustava, započinje se testiranje na pravoj Jaco robotskoj ruci.
+Tesiranje na stvarnoj robotskoj ruci prvo se provodi praćenjem fiksnih periodičnih trajektorija, a zatim se prelazi na putanje zadane RGB-Dubinskom kamerom.
+Konačno, ispituje se korisnost sustava u usporedbi sa konvencionalnim načinom upravljanja robotskom rukom, tako da se korisnicima bez prijašnjeg iskustva zadaje zadatak koji moraju obaviti koristeći obje metode.
 
 \section{Praćenje putanje u simulaciji}
-Unatoč tome što smo u poglavlju \ref{Upravljački algoritam} dokazali kinematičku stabilnost izvođenja putanje, provjeravamo robusnost sustava pri kretanju ruke korisnika.
+Unatoč tome što je u poglavlju \ref{Upravljački algoritam} dokazana kinematička stabilnost izvođenja putanje, provjerava se robusnost sustava pri kretanju ruke korisnika.
 Glavni razlog za ovakvo ispitivanje jest nepredvidivost utjecaja stvarne dinamike elektromotora na korištene algoritme.
 %\begin{figure}
 %\centering
@@ -1594,8 +1594,8 @@ Ovu situacija izbjegnuta je dinamičkim postavljanjem parametra $\lambda$ na vri
 Nagli skokovi u brzini jedan su od indikatora da bi konfiguracija mogla biti blizu singulariteta, te ovom jednostavnom metodom izbjegavamo većinu zaglavljenja.
 
 Rotaciju detektiranu RGB-Dubinskom kamerom prenosimo u obliku skalara raspona 0 do 1, gdje 0 označava ruku okrenutu prema tlu, a 1 ruku okrenutu prema gore.
-Ovaj  se raspon zatim unutar upravljačkog algoritma skalira na željeni raspon kuteva. 
-Tokom testiranja primjećeno je da se najbolji rezulati dobivaju skaliranjem ove vrijdnosti na valjanje alata u rasponu od $[-45^{\circ} , 45^{\circ}]$.
+Ovaj se raspon zatim unutar upravljačkog algoritma skalira na željeni raspon kuteva. 
+Tokom testiranja primjećeno je da se najbolji rezulati dobivaju skaliranjem ove vrijednosti na valjanje alata u rasponu od $[-45^{\circ} , 45^{\circ}]$.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.55\textwidth]{rot_gazebo_0002}
@@ -1625,7 +1625,7 @@ Rezultati prikazani na slici \ref{fig:jacooblici} pokazuju kvalitetno praćenje 
 Pri izvođenju pravokutne trajektorije primjećujemo zakrivljenje na kutevima karakteristično za izvođenje pravokutnih putanja, ovo ponašanje opisano je u \ref{simuliranje} i očekivano.
 Praćenje eliptične putanje vrlo je precizno te ima pogrešku reda veličine manjeg od milimetra. 
 Manjak glatkoće u izvedenoj trajektoriji uzrokovan je nelinearnim karakteristikama aktuatora pri niskim brzinama potrebnim da se kompenziraju mala odstupanja od željene konfiguracije.
-Ovaj problem nestaje pri višim brzinama karakterističnim za kretanje ljudske ruke, stoga ovaj rezultat uzimamo kao izrazito pozitivan.
+Ovaj problem nestaje pri višim brzinama karakterističnim za kretanje ljudske ruke, stoga rezultat uzimamo kao izrazito pozitivan.
 
 Upravljačko sučelje sada se može ispitati u potpunosti sa svim komponentama na stvarnoj Jaco robotskoj ruci.
 Kutne brzine aktuatora (zglobova) ograničavaju se na 2.5 rad/s, dok akceleracije i ograničenja zakreta ostaju na tvornički postavljenim vrijednostima.
@@ -1633,7 +1633,7 @@ Otvaranje i zatvaranje šake korisnika vežu se uz otvaranje i zatvaranje "šake
 Zatvaranje "šake" robotske ruke odrađuje podređena petlja sa povratnom vezom po sili, gdje se pri velikim protusilama stiskanje šake zaustavlja kako bi se izvršni član zaštitio od oštećenja.
 Upravljačko sučelje prvo se ispituje pri situacijama gdje korisnik miče i rotira ruku bez posebnog cilja, istražujući radni prostor robotske ruke.
 Nakon toga ispituju se situacije gdje je korisniku zadan konkretan zadatak kao što je podizanje objekta ili stavljanje objekta u spremnik.
-Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperimenta ograničen po z osi, kako ne bi došlo do udaranju u podlogu pri ispitivanju.
+Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperimenta ograničen po z osi, kako ne bi došlo do udaranja u podlogu pri ispitivanju.
 
 
 \begin{figure}[H]
@@ -1660,7 +1660,7 @@ Uočljivo je kako linije na ove dvije skupine grafova indiciraju različite kara
 Ovakva dva primjera namjerno su izdvojena kako bi mogli prokomentirati ponašanje cjelokupnog sustava u pri različitim tipovima kretanja.
 
 Slika \ref{fig:jacok1} prikazuje brzo kretanje ruke korisnika pri čemu Jaco robotska ruka ne može dostići željenu konfiguraciju na vrijeme.
-Na izraženim krivuljama vidljivo je kako u pri ovakvom kretanju putanja samomg manipulatora zadržava oblik putanje korisnikove ruke.
+Na izraženim krivuljama vidljivo je kako u pri ovakvom kretanju putanja samog manipulatora zadržava oblik putanje korisnikove ruke.
 Naša metoda upravljanja zahvaljujući struktri upravljačke petlje (\ref{upr_shm}) mijenja ciljanu konfiguraciju svakom iteracijom, čime se ostvaruje djelovanje u stvarnom vremenu.
 Potpuno praćenje putanje stavljanjem naredbi na stog uzrokovalo bi značajno kašnjnje manipulatora za korisnikom, kao i moguća zaglavljenja i oscilacije.
 Kašnjenje u upravljanju jedan je od glavnih faktora kod intuitivnosti i stoga ocjenjujemo ovakav pristup kao boljim od alternative.
@@ -1742,7 +1742,7 @@ Drugi, napredniji algoritam koristi više procesorskog vremena kako bi detektira
 Također, ostvarena je detekcija otvorenosti ljudske šake koju koristimo kao dodatnu informaciju za upravljanje.
 
 Konačno, ova dva algoritma ujedinili smo u upravljačku strukturu više razine baziranu na ROS arhitekturi.
-Prednost naše arhitekture leži u univerzalnosti sučelja te vrlo lakoj prenamjeni.
+Prednost naše arhitekture leži u univerzalnosti sučelja te vrlo jednostavnoj prenamjeni.
 Cjelokupnu upravljačku arhitekturu ispitujemo u Gazebo programskom sučelju i zaključujemo kako su rezultati zadovoljavajući za primjenu.
 
 Upravljačko sučelje se u uporabi ponaša intuitivno, te su u jednostavnim zadacima postignute performanse bolje od konvencionalnog sučelja.

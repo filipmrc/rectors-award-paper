@@ -82,7 +82,7 @@ Posebna pažnja pridana je opisu ROS operacijskog sustava i pratećih paketa, ko
 
 Teoretska pozadina problema kretanja manipulatora i prijedlog rješenja obrađen je u poglavlju "Kinematika manipulatora".
 Predloženo rješenje u ovom poglavlju također je programski provjereno na razini matematičke ispravnosti.
-Problem detekcije stanja ljudske ruke obrađen je u poglavlju Detekcijski algoritam (\ref{Detekcijski algoritam}), gdje su dvije izložene metode uspoređujene na bazi mogućnosti i performansi.
+Problem detekcije stanja ljudske ruke obrađen je u poglavlju Detekcijski algoritam (\ref{Detekcijski algoritam}), gdje su dvije izložene metode uspoređene na bazi mogućnosti i performansi.
 
 Nakon što su komponente koje sačinjavaju sustav pojedinačno objašnjene, njihova povezanost i detalji programske izvedbe izlaženi su u poglavlju "Sustav upravljanja".
 U istom poglavlju izloženi su i rezultati testiranja sustava na simulaciji robotske ruke, napravljenogradi boljeg uvida u moguće nedostatke sustava.
@@ -348,7 +348,7 @@ Jaco robotska ruka opremljena je velikom količinom senzora.
 Svaki zglob posjeduje senzore pozicije, temperature, struje i napona.
                                                                                                                             
 Senzori pozicije služe za bilježenje zakreta svakog pojedinačnog zgloba manipulatora, a diferenciranjem zakreta dobiva se informacija o brzini okretanja.
-Informacijom o temperaturi aktuatora štiti se manipulator od moguće štete uzrokovane prekomjernim zagrijavanjem.
+Informacijom o temperaturi aktuatora manipulator se štiti od moguće štete uzrokovane prekomjernim zagrijavanjem.
 Pomoću senzora struje moguće je dobiti povratnu informaciju o momentu razvijenom na pojedinom aktuatoru, ovaj zaključak proizlazi iz dobro poznatog identiteta:
 \begin{align}
 m_m \approx k \ i_a;
@@ -507,7 +507,7 @@ Zahvaljujući ovoj činjenici, sustav je moguće razvijati za simulaciju i stvar
 
 \chapter{Kinematika manipulatora}
 Modularna arhitektura našeg sustava dopušta integraciju manipulatora sa različitim razinama mogućnosti API-ja.
-Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, odlučeno je da radi kompletnosti izvedbe moraju predvidjeti i slučaj kada su dostupne samo naredbe pomicanja zglobova.
+Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, odlučeno je da radi kompletnosti izvedbe mora biti predviđen i slučaj kada su dostupne samo naredbe pomicanja zglobova.
 Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike neredundantnog manipulatora izvedenog unutar našeg sustava na primjeru Jaco robotske ruke.
 Pošto Jaco robotska ruka ima 6 stupnjeva slobode , sa stajališta složenosti kinematike ovaj izbor predstavlja svojevrsni najgori slučaj.
 Kinematičko rješenje provjerava se u Matlab programskom paketu kako bi se ustanovila numerička stabilnost rješenja i mogući nedostaci.
@@ -1166,7 +1166,7 @@ Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u det
 
 \subsubsection{Rezultati}
 \label{sec:tuning}
-Posjedovanjem slijednih slika može se ublažiti utjecaji mogućih oscilacija na detekciju.
+Posjedovanjem slijednih slika može se ublažiti utjecaj mogućih oscilacija na detekciju.
 
 Prilikom određivanja zatvorenosti dlana dobivena vrijednost omjera (Izraz \ref{eq:closure_feature_1}) se sprema u vektor koji sadrži prethodnih $ n $  omjera iz prethodnih $n$ slika te se u pojedinom trenutku $t$ vrijednost može odrediti pomoću težinskog prosjeka vrijednosti u vektoru.
 \begin{equation}\label{eq:advanced_closure_feature}
@@ -1377,7 +1377,7 @@ Drugi oblik koristi se ako je dostupno postavljanje brzine zglobova, što ga či
 Prvi korak pri inicijalizaciji sustava sastoji se od pokretanja sklopovskih sučelja.
 Samo sučelje jest programska rutina ostvarena tako da se API funkcije manipulatora "umotava" u \texttt{hardware\_interface} klasu koja je dio \texttt{ros\_control} paketa.
 Pri pokretanju cjelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
-Moguće je ostvariti više vrsta sučelja te u nastavku se obrađuju dva slučaja.
+Moguće je ostvariti više vrsta sučelja te se u nastavku obrađuju dva slučaja.
 
 \subsubsection{Sučelje brzine izvršnog člana}
 U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno postavljanje kartezijske brzine, algoritam se znatno pojednostavljuje.
@@ -1462,7 +1462,7 @@ Vrijednosti vezane uz izvršni član neovisne su o sučelju i šalju se direktno
 
 \subsection{Kinematika}
 Biblioteka KDL nije jedina, a vjerojatno ni najkvalitetnija dostupna metoda rješavanja općeg kinematičkog problema.
-Kako bi bio ostaviljen prostor za kvalitetnijeg nasljednika ili moguće vlastite implementacije naprednijih metoda, kinematika je odvojena u diskretnu komponentu sustava.
+Kako bi se ostavio prostor za kvalitetnijeg nasljednika ili moguće vlastite implementacije naprednijih metoda, kinematika je odvojena u diskretnu komponentu sustava.
 Kao što je ranije spomenuto, sve funkcije vezane uz kinematičke kalkulacije sadržane su u  \texttt{Kinematics} klasi.
 
 Pri inicijalizaciji kalse unutar glavnog čvora prvo je potrebno konstruirati kinematički lanac od semantičkog opisa sadržanog u URDF datoteci.
@@ -1476,7 +1476,7 @@ Pri pozivu funkcije \texttt{CartToJnt} generira Jakobijan te računa izraz slič
 Funkcija \texttt{getFK} sadrži proceduru za rješavanje direktne kinematike, dok \texttt{getIKvel} sadrži račun vezan uz dobivanje potrebnih pomaka zglobova.
 
 Poznavajući teorijsku pozadinu iza ovakvog sustava, vlastita implementacija algoritma također je moguća.
-Unatoč tome, za odlučeno je koristiti KDL biblioteku radi već rješenih tehničkih problema kao što su upravljanje memorijom i optimiranje performansi.
+Unatoč tome, u radu su se koristile KDL biblioteke radi već rješenih tehničkih problema kao što su upravljanje memorijom i optimiranje performansi.
 Sustav mora vršiti izračune relativno visokom frekvencijom i stoga bilo kakvo \textit{curenje} memorije može ostaviti trag na performansama.
 
 \section{Simuliranje sustava}\label{simuliranje}

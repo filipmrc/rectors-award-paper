@@ -895,11 +895,11 @@ Dobiveni kutevi korišteni su za osvježavanje matrice $\mathbf{J}$ i dobivanje 
 Iz \ref{petlja} primjećuje se struktura sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora u nadređenoj i/ili podređenoj petlji.
 
 \subsection{Provjera sustava}\label{provjera}
-Zamišljenu upravljačku shemu sustava prikazanu na slici \ref{petlja} provjeravamo u Matlabu.
+Zamišljena upravljačka shema sustava prikazana na slici \ref{petlja} provjerava se u Matlabu.
 Prvi korak je rješavanje direktne kinematike te generiranje funkcije \texttt{jacoFK(q)} koja kao argumente prima zakrete zglobova $\mathbf{q}$,
 a kao rezultat vraća matricu homogene transformacije alata.
-Sastavljamo matricu Jakobijana geometrijskom metodom u funkciji \texttt{JacoJ(q , dw)} radi boljih performansi od simboličke zamjene.
-Konačno, stvaramo upravljačku petlju koja se izvodi sa proizvoljnim brojem koraka.  Uključujemo i funkciju \texttt{skaliranje} koja s obzirom na maksimalnu brzinu skalira pogrešku $e$.
+Matrica Jakobijana sastavlja se geometrijskom metodom u funkciji \texttt{JacoJ(q , dw)}, radi boljih performansi od simboličke zamjene.
+Konačno, stvara se upravljačka petlja koja se izvodi sa proizvoljnim brojem koraka.  Uključujemo i funkciju \texttt{skaliranje} koja s obzirom na maksimalnu brzinu skalira pogrešku $e$.
 \begin{algorithm}[H]
 \caption{Upravljačka petlja}
 \begin{algorithmic}
@@ -935,10 +935,10 @@ Konačno, stvaramo upravljačku petlju koja se izvodi sa proizvoljnim brojem kor
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{P1}
 \end{figure}
 
-Radna frekvencija detekcije kreće se oko 30 Hz , a matricu Jakobijana planiramo osvježavati oko 200 puta u sekundi.
+Radna frekvencija detekcije kreće se oko 30 Hz , a planirana frekvencija osvježavanja matrice Jakobijana je oko 200 puta u sekundi.
 Iz ovih smjernica uzimamo kako ćemo pri testiranju osvježavati matricu Jakobijana 6 puta pri izvršavanju kretanja.
 Iz grafa \ref{P1} vidljivo je kako pri čistom translacijskom kretanju upravljačka petlja sa P regulatorom ostvaruje željenu konfiguraciju  bez oscilacija u kretanju.
-Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za metodu baziranu na korištenju običnog inverza Jakobijana.
+Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za metodu baziranu na korištenju običnog inverza Jakobijana (\ref{jac_approx2}).
 \begin{figure}[h!]
 \centering
 \includegraphics[width = 0.49\textwidth]{matlab_rot1}
@@ -947,7 +947,7 @@ Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za metodu b
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{rot1m}
 \end{figure}
 
-Sa slike \ref{rot1m} vidimo kakop pri isklučivo rotacijskom kretanju koristeći izraz \ref{jac_approx2} ne možemo dobiti zadovoljavajuće rješenje.
+Sa slike \ref{rot1m} vidi se kako pri isklučivo rotacijskom kretanju korištenjem izraza \ref{jac_approx2} ne možemo dobiti zadovoljavajuće rješenje.
 Ovaj slučaj jednostavan je dokaz ranije tvrdnje kako "obični" Jakobijan često nije dovoljno numerički stabilan.
 Kako bi doskočili ovom problemu koristimo metodu prigušenih najmanjih kvadrata iz izraza \ref{dlq2} sa faktorom $\lambda = 0.2$.
 \begin{figure}[h!]
@@ -958,9 +958,9 @@ Kako bi doskočili ovom problemu koristimo metodu prigušenih najmanjih kvadrata
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{rot2m}
 \end{figure}
 
-Iz slike \ref{rot2m} vidimo kako je ostvareno drastično bolje ponašanje.
-Na prikazu translacije primjećujemo nakupinu crvenih indikatora u jednoj točki, što znači da je pozicija izvršnog člana približno konstantna.
-Ostaje nam još ispitati ponašanje pri promjeni cijelog vektora konfiguracije.
+Iz slike \ref{rot2m} vidi se kako je ostvareno drastično bolje ponašanje.
+Na prikazu translacije potrebno je primjetiti nakupinu crvenih indikatora u jednoj točki, što znači da je pozicija izvršnog člana približno konstantna.
+Potrebno je još ispitati ponašanje pri promjeni cijelog vektora konfiguracije.
 \begin{figure}[h!]
 \centering
 \includegraphics[width = 0.49\textwidth]{matlab_pravocrtno2}
@@ -969,8 +969,8 @@ Ostaje nam još ispitati ponašanje pri promjeni cijelog vektora konfiguracije.
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava predstavljene u Eulerovim kutevima.} \label{PPI}
 \end{figure}
 
-Rezultati prikazani na slici \ref{PPI} dovoljni su nam kao dokaz da se metoda prigušenih najmanjih kvadrata u teoriji može koristiti za upravljanje manipulatorom sa 6 stupnjeva slobode.
-U ovom preliminarnom testiranju nismo uključivali model motora i dinamike manipulatora i stoga će konačnu programsku izvedbu biti potrebno testirati na simulaciji.
+Rezultati prikazani na slici \ref{PPI} dovoljan su dokaz da se metoda prigušenih najmanjih kvadrata u teoriji može koristiti za upravljanje manipulatorom sa 6 stupnjeva slobode.
+U ovom preliminarnom testiranju nije uključen model motora i dinamike manipulatora, stoga će konačnu programsku izvedbu biti potrebno testirati na simulaciji u Gazebo programskom okruženju.
 
 %Klasičnim PID regulatorom možemo značajno smanjiti oscilatornost sustava.
 %Pošto se regulator izvodi u kodu, potrebno ga je ostvariti rekurzivno:
@@ -1319,9 +1319,9 @@ Ovakvom analizom možemo zaključiti kako će se najveće greške prilikom klasi
 Neuronska mreža dobivena ovakvim postupkom sposobna je klasificirati ~1200 slika u sekundi na gore navedenoj grafičkoj kartici, a 160 slika u sekundi na procesoru porodice \textit{Intel Core i7}. U svakom slučaju klasifikacija će i na slabijim današnjim procesorima raditi u stvarnom vremenu, što je i bio cilj.
 
 \chapter{Upravljački algoritam}\label{Upravljački algoritam}
-Ovo poglavlje pomoću koncepata i metoda objašnjenih u prethodnim poglavljima možemo detaljno prikazuje arhitekturu upravljačkog dijela sustava.
-U odlomku \ref{arhitektura} opisujemo korake potrebne za inicijalizaciju sustava te detalje sklopovskih sučelja, glavnog čvora i kinematičkih izračuna.
-Odlomak \ref{simuliranje} sadrži opis simulacijskih ispitaivanja odrađenih na sustavu i njihove rezultate.
+Ovo poglavlje pomoću koncepata i metoda objašnjenih u prethodnim poglavljima detaljno prikazuje arhitekturu upravljačkog dijela sustava.
+U odlomku \ref{arhitektura} opisuju se koraci potrebni za inicijalizaciju sustava te detalji sklopovskih sučelja, glavnog čvora i kinematičkih izračuna.
+Odlomak \ref{simuliranje} sadrži opis simulacijskih ispitivanja odrađenih na sustavu i njihove rezultate.
 Rezultate zatim komentiramo i objašnjavamo njihov odraz na stvarni sustav.
 
 \begin{figure}[h!]
@@ -1331,19 +1331,19 @@ Rezultate zatim komentiramo i objašnjavamo njihov odraz na stvarni sustav.
 \end{figure}
 
 Na slici \ref{upr_shm} prikazana je detaljna shema sustava u programskoj izvedbi.
-Iscrtkani pravokutnik predstavlja granicu između uređaja i računala dok žuti i sivi predstavljaju područje sustava unutar ROS, odnosno \texttt{ros\_control}arhitekture, respektivno.
+Iscrtkani pravokutnik predstavlja granicu između uređaja i računala dok žuti i sivi predstavljaju područje sustava unutar ROS, odnosno \texttt{ros\_control} arhitekture, respektivno.
 
 
 \section{Arhitektura upravljačke petlje}\label{arhitektura}
-Ulazni signal u sustav dolazi iz detekcijskog algoritma u obliku ROS poruke \verb|ime poruke| čija je struktura :
-Kako bi ostvarili mogućnost udaljenog upravljanja, detekcijski dio ostvarujemo kao zasebni ROS čvor koji frekvencijom 30 Hz objavljuje poruke na temu \verb|ime topica|.
-Ovime omogućujemo pokretanje detekcijskog algoritma na zasebnom računalu, uz uvjet da je na istoj mreži kao ostatak ROS čvorova.
+Ulazni signal u sustav dolazi iz detekcijskog algoritma u obliku ROS poruke \texttt{geomet - ry\_msgs/Transform}.
+Kako bi se ostvarila mogućnost udaljenog upravljanja, detekcijski dio ostvaruje se kao zasebni ROS čvor koji frekvencijom 30 Hz objavljuje poruke na temu \texttt{camera\_goal}.
+Ovime se omogućuje pokretanje detekcijskog algoritma na zasebnom računalu, uz uvjet da je na istoj mreži kao ostatak ROS čvorova.
 
-Glavni čvor svaku novu poruku \verb|ime topica| čita i obrađuje.
+Glavni čvor svaku novu poruku na \texttt{camera\_goal} čita i obrađuje.
 Početnoj poziciji korisnikovog dlana (pri prvoj detekciji) pridružuje se željena pozicija manipulatora jednaka početnoj.
-Pomak dlana od početne pozicije primljen u poruci sustav zbraja s početnom pozicijom manipulatora koju smo ranije spremili, čime dobivamo novu željenu poziciju manipulatora.
-Trenutna pozicija manipulatora potom je oduzeta od željene, čime dobivamo nama bitnu potrebnu translaciju manipulatora.
-Zbog ograničenja pri detekciji orijentacije dlana, trenutnu orijentaciju (klasificiranu u diskretne slučajeve) direktno prenosimo u željenu orijentaciju manipulatora.
+Pomak dlana od početne pozicije primljen u poruci sustav zbraja s početnom pozicijom manipulatora koja je ranije spremljena, čime se dobiva nova željenu poziciju manipulatora.
+Trenutna pozicija manipulatora potom je oduzeta od željene, čime se dobiva nama bitna potrebna translacija manipulatora.
+Zbog ograničenja pri detekciji orijentacije dlana, trenutna orijentacija (klasificiranu u diskretne slučajeve) direktno se prenosi u željenu orijentaciju manipulatora.
 
 \begin{algorithm}[H]
 \caption{Računanje potrebne promjene vektora konfiguracije}
@@ -1368,18 +1368,19 @@ Drugi oblik koristi se ako je dostupno postavljanje brzine zglobova, što ga či
 
 \subsection{Inicijalizacija sustava}
 Prvi korak pri inicijalizaciji sustava sastoji se od pokretanja sklopovskih sučelja.
-Samo sučelje jest programska rutina koji ostvarujemo tako da API funkcije manipulatora "umotavamo" u \verb|hardware_interface| klasu koja je dio \texttt{ros\_control}paketa.
-Pri pokretanju cijelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
+Samo sučelje jest programska rutina ostvarena tako da se API funkcije manipulatora "umotava" u \texttt{hardware\_interface} klasu koja je dio \texttt{ros\_control} paketa.
+Pri pokretanju cjelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
+Moguće je ostvariti više vrsta sučelja te u nastavku obrađujemo dva slučaja.
 
 \subsubsection{Sučelje brzine izvršnog člana}
 U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno postavljanje kartezijske brzine, algoritam se znatno pojednostavljuje.
-Na ovaj način izbjegavamo složen kinematički račun iz poglavlja \ref{direkt i inverz} i oslanjamo se na interne algoritme samog manipulatora.
+Na ovaj način izbjegava se složen kinematički račun iz poglavlja \ref{direkt i inverz}, te se oslanja na interne algoritme samog manipulatora.
 
-Pri primanju poruke tipa \texttt{ime\_poruke} sa detekcijskog servera, funkcija \\  \texttt{sendCartesianCommand} unutar glavnog čvora obrađuje podatke. 
+Pri primanju poruke tipa \texttt{camera\_goal} sa detekcijskog servera, funkcija \\  \texttt{sendCartesianCommand} unutar glavnog čvora obrađuje podatke. 
 Vektor razlike konfiguracija sklairamo za neki iznos $\alpha$, ali daljnju regulaciju ostavljamo upravljačkom algoritmu samog manipulatora.
 Ovo znači da \texttt{ros\_control} u ovom obliku koristimo isključivo za prosljeđivanje naredbi te čitanje stanja zglobova.
-Po završetku obrade, Kartezijska naredba šalje se u obliku poruke \verb|ime_2| na temu \verb|goal|, koja je rezervirana za referentnu veličinu kretanja manipulatora.
-Naredba vezana uz izvršni član sprema se u poruku \verb|ime_3| te se šalje na temu \verb|goal_2|, koja je rezervirana za referentnu veličinu operacije izvršnog člana te ima vlastiti regulator.
+Po završetku obrade, Kartezijska naredba šalje se u obliku poruke na temu \texttt{cartesian\_goal}, koja je rezervirana za referentnu veličinu kretanja manipulatora.
+Naredba vezana uz izvršni član sprema se u poruku te šalje na temu \texttt{cartesian\_goal\_grip}, koja je rezervirana za referentnu veličinu operacije izvršnog člana te ima vlastiti regulator.
 
 Pokazalo se da je ovaj pristup optimalan za brzi početak korištenja jer visoka radna frekvencija najčešće znači da se parametar $\alpha$ može postaviti proizvoljno, dok ostalu regulaciju provodi API.
 
@@ -1391,11 +1392,11 @@ Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \texttt{hardwa
 Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \texttt{velocity\_ controllers/JointGroupVelocityController}. 
 Regulator svoje parametre učitava iz odgovarajuće konfiguracijske YAML\footnote{YAML (engl. YAML Ain't Markup Language) - \texttt{www.yaml.org}} datoteke.
 U parametre između ostalog ubrajamo imena robota i zglobova, tip sučelja, pojačanja P, I i D komponenti, vremenska ograničenja na izvršenje naredbi, ograničenja zglobova i frekvenciju.
-Pokretanjem regulatora API naredbe manipulatora činimo mrežnim resursima unutar ROS "grafa", čime ovaj dio sustava postaje potpuno fizički odvojiv od ostatka.
-Svi podaci sa senzora postaju dostupni na temi \verb|joint_states|, postavljanje referentne veličine vrši se slanjem odgovarajuće poruke na temu \verb|\goal|, a parametri regulatora također su dostupni.
+Pokretanjem regulatora, API naredbe manipulatora postavljaju se kao mrežni resursi unutar ROS "grafa", čime ovaj dio sustava postaje potpuno fizički odvojiv od ostatka.
+Svi podaci sa senzora postaju dostupni na temi \texttt{joint\_states}, postavljanje referentne veličine vrši se slanjem odgovarajuće poruke na temu \texttt{camera\_goal}, a parametri regulatora također su dostupni.
 
 \subsection{Glavni čvor}
-Inicijalizacijom glavnog čvora dovršavamo pokretanje sustava.
+Inicijalizacijom glavnog čvora dovršava se pokretanje sustava.
 Dok \texttt{ros\_control} regulator osigurava stabilnu brzinu, glavni čvor čini nadređenu regulacijsku petlju koja osigurava odgovarajuću referentnu veličinu baziranu na razlici željenog i trenutnog vektora konfiguracija.
 Kako bi rješili problem kinematike opisan u poglavlju \ref{direkt i inverz}, pomoću metoda dostupnih u KDL bibliotekama učitavamo opis kinematičkog lanca iz \texttt{.urdf} datoteke.
 Iz učitanog se lanca pomoću funkcija u klasi \texttt{Kinematics} generira matrica direktne kinematike i Jakobijan sustava. 

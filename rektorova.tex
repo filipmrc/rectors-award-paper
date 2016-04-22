@@ -1727,21 +1727,22 @@ Pri korištenju igraće palice studenti navode da „nisu imali u potpunosti osj
 Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena saznali smo da je studentima „značajno lakše upravljati rukom na ovaj način“. Ponovno je, po istim kriterijima korištenim ranije, traženo da ocjene iskustvo u ovom načinu rada. Dobivena je prosječna ocjena 8.1/10.
 
 \chapter{Zaključak}
-Sustav zamišljen kao intuitivniju alternativu konvencionalnim načinima upravljanja ostvarili smo u potpunosti koristeći metode neovisne o konkretnoj sklopovskoj implementaciji. 
+Sustav zamišljen kao intuitivnija alternativa konvencionalnim načinima upravljanja ostvaren je u potpunosti koristeći metode neovisne o konkretnoj sklopovskoj implementaciji. 
 Smatramo da smo ovakvim pristupom prikazali moguće rješenje problema ovakvog tipa upravljačkog sučelja u općem slučaju.
 
-Problem kinematike detaljno smo obradili kako bi prikazali prepreke na koje se nailazi pri poopćenju.
-Inverznu kinematiku rješili smo iterativno na način primjenjiv za velik broj manipulatora, pritom uzimajući u obzir numeričke karakteristike rješenja te ograničenja matematičkog modela.
-Matematički model zatim smo uspješno testirali i pri tome objasnili potrebu za primjenom numerički robusnijeg algoritma, koji smo potom i ostvarili.
+Problem kinematike detaljno je obrađen kako bi se prikazale prepreke na koje se nailazi pri poopćenju.
+Inverzna kinematika rješena je iterativnom metodom primjenjivom za velik broj manipulatora.
+Pritom su se uzimale u obzir numeričke karakteristike rješenja te ograničenja matematičkog modela.
+Matematički model zatim je uspješno testiran i pri tome je objašnjena potreba za primjenom numerički robusnijeg algoritma, koji je i ostvaren.
 
-Detekciju pozicije i orijentacije ljudskog dlana također smo ostvarili na dva načina.
-Prvi je način komputacijski vrlo učinkovit no ostavlja prostora za razvoj radi nemogućnosti pronalaženja orijentacije ruke korisnika.
+Detekciju pozicije i orijentacije ljudskog dlana također ostvarujemo na dva načina.
+Prvi je način računalno vrlo učinkovit no ostavlja prostora za razvoj radi nemogućnosti pronalaženja orijentacije ruke korisnika.
 Drugi, napredniji algoritam koristi više procesorskog vremena kako bi detektirao orijentaciju dlana korisnika korištenjem konvolucijske neuronske mreže.
 Također, ostvarena je detekcija otvorenosti ljudske šake koju koristimo kao dodatnu informaciju za upravljanje.
 
-Konačno, ova dva algoritma ujedinili smo u upravljačku strukturu više razine baziranu na ROS arhitekturi.
-Prednost naše arhitekture leži u univerzalnosti sučelja te vrlo jednostavnoj prenamjeni.
-Cjelokupnu upravljačku arhitekturu ispitujemo u Gazebo programskom sučelju i zaključujemo kako su rezultati zadovoljavajući za primjenu.
+Konačno, ova dva algoritma ujedinjena su u upravljačku strukturu više razine baziranu na ROS arhitekturi.
+Prednost razvijene arhitekture leži u univerzalnosti sučelja te vrlo jednostavnoj prenamjeni.
+Cjelokupna upravljačka arhitektura ispitana je u Gazebo programskom sučelju i zaključeno je kako su rezultati zadovoljavajući za primjenu.
 
 Upravljačko sučelje se u uporabi ponaša intuitivno, te su u jednostavnim zadacima postignute performanse bolje od konvencionalnog sučelja.
 Podizanje i spuštanje predmeta pokazalo se kao posebno prikladan zadatak jer odgovara anatomiji odabranog manipulatora, no promjenom izvršnog člana moguće je pronaći druge prikladne primjene.

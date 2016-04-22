@@ -100,7 +100,7 @@ Ovime osiguravamo ažurnost sustava kroz vrijeme te jednostavnije popravke i mod
 \item Sustav mora imati zadovoljavajuće dinamičko ponašanje, što zahtjeva testiranje kinematike i upravljačke petlje na simulaciji razvijenoj za potrebe rada.
 \end{itemize}
 
-Kako bi ostvarili ove ciljeve bilo je potrebno savladati metodologiju korištenja nekolicine programskih paketa i biblioteka, kao i riješiti problem međusobne kompatibilnosti brojnih komponenti sustava.
+Za ostvarivanje ovih ciljeva bilo je potrebno savladati metodologiju korištenja nekolicine programskih paketa i biblioteka, kao i riješiti problem međusobne kompatibilnosti brojnih komponenti sustava.
 Komponente je potom potrebno uklopiti u strukturu upravljačke petlje više razine, pri tome vodeći računa o radnim frekvencijama korištenih sklopova.
 
 %\section{Osnovni koncepti}
@@ -110,9 +110,9 @@ Komponente je potom potrebno uklopiti u strukturu upravljačke petlje više razi
 %Drugi odlomak sadrži grubi pregled arhitekture cjelokupnog sustava i svrhe pojedinih komponenata, koje detaljnije obrađujemo u poglavlju \ref{Upravljački algoritam}.
 
 \section{Interpretacija pokreta}\label{2_1}
-Samom prenošenju kretnji ljudske ruke na robota pristupili smo na dva načina: prvi ostvaruje praćenje ljudske ruke u stvarnom vremenu, dok se drugi bazira na načelu sličnom upravljanju kontrolnom palicom (\textit{engl. joystick}).
+Samom prenošenju kretnji ljudske ruke na robota pristupa se na dva načina: prvi ostvaruje praćenje ljudske ruke u stvarnom vremenu, dok se drugi bazira na načelu sličnom upravljanju kontrolnom palicom (\textit{engl. joystick}).
 
-Praćenje ljudske ruke ostvarujemo "poistovjećivanjem" dlana korisnika s alatom na vrhu manipulatora. 
+Praćenje ljudske ruke ostvaruje se "poistovjećivanjem" dlana korisnika s alatom na vrhu manipulatora. 
 Pri početku upravljanja ljudska se ruka nalazi na sredini kadra i odgovarajućoj udaljenosti, ova početna pozicija poistovjećuje se sa trenutnom pozicijom alata manipulatora.
 Pomicanjem dlana korisnik pomiče željenu poziciju alata manipulatora.
 Upravljačka petlja "primjećuje" ovu razliku te regulacijom brzine zglobova ili izvršnog člana nastoji smanjiti pogrešku između trenutne i željene pozicije manipulatora.
@@ -133,7 +133,7 @@ Prenosi se samo konačni "cilj" kretanja, dok se način postizanja prilagođava 
 Zajednička funkcija kod ovih pristupa vezana je uz otvaranje i zatvaranje alata (izvršnog člana).
 Otvaranje šake korisnika upravljački algoritam interpretira kao naredbu otvaranja alata manipulaotra, dok se zatvorena šaka interpretira kao naredba zatvaranja.
 Ova funkcija naravno ovisi o tipu alata na kraju manipulatora, no mapiranje otvaranja i zatvaranja šake na neku drugu funkciju ne predstavlja problem radi separabilnosti dijela upravljačke petlje vezane uz izvršni član.
-U ovom radu većinom ćemo se baviti prvim i složenijim načinom upravljanja, jer svi sustavi razvijeni za njega mogu ostvariti \textit{joystick} način rada.
+U ovom radu većinom se obrađuje prvi i složeniji način upravljanja, jer se svi sustavi razvijeni za njega mogu ostvariti \textit{joystick} način rada.
 
 
 
@@ -149,9 +149,9 @@ Sustav upravljanja na najvišoj se razini sastoji od 4 komponente:
   Ugrađeno sklopovlje bilježi senzorska očitanja sa zglobova te ih priprema za čitanje od strane API sučelja.
 \end{itemize}
 
-Kako bi kvalitetno ostvarili koncepte upravljanja navedene u potpoglavlju \ref{2_1}, vrlo nam je bitna povratna veza prikazana na slici \ref{izvedba}.
-Povratna veza omogućuje nam uvid u trenutno stanje sustava čime se omogućuje ispravljanje pogrešaka, praćenje referentne veličine i otpornost na smetnje.
-Pomoću informacija o poziciji pojedinačnih zglobova također osvježavamo matricu Jakobijana manipulatora, koja je ključni element općeg kinematičkog rješenja praćenja u poglavlju \ref{direkt i inverz}.
+Kako bi se kvalitetno ostvarili koncepti upravljanja navedeni u potpoglavlju \ref{2_1}, vrlo je bitna povratna veza prikazana na slici \ref{izvedba}.
+Povratna veza omogućuje uvid u trenutno stanje sustava čime se postiže ispravljanje pogrešaka, praćenje referentne veličine i otpornost na smetnje.
+Pomoću informacija o poziciji pojedinačnih zglobova također se osvježava matrica Jakobijana manipulatora, koja je ključni element općeg kinematičkog rješenja praćenja u poglavlju \ref{direkt i inverz}.
 
 \begin{figure}[!h]
 \centering
@@ -184,15 +184,15 @@ U našem radu izvedeno je trodimenzionalno translacijsko kretanje, dok je upravl
 
 \subsubsection{Regulator}
 Pod pojmom regulator ovdje se podrazumjeva cijela programska struktura koja prima, obrađuje i šalje podatke između više objekata u stvarnom vremenu.
-Stvarnu strukturu regulatora detaljnije ćemo razmotriti u poglavlju \ref{Upravljački algoritam}, kada se upoznamo sa korištenom programskom podrškom i kinematičkim rješenjem.
+Stvarna struktura regulatora detaljnije se razmatra u poglavlju \ref{Upravljački algoritam}, nakon upoznavanja sa korištenom programskom podrškom i kinematičkim rješenjem.
 
-Ovdje ćemo samo napomenuti da je za kvalitetan rad regulatora bitna sinkronizacija rada svih njegovih komponenti kako bi se ostvario stabilan protok podataka i stalna radna frekvencija sustava.
-Ovo je ostvarujemo koristeći mrežnu arhitekturu operacijskog sustava ROS, koji omogućuje određivanje radne frekvencije komponenti i daje detaljan uvid u protok podataka.
+Ovdje je potrebno napomenuti da je za kvalitetan rad regulatora bitna sinkronizacija rada svih njegovih komponenti kako bi se ostvario stabilan protok podataka i stalna radna frekvencija sustava.
+Ovo se ostvaruje koristeći mrežnu arhitekturu operacijskog sustava ROS, koji omogućuje određivanje radne frekvencije komponenti i daje detaljan uvid u protok podataka.
 Također, mrežna arhitektura ROS-a omogućuje pokretanje komponenti pojedinačno na različitim fizičkim računalima, što ide u prilog modularnosti sustava.
 
 \subsubsection{API sučelje}
 Općenitost sustava zahtjeva razdvajanje općih funkcija za regulaciju i obradu podataka od funkcija povezanih uz specifični korišteni manipulator.
-Konkretnije, ovu komponentu moramo ostvariti tako da se na nju može spojiti API bilo kojeg manipulatora koji zadovoljava fizičke zahtjeve.
+Konkretnije, ovu komponentu potrebno je ostvariti tako da se na nju može spojiti API bilo kojeg manipulatora koji zadovoljava fizičke zahtjeve.
 
 Paket \texttt{ros\_control}ostvaruje zadano sučelje koristeći apstraktne klase na koje "spajamo" API manipulatora.
 Dovoljno je funkcije čitanja stanja zglobova i zadavanja brzine/pozicije "umotati" u dostupne klase, te ostatak sustava izvesti koristeći njih.
@@ -403,7 +403,7 @@ Ovaj način komunikacije omogućuje distribuciju raznih procesa na više računa
 %slika streama jednog topica
 
 \subsection{Ostale korištene funkcionalnosti}
-Uz navedene osnovne funkcionalnosti , ROS sadrži neke složenije koncepte od kojih ćemo ovdje izdvojiti servise i parametarski server. 
+Uz navedene osnovne funkcionalnosti , ROS sadrži neke složenije koncepte od kojih se ovdje izdvajaju servisi i parametarski server. 
 
 \subsubsection{Servisi}
 U ovom radu koriste se servisi (engl. \textit{services}). 
@@ -449,7 +449,7 @@ Unutar Matlaba nalazi se veliki broj programskih paketa koji se koriste za speci
 Nama je bitan paket za simnolički račun, kao i paketi za čitanje podataka spremljenih unutar ROS operacijskog sustava.
 Za svrhe testiranja nam je također bitna mogućnost pretvaranja Matlab koda u C, čime se znatno ubrzava izvođenje te omogućuje testiranje matematičkog modela.
 
-U ovom radu Matlab koristimo pri razvoju rješenja kinematike manipulatora za preliminarno testiranje matematičke provedivosti zamišljene upravljačke petlje.
+U ovom radu Matlab se koristi pri razvoju rješenja kinematike manipulatora za preliminarno testiranje matematičke provedivosti zamišljene upravljačke petlje.
 
 \section{OpenCV}
 \begin{figure}[h!]
@@ -501,16 +501,12 @@ Ova kompatibilnost ostvaruje se kroz \texttt{gazebo\_ros}, \texttt{gazebo\_msgs}
 Vrstu sklopovskog sučelja simulacije definiramo unutar URDF datoteke te se pri pokretanju Gazeba unutar ROS okruženja ono objavljuje kao stvarno.
 Zahvaljujući ovoj činjenici, sustav možemo razvijati za simulaciju i stvarni sustav istovremeno, što ubrzava proces razvoja.
 
-
-
-
-
 \chapter{Kinematika manipulatora}
 Modularna arhitektura našeg sustava dopušta integraciju manipulatora sa različitim razinama kompleksnosti API-ja.
 Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, smatramo da je radi kompletnosti izvedbe bitno predviditi i slučaj kada su dostupne samo naredbe pomicanja zglobova.
 Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike neredundantnog manipulatora izvedenog unutar našeg sustava na primjeru Jaco robotske ruke.
 Pošto Jaco robotska ruka ima 6 stupnjeva slobode , sa stajališta složenosti kinematike ovaj izbor predstavlja svojevrsni najgori slučaj.
-Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovili numeričku stabilnost rješenja i moguće nedostatke.
+Kinematičko rješenje provjerava se u Matlab programskom paketu kako bi se ustanovila numerička stabilnost rješenja i moguće nedostaci.
 
 \begin{figure}[h!]
 \centering
@@ -520,13 +516,13 @@ Kinematičko rješenje provjeravamo u Matlab programskom paketu kako bi ustanovi
 
 U idealnom slučaju, rješavanje problema direktne kinematike manipulatora sa do 6 stupnjeva slobode zahtjeva sintezu matrica homogene transformacije između koordinatnih sustava baze i alata.
 Iz članova dobivene matrice potom analitički dobivamo izraze za Kartezijsku poziciju i orijentaciju alata u ovisnosti o zakretima zglobova.
-Sintezu direktne kinematike započinjemo D-H postupkom \cite{uicker1964iterative} postavljanja koordinatnih sustava vezanih uz zglobove.
-Određivanjem matrica homogenih transformacija između tih sustava dobivamo surjektivnu\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkciju koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
+Sinteza direktne kinematike započinje se D-H postupkom \cite{uicker1964iterative} postavljanja koordinatnih sustava vezanih uz zglobove.
+Određivanjem matrica homogenih transformacija između tih sustava dobiva se surjektivna\footnote{Uz pretpostavku restrikcije zakreta zglobova na vrijednosti $[0,2\pi]$.} funkcija koja prostor zglobova preslikava u 6-dimenzionalni prostor pozicije.
 
 Problem inverzne kinematike znatno je složeniji jer zahtjeva rješavanje sustava nelinearnih jednadžbi s više nepoznanica.
 Za složenije manipulatore  ovaj problem je netrivijalan, a analitička rješenja postoje tek u specijalnim slučajevima gdje su osi zglobova međusobno okomite.
 Još jedna otežavajuća okolnost nalazi se u činjenici da će dobivena rješenja često biti višestruka, a pronalaženje odgovarajućeg ovisi o konstrukciji i poziciji manipulatora.
-Kod redundantnih manipulatora ovaj problem je još složeniji jer za svaku zadanu konfiguraciju postoji beskonačno mnogo rješenja.
+Kod redundantnih manipulatora ovaj problem poprima dodatnu složenost jer za svaku zadanu konfiguraciju postoji beskonačno mnogo rješenja.
 
 Analitička rješenja problema ne postoje za većinu konfiguracija sa 6 stupnjeva slobode \cite{grochow2004style}, a klasični pristupi aproksimiranju rješenja sustava nelinearnih jednadžbi \cite{broyden1965class}\cite{bi2009three} zahtjevaju složen račun neprikladan za izvođenje u stvarnom vremenu.
 Pronađeno je da je ovaj problem moguće zaobići koristeći iterativnu metodu baziranu na pronalaženju inverza matrice Jakobijana manipulatora \cite{buss2004introduction}, koja je puno prikladnija za programsku izvedbu.
@@ -650,7 +646,7 @@ Matrica $\mathbf{R}$ je matrica rotacije koja definira orijentaciju koordinatnog
 \label{homogena}
 \end{equation}
 
-Uvrštavajući podatke iz tablice \ref{JacoDH} u izraz \ref{homogena} dobivamo matrice homogenih transformacija za koordinatne sustave Jaco robotske ruke.
+Uvrštavanjem podataka iz tablice \ref{JacoDH} u izraz \ref{homogena} dobivaju se matrice homogenih transformacija za koordinatne sustave Jaco robotske ruke.
 \begin{equation}
 \mathbf{T_0^1} =\begin{bmatrix} \cos\theta_{1}& 0 & \sin\theta_{1} & 0\\ 
 \sin\theta_{1}& 0 & -\cos\theta_{1} & 0\\
@@ -699,14 +695,14 @@ Uvrštavajući podatke iz tablice \ref{JacoDH} u izraz \ref{homogena} dobivamo m
 \end{bmatrix}
 \end{equation}
 
-Množenjem ovih matrica dobivamo matricu homogene transformacije između baze robota i alata \ref{b-a}
+Množenjem ovih matrica dobiva se matrica homogene transformacije između baze robota i alata \ref{b-a}
 \begin{equation}
 \mathbf{T_{alat}^{baza}} = \mathbf{T_1^0}\ \mathbf{T_2^1}\ \mathbf{T_3^2}\ \mathbf{T_4^3}\ \mathbf{T_5^4}\ \mathbf{T_6^5}
 \label{b-a}
 \end{equation}
 
-Članove ove matrice određujemo koristeći matlab skriptu, rezultat računa i skripta ispisani su u dodatku.
-Iz matrice $\mathbf{T_{alat}^{baza}}$ dobivamo potpunu informaciju o položaju alata u baznom koordinatnom sustavu kao funkciju zakreta zglobova:
+Članovi ove matrice određuju se koristeći matlab skriptu, rezultat računa i skripta ispisani su u dodatku.
+Iz matrice $\mathbf{T_{alat}^{baza}}$  se dobiva potpuna informaciju o položaju alata u baznom koordinatnom sustavu kao funkcija zakreta zglobova:
 \begin{equation}
 \mathbf{w}(\bm \theta) = 
 \begin{bmatrix}
@@ -716,7 +712,7 @@ Iz matrice $\mathbf{T_{alat}^{baza}}$ dobivamo potpunu informaciju o položaju a
 \label{konfig_alat}
 \end{equation}
 
-Vektor \ref{konfig_alat} još nazivamo vektorom konfiguracije alata.
+Vektor \ref{konfig_alat} još se naziva vektorom konfiguracije alata.
 
 \subsection{Inverzna kinematika}
 Ciljane konfiguracije izvršnog člana u $\mathbb{R}^{6}$ dane su vektorom $\vec{\mathbf{t}} = (\mathbf{t_1}, \ldots , \mathbf{t_k})^{T}$ , a trenutne konfiguracije vektorom
@@ -732,14 +728,14 @@ Razvijeni su različiti pristupi ovom problemu od kojih se mnogi oslanjaju na nu
 
 Korištenjem analitičke metode rješavanja opisane u uvodu ovog poglavlja, vektor $\bm{\theta}_{\mathbf{i}}(\mathbf{t_i})$ dobiva se rješavanjem sustava jednadžbi dobivenog iz vektora konfiguracije alata \ref{konfig_alat}. 
 Promatrajući puni izraz za vektor konfiguracije alata $\mathbf{w}$, primjećujemo da je analitičko rješavanje ovog problema netrivijalan zadatak čije poopćavanje zahtjeva iznimno složen algoritam.
-Ovo nas dovodi do zaključka da univerzalni algoritam rješavanja inverzne kinematike zahtjeva drugačiji pristup.
+Ovo dovodi do zaključka da univerzalni algoritam rješavanja inverzne kinematike zahtjeva drugačiji pristup.
 
 \section{Iterativno rješavanje kinematičkog problema}
-Kako bi izbjegli komplicirano analitičko rješavanje problema inverzne kinematike, koristimo metodu koja zaobilazi rješavanje sustava jednadžbi \ref{inverzna_def}.
+Kako bi se izbjeglo komplicirano analitičko rješavanje problema inverzne kinematike, koristimo metodu koja zaobilazi rješavanje sustava jednadžbi \ref{inverzna_def}.
 Prvi se korak sastoji od određivanja matrice Jakobijana manipulatora koja povezuje brzine okretanja zglobova sa linearnim i rotacijskim brzinama alata.
 
-Pronalaženjem inverza ove matrice, moguće je odrediti potrebne brzine rotacije zglobova kako bismo ostvarili željene brzine gibanja alata.
-Sintezom upravljačke petlje moguće je ostvariti praćenje referentne veličine u obliku zadanog vektora konfiguraciije alata, čime ostvarujemo iterativni postupak rješavanja inverzne kinematike.
+Pronalaženjem inverza ove matrice, moguće je odrediti potrebne brzine rotacije zglobova potrebne za ostvarivanje željene brzine gibanja alata.
+Sintezom upravljačke petlje moguće je ostvariti praćenje referentne veličine u obliku zadanog vektora konfiguraciije alata, čime se ostvaruje iterativni postupak rješavanja inverzne kinematike.
 
 \subsection{Jakobijan manipulatora}
 
@@ -748,17 +744,17 @@ Radi jednostavnosti zapisa, u nastavku teksta ispuštamo indekse ovih vektora. S
 \begin{equation}
 \mathbf{J} =\frac{d\mathbf{w}}{d\bm{\theta}} \label{jakob}
 \end{equation}
-Počinjemo pretpostavkom da za dovoljno malene vrijednosti $\Delta \mathbf{w}$ vrijedi \ref{jac_approx}:
+Počinje se pretpostavkom da za dovoljno malene vrijednosti $\Delta \mathbf{w}$ vrijedi \ref{jac_approx}:
 \begin{equation}
 \Delta \mathbf{w} \approx \mathbf{J}  \Delta \bm{\theta}
 \label{jac_approx}
 \end{equation}
-Inverzom matrice $\mathbf{J}$ možemo dobiti sljedeći vrlo koristan identitet:
+Inverzom matrice $\mathbf{J}$ može se dobiti sljedeći vrlo koristan identitet:
 \begin{equation}
 \Delta \bm{\theta} \approx \mathbf{J}^{-1} \Delta \textbf{w}
 \label{jac_approx2}
 \end{equation}
-Identitet \ref{jac_approx2} važan je jer zahvaljujući njemu ostvarujemo regulator brzine definiran u \ref{kin_upr}.
+Identitet \ref{jac_approx2} važan je jer omogućuje ostvarivanje regulatora brzine definiranog u \ref{kin_upr}.
 
 U generalnom slučaju Jacobijeva matrica predstavlja matricu dimenzija $n \times k$ gdje je $\mathbf{w_i} = (w_1, \ldots , w_k)^T$:
 \begin{equation}
@@ -809,14 +805,14 @@ Uz odgovarajuću frekvenciju osvježavanja matrice $\mathbf{J}$, moguće je dobi
 Problem kod ovog pristupa nastaje u slučajevima kada matrica $\mathbf{J}$ nije kvadratna, što je slučaj kod svih manipulatora sa brojem zglobova različitim od 6.
 Nekvadratnu matricu nije moguće invertirati, što znači da metoda nije univerzalna.
 Radi potrebe za općim rješenjem koristimo metodu baziranu na Moore-Penroseovom pseudoinverzu \cite{klein1983review}, koji je svojevrsno poopćenje inverza matrice proizvoljnih dimenzija.
-Uz određene uvjete (ref), pseudoinverz Jakobijana određujemo izrazom \ref{eq:pseudoinverz}:
+Uz određene uvjete (\cite{ben2003generalized}), pseudoinverz Jakobijana određen je izrazom \ref{eq:pseudoinverz}:
 \begin{equation}
 \mathbf{J}^{+} = \left( \mathbf{J}^{\dagger} \mathbf{J}\right)^{-1}\mathbf{J}^{\dagger}
 \label{eq:pseudoinverz}
 \end{equation}
 U izrazu \ref{eq:pseudoinverz} simbol $\dagger$ označava operaciju hermitske transpozicije.
-Ovom modifikacijom poopćavamo ideju izraza \ref{jac_approx2} na sve manipualtore te osiguravamo veću numeričku stabilnost naspram običnog inverza.
-U praksi se koriste naprednije metode koje osiguravaju dodatnu numeričku stabilizaciju dodatnim članovima, pa u praksi izraz \ref{jac_approx2} poprima oblik \ref{jacob3}.
+Ovom modifikacijom poopćava se ideja izraza \ref{jac_approx2} na sve manipualtore, čime se osigurava veća numeričku stabilnost naspram običnog inverza.
+U praksi se koriste naprednije metode koje osiguravaju dodatnu numeričku stabilizaciju dodatnim članovima, pa izraz \ref{jac_approx2} poprima oblik \ref{jacob3}.
 \begin{equation}
 \Delta \bm{\theta} \approx \mathbf{J}^{+} \Delta \textbf{w} + \mathbf{S}
 \label{jacob3}
@@ -828,19 +824,20 @@ Metoda prigušenih najmanjih kvadrata nalazi vektor $\Delta \bm{\theta}$ koji pr
 \begin{equation}
 \|\mathbf{J}\Delta \bm{\theta} - \Delta \textbf{w}\|^2 + \lambda^2\|\Delta \bm{\theta}\|^2 \label{dlq}
 \end{equation}
-Izraz \ref{dlq} može se svesti na izraz \ref{dlq2}, gdje konstantu $\lambda$ odabiremo ovisno o konstrukciji manipulatora prema nekoj od razvijenih metoda (ref).
+Izraz \ref{dlq} može se svesti na izraz \ref{dlq2}, gdje se konstanta $\lambda$ odabire ovisno o konstrukciji manipulatora prema nekoj od razvijenih metoda.
 Jedan prijedlog korišten pri testiranju koncepta jest postavljanje konstante na vrijednost maksimalne dopuštene promjene vrijednosti nekog zgloba unutar jednog radnog ciklusa.
 \begin{equation}
 \Delta \bm{\theta} = \left(\mathbf{J}^{\dagger} \mathbf{J} + \lambda^2\mathbf{I}\right)^{-1}\mathbf{J}^{\dagger} \Delta \mathbf{w} \label{dlq2}
 \end{equation}
-Pokazalo se da je ovakva izvedba superiorna prema ostalim metodama, što pokazujemo u odlomku \ref{provjera}. Primjećujemo da izraz \ref{dlq2} za $\lambda = 0$ postaje \ref{jacob3}.
+Ispostavlja se da je ovakva izvedba superiorna prema ostalim metodama, što pokazujemo u odlomku \ref{provjera}.
+Primjećeno je da izraz \ref{dlq2} za $\lambda = 0$ postaje \ref{jacob3}.
 
 \subsection{Upravljačka petlja}\label{kin_upr}
 %Pomoću izvedene Jakobijeve matrice manipulatora konstruiramo upravljačku petlju više razine koja regulira vektor konfiguracije alata $\mathbf{w}$.
-Razmatranjem izraza \ref{jac_approx2} možemo zaključiti da smo posredno došli do metode čijom primjenom u upravljačkoj petlji u teoriji možemo ostvariti kretanje po putanji. 
-Iterativnom primjenom izraza \ref{jac_approx2} moguće je ostvariti kretanje ruke prema željenom vektoru konfiguracije dokle god poznajemo pogrešku $\mathbf{e}$ . 
-Za sintezu Jacobijeve matrice potrebni su nam podaci o trenutnim pozicijama zglobova $\bm{\theta}$, koji čine unutarnju povratnu vezu petlje.
-Vanjsku povratnu vezu korištenu za računanje potrebne promjene vektora konfiguracije ostvarujemo pomoću bloka funkcije direktne kinematike \textbf{DK}.
+Razmatranjem izraza \ref{jac_approx2} moguće je posredno doći do metode čijomse primjenom u upravljačkoj petlji u teoriji ostvaruje kretanje po putanji. 
+Iterativnom primjenom izraza \ref{jac_approx2} moguće je ostvariti kretanje ruke prema željenom vektoru konfiguracije dokle god je poznata pogrešku $\mathbf{e}$ . 
+Za sintezu Jacobijeve matrice potrebni su podaci o trenutnim pozicijama zglobova $\bm{\theta}$, koji čine unutarnju povratnu vezu petlje.
+Vanjska povratna vezu korištena za računanje potrebne promjene vektora konfiguracije ostvaruje se pomoću bloka funkcije direktne kinematike \textbf{DK}.
 Blok $\mathbf{J^{-1}}$ u ovom slučaju podrazumjeva bilo koju od metoda \ref{jac_approx2}, \ref{jacob3} ili \ref{dlq2} kojima povezujemo promjene zglobova sa promjenama vektora konfiguracije.
 \begin{figure}[!h]
 \centering
@@ -871,31 +868,31 @@ Blok $\mathbf{J^{-1}}$ u ovom slučaju podrazumjeva bilo koju od metoda \ref{jac
 \caption{Blok dijagram izvedbe upravljače petlje manipulatora} \label{petlja}
 \end{figure}
 
-Izrazom \ref{e} definiramo vektor razlike translacija u iteraciji $i$. Njime je definirana razlika u poziciji između ciljane i trenutne konfiguracije ${\mathbf{t}_{T}}$ i ${\mathbf{c}_{T}}$ unutar baznog koordinatnog sustava.
+Izrazom \ref{e} definira se vektor razlike translacija u iteraciji $i$. Njime je definirana razlika u poziciji između ciljane i trenutne konfiguracije ${\mathbf{t}_{T}}$ i ${\mathbf{c}_{T}}$ unutar baznog koordinatnog sustava.
 \begin{equation}
 {\mathbf{e}_{T}} = {\mathbf{t}_{T}} -{\mathbf{c}_{T}}
 \label{e}
 \end{equation}
-Kako bi potpuno definirali potrebnu promjenu konfiguracije, moramo poznavati i razliku u orijentaciji.
-Također, ova mjera razlike u orijentaciji mora biti kompatibilna sa geometrijskom izvedbom Jakobijana koju koristimo u izračunima.
+Kako bi se potpuno definirala potrebna promjena konfiguracije, potrebno je poznavati i razliku u orijentaciji.
+Također, mjera razlike u orijentaciji mora biti kompatibilna sa geometrijskom izvedbom Jakobijana koju koristimo u izračunima.
 Ovo čini izračun nešto je složenijim, te se on ne može svesti na oduzimanje.
 \begin{equation}
 {\mathbf{e}_{O}} = 0.5\left(\mathbf{R}_{x_c}\times\mathbf{R}_{x_t} + \mathbf{R}_{y_c}\times\mathbf{R}_{y_t} + \mathbf{R}_{z_c}\times\mathbf{R}_{z_t}\right)
 \label{eo}
 \end{equation}
-Koristimo izraz \ref{eo} definiran u \cite{siciliano2010robotics}, koji je pogodan za kinematičke lance koji ne posjeduju sferne zglobove.
+Koristi se izraz \ref{eo} definiran u \cite{siciliano2010robotics}, koji je pogodan za kinematičke lance koji ne posjeduju sferne zglobove.
 Elementi izraza predstavljaju stupce rotacijskih matrica koji korespondiraju sa orijentacijom koordinatnog sustava koji je njima definiran.
 
 Razliku referentnog i stvarnog vektora konfiguracije alata sustav množi se prema izrazima \ref{jac_approx2}, \ref{jacob3} ili \ref{dlq2}.
-Kao rezultat množenja dobivamo potrebne zakrete zglobova $\Delta \mathbf{q}$.
-Pri praćenju putanje manipulator nikad neće biti daleko od tražene pozicije, čime bez gubitka općenitosti dobivene potrebne pomake nakon skaliranja također možemo tretirati kao brzine.
+Kao rezultat množenja dobivaju se potrebni zakreti zglobova $\Delta \mathbf{q}$.
+Pri praćenju putanje manipulator nikad neće biti daleko od tražene pozicije, čime se bez gubitka općenitosti dobiveni potrebni pomaci (nakon skaliranja) mogu tretirati kao brzine.
 \begin{equation}
 \Delta \mathbf{q} \approx \bm{\omega}
 \end{equation}
 
 Vektor funkcija $\mathbf{f}$ u ovom slučaju označava preračunavanje kuteva očitanih sa manipulatora ruke $\bm{\theta_r}$ u kuteve koji odgovaraju postavljenom matematičkom modelu $\bm{\theta}$. 
-Dobivene kuteve koristimo kako bi osvježili matricu $\mathbf{J}$ i kako bi dobili trenutni vektor konfiguracije alata $\mathbf{w}$. 
-Iz \ref{petlja} primjećujemo kako se radi o strukturi sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora u nadređenoj i/ili podređenoj petlji.
+Dobiveni kutevi korišteni su za osvježavanje matrice $\mathbf{J}$ i dobivanje trenutnog vektora konfiguracije alata $\mathbf{w}$. 
+Iz \ref{petlja} primjećuje se struktura sa P (proporcionalnim) regulatorom jediničnog pojačanja, no sustav je moguće proširiti složenijim oblicima regulatora u nadređenoj i/ili podređenoj petlji.
 
 \subsection{Provjera sustava}\label{provjera}
 Zamišljenu upravljačku shemu sustava prikazanu na slici \ref{petlja} provjeravamo u Matlabu.

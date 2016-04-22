@@ -326,7 +326,18 @@
 @book{siciliano2010robotics,
   title={Robotics: modelling, planning and control},
   author={Siciliano, Bruno and Sciavicco, Lorenzo and Villani, Luigi and Oriolo, Giuseppe},
-  pages={136--140}
+  pages={136--140},
   year={2010},
   publisher={Springer Science \& Business Media}
 }
+
+@article{van2008visualizing,
+  title={Visualizing data using t-SNE},
+  author={van der Maaten, Laurens and Hinton, Geoffrey},
+  journal={The Journal of Machine Learning Research},
+  volume={9},
+  number={2579-2605},
+  pages={85},
+  year={2008}
+}
+

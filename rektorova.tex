@@ -67,7 +67,7 @@ Zahvaljujući masovnoj proizvodnji tehnologija koje su za početka razvoja robot
 Robotski manipulatori vrlo su često anatomski slični ljudskoj ruci, što nas je dovelo do zaključka kako bi upravljanje manipulatora ljudskom rukom rezultiralo visokom razinom intuitivnosti, čiji manjak smatramo glavnim nedostatkom klasičnih sučelja.
 
 Zamišljeno upravljačko sučelje razlikuje se od klasičnih po još jednoj osnovnoj karakteristici: ne zahtjeva kontakt između opreme i korisnika.
-Ovakav sustav ostvarujemo snimanjem pokreta ruke korisnika pomoću RGB-Dubinske kamere, koja uz sve funkcije standardne kamere vraća informaciju o udaljenosti objekata u kadru.
+Ovakav sustav je ostvaren snimanjem pokreta ruke korisnika pomoću RGB-Dubinske kamere, koja uz sve funkcije standardne kamere vraća informaciju o udaljenosti objekata u kadru.
 Dobivene informacije obrađuju se razvijenim algoritmom detekcije dlana ruke te se šalju preko mreže na upravljačko računalo robotskog manipulatora, koje ih pretvara u naredbe.
 
 %doradi zadnji paragraf, bolje primjene, fokusirati se više na potrebu za ljudskim aspektom i postupnim ulaskom robota u svakodnevni život
@@ -82,7 +82,7 @@ Posebna pažnja pridana je opisu ROS operacijskog sustava i pratećih paketa, ko
 
 Teoretska pozadina problema kretanja manipulatora i prijedlog rješenja obrađen je u poglavlju "Kinematika manipulatora".
 Predloženo rješenje u ovom poglavlju također je programski provjereno na razini matematičke ispravnosti.
-Problem detekcije stanja ljudske ruke obrađen je u poglavlju "Detekcija", gdje dvije izložene metode uspoređujemo na bazi mogućnosti i performansi.
+Problem detekcije stanja ljudske ruke obrađen je u poglavlju Detekcijski algoritam (\ref{Detekcijski algoritam}), gdje su dvije izložene metode uspoređujene na bazi mogućnosti i performansi.
 
 Nakon što su komponente koje sačinjavaju sustav pojedinačno objašnjene, njihova povezanost i detalji programske izvedbe izlaženi su u poglavlju "Sustav upravljanja".
 U istom poglavlju izloženi su i rezultati testiranja sustava na simulaciji robotske ruke, napravljenogradi boljeg uvida u moguće nedostatke sustava.
@@ -94,9 +94,9 @@ Zamišljeno sučelje mora biti jednostavno za savladati novom korisniku, intuiti
 Iz ovih smjernica proizlaze specifični ciljevi rada:
 \begin{itemize}
 \item Cijeli sustav mora biti izveden koristeći besplatne, open-source\footnote{\textbf{open-source} - čiji je izvorni kod i/ili nacrti (dizajn) dostupan javnosti na uvid, korištenje, izmjene i daljnje raspačavanje} tehnologije. 
-Ovime osiguravamo ažurnost sustava kroz vrijeme te jednostavnije popravke i modifikacije.
+Ovime je osigurana ažurnost sustava kroz vrijeme te jednostavnije popravke i modifikacije.
 \item Radi nedostatka open-source rješenja za detekciju ruke korištenom 3d kamerom, potrebno je razviti detekcijski algoritam koji uzima u obzir ograničenja korištene sklopovske podrške i potrebe sustava.
-\item Udaljeno upravljanje zahtjeva korištenje robotskog operacijskog sustava ROS, u kojem izvodimo cijelokupni upravljački algoritam.
+\item Udaljeno upravljanje zahtjeva korištenje robotskog operacijskog sustava ROS, u kojem je izveden cijelokupni upravljački algoritam.
 \item Sustav mora biti primjenjiv na bilo kojem manipulatoru sa 3 ili više osi. Ovo ukazuje na potrebu za programskim rješavanjem problema kinematike robota uz dostupnu opisnu datoteku i kompatibilnost sa najčešćim izvedbama ROS-API\footnote{\textbf{API} (\textit{engl. application programming interface}) - set programskih "blokova" razvijen sa svrhom olakšavanja komunikacije i upravljanja programskim ili sklopovskim sustavom} sučelja.
 \item Sustav mora imati zadovoljavajuće dinamičko ponašanje, što zahtjeva testiranje kinematike i upravljačke petlje na simulaciji razvijenoj za potrebe rada.
 \end{itemize}
@@ -200,13 +200,13 @@ Dovoljno je funkcije čitanja stanja zglobova i zadavanja brzine/pozicije "umota
 
 \subsubsection{Manipulator}
 Manipulator je robotski uređaj koji izvršava željenu radnju te je na njega postavljeno nekoliko osnovnih zahtjeva kako bi bio kompatibilan sa sustavom.
-Kao što je ranije spomenuto, sam manipulator mora imati minimalno dva računalom upravljiva stupnja slobode (time ostvarujemo planarno kretanje).
+Kao što je ranije spomenuto, sam manipulator mora imati minimalno dva računalom upravljiva stupnja slobode (time se ostvaruje planarno kretanje).
 Minimalan uvjet za upravljanje jest postojanje API naredbi vezanih uz postavljanje brzine zglobova.
 Također, manipulator mora biti opermljen senzorima pozicije i/ili brzine koje je moguće čitati na računalu koristeći API.
 
 
 \chapter{Sklopovska podrška}
-Sustav je dizajniran da bude univerzalan s obzirom na manipulator i detekcijski uređaj, ali pri svim testiranjima koristili smo Kinova Jaco robotsku ruku i Microsoft Kinect RGB-Dubinsku kameru.
+Sustav je dizajniran da bude univerzalan s obzirom na manipulator i detekcijski uređaj, ali pri svim testiranjima korištena je Kinova Jaco robotska ruka i Microsoft Kinect RGB-Dubinska kamera.
 
 \section{Microsoft Kinect 3d kamera}\label{sec:kinect}
 \begin{figure}[h!]
@@ -232,11 +232,11 @@ RGB-Dubinska kamera se sastoji od emitera infracrvene svjetlosti koji projicira 
 	\label{fig:oculsion}
 \end{figure}
 
-Okluzija se pojavljuje kao posljedica razmaka između emitera infracrvene svjetlosti i kamere. Kako kamera promatra prostor s neke udaljenosti od emitera, vidi neke dijelove prostora koje emiter nije mogao obasjati jer su bili pokriveni drugim objektima. Tako na slici \ref{fig:oculsion} a) bijelom bojom vidimo sjenu koju dubinska slika ruke ostavlja za sobom. Iz položaja sjene i ruke jasno se vidi kako emiter emitira infracrvenu svjetlost s desne strane kamere što i je slučaj ako pogledamo arhitekturu senzora gdje se emiter nalazi s desne strane.
+Okluzija se pojavljuje kao posljedica razmaka između emitera infracrvene svjetlosti i kamere. Kako kamera promatra prostor s neke udaljenosti od emitera, vidi neke dijelove prostora koje emiter nije mogao obasjati jer su bili pokriveni drugim objektima. Tako na slici \ref{fig:oculsion} a) bijela boja predstavlja sjenu koju dubinska slika ruke ostavlja za sobom. Iz položaja sjene i ruke jasno se vidi kako emiter emitira infracrvenu svjetlost s desne strane kamere što i je slučaj ako se pogleda arhitekturu senzora gdje se emiter nalazi s desne strane \ref{fig:kinect}.
 
-Okluzije predstavljaju znatni problem u detektiranjima. U detekciji dlana, dlan može biti u takvom položaju da jedan dio dlana zasjeni drugi te ćemo dobiti maksimalnu moguću dubinu na tom području. Takvi slučajevi mogu prevariti detektor te zato valja imati na umu učinak okluzije prilikom konstrukcije detektora.
+Okluzije predstavljaju znatni problem u detektiranjima. U detekciji dlana, dlan može biti u takvom položaju da jedan dio dlana zasjeni drugi te je tada dobivena maksimalna moguća dubina na tom području. Takvi slučajevi mogu prevariti detektor te zato valja imati na umu učinak okluzije prilikom konstrukcije detektora.
 
-Jedan kvalitetan pristup detekciji dlana koristi sintetizirane slike dlana na kojima simulira i okluziju kako bi detektor bio što bolje naučen na prave slike \citep{xu2013efficient}. U istom radu Xu i Cheng su simulirali i neuspješne detekcije malih površina. Jedan takav primjer vidimo na slici \ref{fig:oculsion} b), gdje je kažiprst okrenut u smjeru kamere te ne uspijeva biti detektiran. Razlog takvih neuspješnih detekcija nalazimo u načinu na koji Kinect određuje kut pod kojim je površina obasjana. Kako je već spomenuto, Kinect generira pseudoslučajne uzorke ovisno o kutu pod kojim su oni projicirani te tako kamera uspoređivanjem uzoraka može znati pod kojim kutom je predmet obasjan. Ako je predmet dovoljno male površine, uzorak neće biti potpun. Kinect pri tome pristupa na isti način kao i kod okluzije, dubinu na tom području postavlja na maksimalnu moguću dubinu.
+Jedan kvalitetan pristup detekciji dlana koristi sintetizirane slike dlana na kojima simulira i okluziju kako bi detektor bio što bolje naučen na prave slike \citep{xu2013efficient}. U istom radu Xu i Cheng su simulirali i neuspješne detekcije malih površina. Jedan takav primjer se vidi na slici \ref{fig:oculsion} b), gdje je kažiprst okrenut u smjeru kamere te ne uspijeva biti detektiran. Razlog takvih neuspješnih detekcija nalazimo u načinu na koji Kinect određuje kut pod kojim je površina obasjana. Kako je već spomenuto, Kinect generira pseudoslučajne uzorke ovisno o kutu pod kojim su oni projicirani te tako kamera uspoređivanjem uzoraka može znati pod kojim kutom je predmet obasjan. Ako je predmet dovoljno male površine, uzorak neće biti potpun. Kinect pri tome pristupa na isti način kao i kod okluzije, dubinu na tom području postavlja na maksimalnu moguću dubinu.
 %\begin{figure}[h!]
 %    \centering
 %    \includegraphics[width=0.5\textwidth]{detekcija/gubitak-malih-objekata}
@@ -347,8 +347,8 @@ Detaljan pregled specifikacija aktuatora nalazi se u tablicama \ref{spec_act_big
 Jaco robotska ruka opremljena je velikom količinom senzora.
 Svaki zglob posjeduje senzore pozicije, temperature, struje i napona.
                                                                                                                             
-Senzori pozicije služe za bilježenje zakreta svakog pojedinačnog zgloba manipulatora, a diferenciranjem zakreta dobivamo informaciju o brzini okretanja.
-Informacijom o temperaturi aktuatora osiguravamo manipulator od moguće štete uzrokovane prekomjernim zagrijavanjem.
+Senzori pozicije služe za bilježenje zakreta svakog pojedinačnog zgloba manipulatora, a diferenciranjem zakreta dobiva se informacija o brzini okretanja.
+Informacijom o temperaturi aktuatora štiti se manipulator od moguće štete uzrokovane prekomjernim zagrijavanjem.
 Pomoću senzora struje moguće je dobiti povratnu informaciju o momentu razvijenom na pojedinom aktuatoru, ovaj zaključak proizlazi iz dobro poznatog identiteta:
 \begin{align}
 m_m \approx k \ i_a;
@@ -491,7 +491,7 @@ KDL također vodi računa o izbjegavanju singulariteta u matricama, čime je osi
 \caption{Gazebo logo}
 \end{figure}
 Gazebo je open-source programski paket za simulaciju robotskih sustava, njihovih senzora i okoline.
-Kako bi se postiglo simuliranje dinamike robota korsitimo DART\footnote{\textbf{DART} (engl . Dynamic Animation and Robotics Toolkit) - \texttt{www.dartsim.github.io}} , jednu od nekoliko biblioteka ovog tipa koje Gazebo podržava.
+Kako bi se postiglo simuliranje dinamike robota koršten je DART\footnote{\textbf{DART} (engl . Dynamic Animation and Robotics Toolkit) - \texttt{www.dartsim.github.io}} , jedna od nekoliko biblioteka ovog tipa koje Gazebo podržava.
 Kvalitetno iscrtavanje 3d modela korištenog robota u Gazebu je omogućeno korištenjem OGRE\footnote{\textbf{OGRE} (engl . Object-Oriented Graphics Rendering Engine) - \texttt{www.ogre3d.org}} 3d grafičkog modula.
 
 Semantički opis robota, njegovih komponenti, prijenosa i zglobova Gazebo dobiva iz pripadajuće URDF\footnote{\textbf{URDF} (engl . Unified Robot Description Format )} datoteke.
@@ -499,7 +499,7 @@ URDF je vrlo često korišten format za opis kinematičkih lanaca koji nudi kval
 Proces pripreme simulacije znatno ubrzava činjenica da gotovo svaki komercijalni robotski manipulator ima pripadajuću URDF datoteku.
 
 \subsection{ROS integracija Gazebo paketa}
-Glavni razlog za korištenje ovog simulacijskog paketa uska je integracija sa ROS-om , čime postižemo jednostavan transfer sustava razvijenog na simulaciji na stvarni manipulator.
+Glavni razlog za korištenje ovog simulacijskog paketa uska je integracija sa ROS-om , čime se postiže jednostavan transfer sustava razvijenog na simulaciji na stvarni manipulator.
 Gazebo simulaciju moguće je potpuno upravljati kroz ROS kroz regulatore i sučelja ostvarene \texttt{ros\_control} paketom, što nam omogućuje simuliranje korištenjem koda za stvarni manipulator.
 Ova kompatibilnost ostvaruje se kroz \texttt{gazebo\_ros}, \texttt{gazebo\_msgs}, \texttt{gazebo\_plugins}  ROS pakete.
 Vrsta sklopovskog sučelja simulacije definirana je unutar URDF datoteke, te se pri pokretanju Gazeba unutar ROS okruženja sučelje objavljuje kao stvarno.
@@ -507,7 +507,7 @@ Zahvaljujući ovoj činjenici, sustav je moguće razvijati za simulaciju i stvar
 
 \chapter{Kinematika manipulatora}
 Modularna arhitektura našeg sustava dopušta integraciju manipulatora sa različitim razinama mogućnosti API-ja.
-Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, odlučeno je da radi kompletnosti izvedbe moramo predvidjeti i slučaj kada su dostupne samo naredbe pomicanja zglobova.
+Unatoč tome što većina komercijalnih manipulatora dolazi sa već izvedenim naprednim kinematičkim funkcijama, odlučeno je da radi kompletnosti izvedbe moraju predvidjeti i slučaj kada su dostupne samo naredbe pomicanja zglobova.
 Ovo poglavlje prikazuje teoretsku pozadinu programskog rješenja kinematike neredundantnog manipulatora izvedenog unutar našeg sustava na primjeru Jaco robotske ruke.
 Pošto Jaco robotska ruka ima 6 stupnjeva slobode , sa stajališta složenosti kinematike ovaj izbor predstavlja svojevrsni najgori slučaj.
 Kinematičko rješenje provjerava se u Matlab programskom paketu kako bi se ustanovila numerička stabilnost rješenja i mogući nedostaci.
@@ -545,9 +545,9 @@ Rezultati zamišljenog postupka potom se ispituju na matematičkom modelu koriš
 
 \section{Direktna i inverzna kinematika Jaco robotske ruke}\label{direkt i inverz}
 \subsection{Direktna kinematika}
-Problem direktne kinematike rješavamo tako da prvo postavimo koordinatne sustave koji odgovaraju svakom pojedinačnom zglobu prema pravilima D-H postupka.
-Iz međusobnih udaljenosti i razlika u orijentaciji ovih zglobova porizlaze D-H parametri koje koristimo za sintezu matrica homogenih transformacija.
-Množenjem dobivenih matrica dobivamo matricu koja izražava poziciju i orijentaciju alata izražene Kartezijevim koordinatama u ovisnosti o zakretu zglobova.
+Problem direktne kinematike je rješavan tako da su prvo postavljeni koordinatni sustavi koji odgovaraju svakom pojedinačnom zglobu prema pravilima D-H postupka.
+Iz međusobnih udaljenosti i razlika u orijentaciji ovih zglobova proizlaze D-H parametri koji su korišteni za sintezu matrica homogenih transformacija.
+Množenjem dobivenih matrica dobiva se matrica koja izražava poziciju i orijentaciju alata izražene Kartezijevim koordinatama u ovisnosti o zakretu zglobova.
  
 \subsubsection{D-H Parametri}
 D-H parametri standardizirani su način prikaza kinematičkog lanca u robotici.
@@ -774,7 +774,7 @@ U generalnom slučaju Jacobijeva matrica predstavlja matricu dimenzija $n \times
 \end{bmatrix}
 \end{equation}
 U slučaju kada ova matrica predstavlja prostor vektora konfiguracije $\mathbf{w}$, vrijedi $k=6$.
-Ove parametre ponekad nije jednostavno analitički odrediti, stoga je korištena geometrijska metoda kojom zaobilazimo deriviranje. 
+Ove parametre ponekad nije jednostavno analitički odrediti, stoga je korištena geometrijska metoda kojom se zaobilazi deriviranje. 
 Neka je $\mathbf{p}_{j}$ pozicija j-tog zgloba u baznom koordinatnom sustavu i neka je $\mathbf{z}_{j}$ jedinični vektor osi rotacije j-tog zgloba. 
 Komponente rotacijskog dijela Jakobijana $J_{\bm{\omega}_j}$ jednake su jediničnim vektorima osi rotacije zgloba u baznom koordinatnom sustavu:
 \begin{equation}
@@ -836,7 +836,7 @@ Jedan prijedlog korišten pri testiranju koncepta jest postavljanje konstante na
 \begin{equation}
 \Delta \bm{\theta} = \left(\mathbf{J}^{\dagger} \mathbf{J} + \lambda^2\mathbf{I}\right)^{-1}\mathbf{J}^{\dagger} \Delta \mathbf{w} \label{dlq2}
 \end{equation}
-Ispostavlja se da je ovakva izvedba superiorna prema ostalim metodama, što pokazujemo u odlomku \ref{provjera}.
+Ispostavlja se da je ovakva izvedba superiorna prema ostalim metodama, što se pokazuje u odlomku \ref{provjera}.
 Primjećeno je da izraz \ref{dlq2} za $\lambda = 0$ postaje \ref{jacob3}.
 
 \subsection{Upravljačka petlja}\label{kin_upr}
@@ -954,9 +954,9 @@ Kretanje koje uključuje rotacije pokazalo se nešto većim izazovom za metodu b
 Slika a) (lijevo) sadrži translacijski odziv, b) (desno) sadrži odziv orijentacije sustava u Eulerovim kutevima.} \label{rot1m}
 \end{figure}
 
-Sa slike \ref{rot1m} vidi se kako pri isklučivo rotacijskom kretanju korištenjem izraza \ref{jac_approx2} ne možemo dobiti zadovoljavajuće rješenje.
+Sa slike \ref{rot1m} vidi se kako pri isklučivo rotacijskom kretanju korištenjem izraza \ref{jac_approx2} ne može se dobiti zadovoljavajuće rješenje.
 Ovaj slučaj jednostavan je dokaz ranije tvrdnje kako "obični" Jakobijan često nije dovoljno numerički stabilan.
-Kako bi doskočili ovom problemu koristimo metodu prigušenih najmanjih kvadrata iz izraza \ref{dlq2} sa faktorom $\lambda = 0.2$.
+Kako bi doskočili ovom problemu korištena je metoda prigušenih najmanjih kvadrata iz izraza \ref{dlq2} sa faktorom $\lambda = 0.2$.
 \begin{figure}[h!]
 \centering
 \includegraphics[width = 0.49\textwidth]{matlab_rot2}
@@ -1000,14 +1000,14 @@ Postoje mnogobrojni načini kojima se može upravljati pokretima ruke. U ovom ra
 
 Problem detekcije položaja ruke relativno uspješno je riješen i kod klasičnih slika (npr. \cite{de2011model}, \cite{stenger2001model} ili \cite{rehg1994visual}), ali je taj pristup obilježen prevelikom ovisnošću o svjetlosnim parametrima slike te potrebom za većim računalnim resursima. Takvi zahtjevi uvelike otežavaju detekciju u stvarnom vremenu na osobnom računalu.
 
-U detekciji objekata kod dubinske slike, prikladna je većina pristupa detekciji objekata kao kod klasične slike s intenzitetom svjetlosti u pojedinim točkama. Pri tome dubinsku sliku možemo promatrati kao klasičnu sivu sliku te raditi detekcije nad istom, ali ne smijemo zaboraviti da informacija koju sadrži pojedini slikovni element ne odgovara intenzitetu, već je mjera udaljenosti. Također uobičajena crno-bijela slika se sastoji od 8-bitnih vrijednosti što polučuje 256 različitih slikovnih elemenata te u velikom broju slučajeva možemo biti zadovoljni s tim. Za razliku od uobičajene crno-bijele slike, kod dubinske slike sa 256 različitih slikovnih elemenata sposobni smo detektirati 256 različitih dubina, što nije dovoljno ukoliko želimo detekciju na većem rasponu ($1m$) uz veliku preciznost ($1mm$). Stoga je u slučaju dubinske slike uobičajen zapis pomoću 2 okteta ili broja s jednostrukom preciznosti po IEEE 754 standardu. Ovaj potonji zapis kompatibilan je s korištenom OpenCV bibliotekom.
+U detekciji objekata kod dubinske slike, prikladna je većina pristupa detekciji objekata kao kod klasične slike s intenzitetom svjetlosti u pojedinim točkama. Pri tome dubinska slika se može promatrati kao klasična siva slika te se može raditi detekcije nad istom, ali se ne smije zaboraviti da informacija koju sadrži pojedini slikovni element ne odgovara intenzitetu, već je mjera udaljenosti. Također uobičajena crno-bijela slika se sastoji od 8-bitnih vrijednosti što polučuje 256 različitih slikovnih elemenata što je u većini slučajeva zadovoljavajuće. Za razliku od uobičajene crno-bijele slike, kod dubinske slike s 256 različitih slikovnih elemenata može se detektirati 256 različitih dubina, što nije dovoljno ukoliko se želi ostvariti detekciju na većem rasponu ($1m$) uz veliku preciznost ($1mm$). Stoga je u slučaju dubinske slike uobičajen zapis pomoću 2 okteta ili broja s jednostrukom preciznosti po IEEE 754 standardu. Ovaj potonji zapis kompatibilan je s korištenom OpenCV bibliotekom.
 
 Razvijeni detekcijski algoritam podijeljen je u dvije slijedne komponente. Lokalizacija dlana u slici te određivanje parametara položaja u kojem se dlan nalazi.
 
 \section{Lokalizacija dlana u slici}
 Određivanje lokacije ruke na dubinskoj slici je kao i kod klasičnih slika, prvi korak u preciznom detektiranju pložaja u kojem se ruka nalazi. Postoje mnogobrojne metode koje omogućuju rješavanje takvog problema, ali vrlo rijetko se nalazi metoda koja ne koristi neki oblik pomagala kako bi se što lakše i brže odredila lokacija ruke na dubinskoj slici. Tako se više vremena može posvetiti samom određivanju položaja u kojem se ruka nalazi.
 
-S obzirom da uvođenjem dodatnih dimenzija slike povećavamo kompleksnost sustava, takvi pokušaji su zanemareni, ali valja spomenuti kako se filtriranjem isključivo boje kože može olakšati pretraga ruke. Neki od takvih pristupa koriste brzu detekciju lica i stvaranje uzoraka parametara boje kože detektirane osobe u svrhu poboljšavanja filtera boje pomoću dobivenih parametara.
+S obzirom da uvođenjem dodatnih dimenzija slike se povećava kompleksnost sustava, takvi pokušaji su zanemareni, ali valja spomenuti kako se filtriranjem isključivo boje kože može olakšati pretraga ruke. Neki od takvih pristupa koriste brzu detekciju lica i stvaranje uzoraka parametara boje kože detektirane osobe u svrhu poboljšavanja filtera boje pomoću dobivenih parametara.
 
 \subsection{Slične metode}
 Qian i suradnici razvili su jednu od najkvalitetnijih metoda danas \cite{qian2014realtime}. Metoda inicijalno pretpostavlja kako se ruka nalazi najbliže kameri u odnosu na ostale objekte u dubinskoj slici. Također, pretpostavlja korištenje nereflektirajuće narukvice na zapešću kojom se lako može izolirati ruka od okoline algoritmom poplavljivanja interesnog područja (eng. \textit{flood fill}).
@@ -1017,7 +1017,7 @@ Bolja inicijalna metoda preuzeta je iz rada Shottona i suradnika \cite{shotton20
 f_{\theta}(I,\mathbf{x})=d_{I}(\mathbf{x}+ \frac{\mathbf{u}}{d_{I}(\mathbf{x})})-d_{I}(\mathbf{x}+ \frac{\mathbf{v}}{d_{I}(\mathbf{x})})\end{equation}
 Zatim se za svaki slikovni element $\mathbf{x}$, učenjem šume nasumičnih stabala odluke (eng. \textit{random decision forrest}), odredi svega nekoliko parova odmaka $(\mathbf{u},\mathbf{v})$ koji za svaki slikovni element dobro binarno klasificiraju da li on pripada naučenom skupu objekata ili ne.
 
-Grupiranjem slikovnih elemenata koji su imali pozitivan odziv klasifikatora možemo izolirati ruku ili više njih na dubinskoj slici.
+Grupiranjem slikovnih elemenata koji su imali pozitivan odziv klasifikatora može se izolirati ruka ili više njih na dubinskoj slici.
 
 Iako je metoda uspješna i relativno brza, pogotovo na grafičkoj kartici za koju je primarno namijenjena, u slučaju ovog rada nedostatak takve metode bilo bi trajanje njenog učenja. Naime, autori navode kako na klasteru od 1000 jezgara učenje šume od 3 stabla do dubine 20 traje 1 dan, a uzevši u obzir nedostatak navedenih resursa, takav pristup u ovom radu nije moguć.
 
@@ -1032,7 +1032,7 @@ Jedna od mogućih aproksimativnih formula za preslikavanje dispariteta u udaljen
 	\label{eq:approx_raw_disparity_to_mm}
 	z_{d}(\mathbf{x})=\frac{1000}{-0.00307*d(\mathbf{x})+3.33}
 \end{equation}
-Dobivenim vrijednostima dubine možemo izračunati $x$ i $y$ vrijednosti koordinantnog sustava na sljedeći način:
+Dobivenim vrijednostima dubine može se izračunati $x$ i $y$ vrijednosti koordinantnog sustava na sljedeći način:
 \begin{equation}
 	\label{eq:raw_disparity_to_mm_x}
 	    x(z,u)=0.0021(v - 320)(z-10) 
@@ -1057,7 +1057,7 @@ slika (c) (lijevo dolje) izoliranje dlana u vodoravnoj ravnini,
 slika (d) (desno dolje) izoliranje šake} \label{successful_palm_isolation}
 \end{figure}
 
-Na slikama \ref{successful_palm_isolation} vidimo primjere ispravne izolacije dlana na dubinskoj slici. Radilo se o uspravnom dlanu (a), dlanu s dorzalne strane (b), pa čak dlanu u vodoravnoj ravnini (c) ili zatvorenom dlanu (d), ovakav jednostavni detektor je sposoban razlučiti dlan kako bi što više procesnog vremena mogao prepustiti sljedećim fazama detekcije.
+Na slikama \ref{successful_palm_isolation} prikazani su primjeri ispravne izolacije dlana na dubinskoj slici. Radilo se o uspravnom dlanu (a), dlanu s dorzalne strane (b), pa čak dlanu u vodoravnoj ravnini (c) ili zatvorenom dlanu (d), ovakav jednostavni detektor je sposoban razlučiti dlan kako bi što više procesnog vremena mogao prepustiti sljedećim fazama detekcije.
 \begin{figure}[h!]
 \centering
 \includegraphics[width = 0.49\textwidth]{detekcija/izolacija-zadovoljavajuce-1}
@@ -1083,7 +1083,7 @@ Jednom kada je dlan segmentiran od pozadine znatno se olakšavaju daljnje operac
 
 Neki od ključnih postupaka u detekciji izvedeni su pomoću biblioteke OpenCV:
 \begin{enumerate}[label=$\bullet$]
-	\item \textbf{Segmentacija slike na osnovu praga} je postupak prilikom kojeg se s obzirom na željenu vrijednost praga može konstruirati binarna slika (maska) gdje jedna vrijednost pokriva sve elemente čija je vrijednost ispod praga, a druga vrijednost sve elemente iznad praga. Na slici \ref{image_segmentation} (b) vidimo binarnu sliku dobivenu segmentacijom po dubini slike (a) pri čemu je prag određen kao $110mm$ u dubinu od minimalne vrijednosti dubine na slici.
+	\item \textbf{Segmentacija slike na osnovu praga} je postupak prilikom kojeg se s obzirom na željenu vrijednost praga može konstruirati binarna slika (maska) gdje jedna vrijednost pokriva sve elemente čija je vrijednost ispod praga, a druga vrijednost sve elemente iznad praga. Na slici \ref{image_segmentation} (b) prikazana je binarna slika dobivena segmentacijom po dubini slike (a) pri čemu je prag određen kao $110mm$ u dubinu od minimalne vrijednosti dubine na slici.
 
 \begin{figure}[h!]
 \centering
@@ -1092,9 +1092,9 @@ Neki od ključnih postupaka u detekciji izvedeni su pomoću biblioteke OpenCV:
 \caption{Segmentacija slike na osnovu praga, lijevo ulazna dubinska slika i desno generirana maska} \label{image_segmentation}
 \end{figure}	
 
-\item \textbf{Dilatacija i erozija binarne slike} su morfološke transformacije. Dilatacija je transformacija prilikom koje se generira nova slika iste veličine. Za svaki osvijetljeni slikovni element u početnoj slici se u ovoj slici osvjetljava element na toj lokaciji zajedno s $n$ slikovnih elemenata u njegovoj okolini. Takvim postupkom smo povećali osvijetljene površine na slici. Erozija je slična dilataciji s razlikom što se postupak temelji na neosvijetljenim slikovnim elementima.
+\item \textbf{Dilatacija i erozija binarne slike} su morfološke transformacije. Dilatacija je transformacija prilikom koje se generira nova slika iste veličine. Za svaki osvijetljeni slikovni element u početnoj slici se u ovoj slici osvjetljava element na toj lokaciji zajedno s $n$ slikovnih elemenata u njegovoj okolini. Takvim postupkom povećane su osvijetljene površine na slici. Erozija je slična dilataciji s razlikom što se postupak temelji na neosvijetljenim slikovnim elementima.
 
-Na slici \ref{morph_transform} (c) je prikazana morfološka transformacija izvorne slike (a) operacijom zatvaranja (dilatacija pa erozija) uz djelovanje na okolnih 8 slikovnih elemenata. Kao što vidimo ovakav slijed transformacija pokriva moguće šumove unutar osvijetljenog dijela slike te može spojiti bliske skupine osvijetljenih slikovnih elemenata što je korisno ako na primjer šum \textit{odsiječe} prst od ostatka ruke.
+Na slici \ref{morph_transform} (c) je prikazana morfološka transformacija izvorne slike (a) operacijom zatvaranja (dilatacija pa erozija) uz djelovanje na okolnih 8 slikovnih elemenata. Kao što je prikazano ovakav slijed transformacija pokriva moguće šumove unutar osvijetljenog dijela slike te može spojiti bliske skupine osvijetljenih slikovnih elemenata što je korisno ako na primjer šum \textit{odsiječe} prst od ostatka ruke.
 
 \begin{figure}[h!]
 \centering
@@ -1160,13 +1160,13 @@ Nakon što su definirane značajke, generirano je 2559 ispitnih primjera od koji
 \label{scatter_me}
 \end{figure}
 
-U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvije klase, zatvorene i otvorene dlanove s greškom od 3.4\%. Težilo se preciznijoj detekciji zatvorenog dlana, što je uzrokovalo gubitak u preciznosti detekcije otvorenog dlana. Takav pristup je vođen pretpostavkom da prilikom upravljanja robotskom rukom zatvoreni dlan podrazumijeva kako ruka drži neki objekt te želimo biti sigurni kako ga neće olako ispustiti bez naše volje. Iako za neki teži problem ovakav pristup detekciji otvorenosti dlana ne bi bio dobar te bismo se trebali okrenuti naprednijim metodama, u ovom slučaju rezultat je sasvim zadovoljavajuć s obzirom na poprilično jasnu distinkciju između dviju klasa.
+U ravnini značajki grafičkom metodom je aproksimiran pravac koji razdvaja dvije klase, zatvorene i otvorene dlanove s greškom od 3.4\%. Težilo se preciznijoj detekciji zatvorenog dlana, što je uzrokovalo gubitak u preciznosti detekcije otvorenog dlana. Takav pristup je vođen pretpostavkom da prilikom upravljanja robotskom rukom zatvoreni dlan podrazumijeva kako ruka drži neki objekt te želimo biti sigurni kako ga neće olako ispustiti bez naše volje. Iako za neki teži problem ovakav pristup detekciji otvorenosti dlana ne bi bio dobar te bi se trebalo okrenuti naprednijim metodama, u ovom slučaju rezultat je sasvim zadovoljavajuć s obzirom na poprilično jasnu distinkciju između dviju klasa.
 
 Dobiveni pravac ima parametre $k = 0.67635$ i $l=0.035558$ koji se koriste u detektoru prilikom određivanja zatvorenosti dlana.
 
 \subsubsection{Rezultati}
 \label{sec:tuning}
-Posjedovanjem slijednih slika možemo ublažiti utjecaje mogućih oscilacija na detekciju.
+Posjedovanjem slijednih slika može se ublažiti utjecaji mogućih oscilacija na detekciju.
 
 Prilikom određivanja zatvorenosti dlana dobivena vrijednost omjera (Izraz \ref{eq:closure_feature_1}) se sprema u vektor koji sadrži prethodnih $ n $  omjera iz prethodnih $n$ slika te se u pojedinom trenutku $t$ vrijednost može odrediti pomoću težinskog prosjeka vrijednosti u vektoru.
 \begin{equation}\label{eq:advanced_closure_feature}
@@ -1174,7 +1174,7 @@ F_{1}(\mathbf{s}(t))=\sum_{0}^{n-1} w_{i}f_{z}(\mathbf{s}(t-i))
 \end{equation}
 Iako inicijalno je razmatrana mogućnost Gaussove raspodjele težina ($w_{i}$), ipak dovoljno dobrim klasifikatorom se iskazala aritmetička sredina zadnjih $n=7$ slika. Sasvim analogno se pristupa s drugom značajkom (Izraz \ref{eq:closure_feature_2}).
 
-Ispitana je brzina pojedine detekcije detektora. Ako izuzmemo vrijeme koje je potrebno Kinectu da dostavi sliku, vrijeme detekcije implementacije detektora neoptimiziranom Python skriptom je $(7.7 \pm 1.6) ms$ ispitano na procesoru porodice \textit{Intel Core i5}. Takva brza detekcija posljedica je jednostavne metode koji ne sadrži računski zahtjevne algoritme. Kako je Kinect u mogućnosti generirati oko 25 slika u sekundi, a algoritam radi brzinom većom od 125 slika u sekundi, postoji veliki prostor za nadogradnju mogućnosti algoritma.
+Ispitana je brzina pojedine detekcije detektora. Ako se izuzme vrijeme koje je potrebno Kinectu da dostavi sliku, vrijeme detekcije implementacije detektora neoptimiziranom Python skriptom je $(7.7 \pm 1.6) ms$ ispitano na procesoru porodice \textit{Intel Core i5}. Takva brza detekcija posljedica je jednostavne metode koji ne sadrži računski zahtjevne algoritme. Kako je Kinect u mogućnosti generirati oko 25 slika u sekundi, a algoritam radi brzinom većom od 125 slika u sekundi, postoji veliki prostor za nadogradnju mogućnosti algoritma.
 
 Ispitivanje točnosti detektora može se izvesti na dva načina. Kako detektor vrši detekciju na jednoj slici, a koristi slijedne slike za ispravak mogućih nepravilnosti može se očekivati da će u slijednim slikama detektor raditi bolje.
 
@@ -1246,7 +1246,7 @@ Prethodna metoda se temelji na jednostavnim, ali vrlo uspješnim heuristikama. I
 
 U nedostatku bolje opreme (konkretno žiroskopa kakav se nalazi u većini mobilnih uređaja) koja bi omogućila brže i preciznije prikupljanje željenih podataka s detaljnijim opisom poze dlana, valjalo je osmisliti efikasan način prikupljanja što većeg broja raznovrsnih podataka uz njihovo precizno označavanje.
 
-Klasifikator poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i u prethodnoj metodi, dok drugi određuje rotaciju dlana oko x osi. Takva rotacija omogućuje robotskoj ruci da uhvati nešto iznad, ispred ili ispod dlana te zbog toga je odabrana kao najkorisnija u usporedbi s rotacijama oko y ili z osi. Podaci su prikupljani u 15 različitih klasa kao kartezijev produkt tri stupnja zatvorenosti dlana $ (0,0.5,1)$ te 5 različitih rotacija oko x osi $(-90\deg, -45\deg, 0\deg, 45\deg, 90\deg)$. Kada bismo u istu proceduru uključili i druge dvije rotacije, tada bi ukupan broj klasa bio $3\cdot5\cdot5\cdot5 =375$ što uz dane resurse ne bi bilo izvedivo.
+Klasifikator poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i u prethodnoj metodi, dok drugi određuje rotaciju dlana oko x osi. Takva rotacija omogućuje robotskoj ruci da uhvati nešto iznad, ispred ili ispod dlana te zbog toga je odabrana kao najkorisnija u usporedbi s rotacijama oko y ili z osi. Podaci su prikupljani u 15 različitih klasa kao kartezijev produkt tri stupnja zatvorenosti dlana $ (0,0.5,1)$ te 5 različitih rotacija oko x osi $(-90\deg, -45\deg, 0\deg, 45\deg, 90\deg)$. Kada bi u istu proceduru bile uključene i druge dvije rotacije, tada bi ukupan broj klasa bio $3\cdot5\cdot5\cdot5 =375$ što uz dane resurse ne bi bilo izvedivo.
 
 \begin{figure}[h!]
 \centering
@@ -1256,7 +1256,7 @@ Klasifikator poze ima dva izlaza. Prvi određuje stupanj otvorenosti dlana kao i
 
 Ukupno je prikupljeno $61 395$ označenih slika dlana podijeljenih u 3 skupa (učenje, validacija i ispitivanje) u omjeru $8:1:1$. Prikupljene slike su dubinske slike dlana dobivenog detekcijom segmentirane na osnovu praga opisanog u postupku detekcije te binarizirane tako da slikovni elementi dlana imaju vrijednost $1$, a ostali $0$ (slika \ref{covnet-dataset}).
 
-Razlog binarizaciji i segmentaciji leži u tome što pri učenju modela želimo reducirati količinu informacija koje klasifikator dobiva na ulaz u postupku učenja kako ih ne bi prenaučio. Naime, uklanjanjem pozadine klasifikator neće biti opterećen time što je u pozadini dlana već morati naučiti heuristike isključivo temeljem slikovnih elemenata dlana. Također, iz sličnog razloga ne želimo klasifikatoru pružiti informaciju na kojoj udaljenosti se dlan nalazio u datoj slici kako se ne bi oslonio i na tu informaciju.
+Razlog binarizaciji i segmentaciji leži u tome što pri učenju modela želi se reducirati količinu informacija koje klasifikator dobiva na ulaz u postupku učenja kako ih ne bi prenaučio. Naime, uklanjanjem pozadine klasifikator neće biti opterećen time što je u pozadini dlana već morati naučiti heuristike isključivo temeljem slikovnih elemenata dlana. Također, iz sličnog razloga ne želi se klasifikatoru pružiti informaciju na kojoj udaljenosti se dlan nalazio u datoj slici kako se ne bi oslonio i na tu informaciju.
 
 
 \subsubsection{Arhitektura}\label{arhitektura-mreze}
@@ -1302,7 +1302,7 @@ Pretpostavka dobro naučenog modela je ta da na toj razini je mreža dovoljno do
 \caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje grupiranih po označenoj otvorenosti.} \label{tsne-otvorenost}
 \end{figure}
 
-Na grafu \ref{tsne-otvorenost} možemo primjetiti kako su većinom primjeri dobro grupirani, a najviše odskaču primjeri za poluotvoren dlan što se i moglo pretpostaviti s obzirom kako je ona najlošije definirana klasa, kao nešto između otvorenog i zatvorenog dlana.
+Na grafu \ref{tsne-otvorenost} može se primjetiti kako su većinom primjeri dobro grupirani, a najviše odskaču primjeri za poluotvoren dlan što se i moglo pretpostaviti s obzirom kako je ona najlošije definirana klasa, kao nešto između otvorenog i zatvorenog dlana.
 
 \begin{figure}[h!]
 \centering
@@ -1310,7 +1310,7 @@ Na grafu \ref{tsne-otvorenost} možemo primjetiti kako su većinom primjeri dobr
 \caption{Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mreže metodom t-SNE nad svim podacima za učenje grupiranih po označenom kutu dlana.} \label{tsne-kut}
 \end{figure}
 
-Pojava okluzije u dubinskoj slici oslabljuje kvalitetu detekcije malih površina te tako dlan postavljen u xz ravninu definiranog koordinatnog sustava je zahtjevno detektirati pa time i klasificirati. Ipak mreža je uspjela i takav problem rješiti te je zanimljivo promotriti t-SNE prikaz obojan po klasama orijentacije dlana (graf \ref{tsne-kut}) gdje vidimo kako su primjeri horizontalno postavljenog dlana (zeleno) relativno udaljeni od primjera vertikalno postavljenog dlana te da između njih se nalaze klase dlana pod kutem od $45$ i $-45$ stupnjeva u odnosu na horizontalu što namo može ukazati na to da je mreža naučila interpolirati između horizontalnog i vertikalnog dlana. Time je opravdano interpoliranje izlaza neuronske mreže kako je opisano u prethodnom odlomku (\ref{arhitektura-mreze}).
+Pojava okluzije u dubinskoj slici oslabljuje kvalitetu detekcije malih površina te tako dlan postavljen u xz ravninu definiranog koordinatnog sustava je zahtjevno detektirati pa time i klasificirati. Ipak mreža je uspjela i takav problem rješiti te je zanimljivo promotriti t-SNE prikaz obojan po klasama orijentacije dlana (graf \ref{tsne-kut}) gdje se vidi kako su primjeri horizontalno postavljenog dlana (zeleno) relativno udaljeni od primjera vertikalno postavljenog dlana te da između njih se nalaze klase dlana pod kutem od $45$ i $-45$ stupnjeva u odnosu na horizontalu što može ukazati na to da je mreža naučila interpolirati između horizontalnog i vertikalnog dlana. Time je opravdano interpoliranje izlaza neuronske mreže kako je opisano u prethodnom odlomku (\ref{arhitektura-mreze}).
 
 
 \begin{figure}[h!]
@@ -1321,7 +1321,7 @@ Pojava okluzije u dubinskoj slici oslabljuje kvalitetu detekcije malih površina
 
 Zanimljivo je pogledati i brojnost nakupina istovjetnih klasa na grafovima \ref{tsne-kut} i \ref{tsne-otvorenost}, gdje u oba slučaja neke klase imaju više udaljenih nakupina iako pripadaju istoj klasi. Graf \ref{tsne-all} kao kartezijev produkt oba elementa klasfikacije (otvorenost i orijentacija) može ponuditi objašnjenje tog naizgled problema. Naime, na izlazu mreže mogu se pojaviti 15 različitih slučajeva, koji su u grafu prikazani različitim bojama. Može se primjetiti kako primjeri istih elemenata kartezijevi produkta klasa zauzimaju puno kompaktinij prostor nego gledajući svaki element klasifikacije zasebno.
 
-Ovakvom analizom možemo zaključiti kako će se najveće greške prilikom klasifikacije dešavati u području horizontalnog dlana što i ja bilo za očekivati s obzirom na lošu kvalitetu ulazne slike u takvim pozama zbog okluzija.
+Ovakvom analizom može se zaključiti kako će se najveće greške prilikom klasifikacije dešavati u području horizontalnog dlana što i ja bilo za očekivati s obzirom na lošu kvalitetu ulazne slike u takvim pozama zbog okluzija.
 
 Neuronska mreža dobivena ovakvim postupkom sposobna je klasificirati ~1200 slika u sekundi na gore navedenoj grafičkoj kartici, a 160 slika u sekundi na procesoru porodice \textit{Intel Core i7}. U svakom slučaju klasifikacija će i na slabijim današnjim procesorima raditi u stvarnom vremenu, što je i bio cilj.
 
@@ -1370,14 +1370,14 @@ Zbog ograničenja pri detekciji orijentacije dlana, trenutna orijentacija (klasi
 \end{algorithm}
 
 Vektor $E_i$ predstavlja \textit{vektor razlike konfiguracija} i koristi se u daljnjim koracima algoritma, koji se ovisno o dostupnim naredbama konfigurira u dva različita oblika.
-Prvi oblik se koristi pri dostupnoj naredbi Kartezijske brzine izvršnog člana, kojom možemo direktno narediti kretanje po x,y i z osima koordinatnog sustava baze.
+Prvi oblik se koristi pri dostupnoj naredbi Kartezijske brzine izvršnog člana, kojom se može direktno narediti kretanje po x,y i z osima koordinatnog sustava baze.
 Drugi oblik koristi se ako je dostupno postavljanje brzine zglobova, što ga čini složenijim.
 
 \subsection{Inicijalizacija sustava}
 Prvi korak pri inicijalizaciji sustava sastoji se od pokretanja sklopovskih sučelja.
 Samo sučelje jest programska rutina ostvarena tako da se API funkcije manipulatora "umotava" u \texttt{hardware\_interface} klasu koja je dio \texttt{ros\_control} paketa.
 Pri pokretanju cjelokupnog sustava , sučelje se pokreće prvo i čini granicu između algoritama i naredbi koje direktno pokreću manipulator.
-Moguće je ostvariti više vrsta sučelja te u nastavku obrađujemo dva slučaja.
+Moguće je ostvariti više vrsta sučelja te u nastavku se obrađuju dva slučaja.
 
 \subsubsection{Sučelje brzine izvršnog člana}
 U slučaju dostupnosti sklopovskog sučelja koje dopušta direktno postavljanje kartezijske brzine, algoritam se znatno pojednostavljuje.
@@ -1462,7 +1462,7 @@ Vrijednosti vezane uz izvršni član neovisne su o sučelju i šalju se direktno
 
 \subsection{Kinematika}
 Biblioteka KDL nije jedina, a vjerojatno ni najkvalitetnija dostupna metoda rješavanja općeg kinematičkog problema.
-Kako bi ostavili prostora za kvalitetnijeg nasljednika ili moguće vlastite implementacije naprednijih metoda, kinematiku smo odvojili u diskretnu komponentu sustava.
+Kako bi bio ostaviljen prostor za kvalitetnijeg nasljednika ili moguće vlastite implementacije naprednijih metoda, kinematika je odvojena u diskretnu komponentu sustava.
 Kao što je ranije spomenuto, sve funkcije vezane uz kinematičke kalkulacije sadržane su u  \texttt{Kinematics} klasi.
 
 Pri inicijalizaciji kalse unutar glavnog čvora prvo je potrebno konstruirati kinematički lanac od semantičkog opisa sadržanog u URDF datoteci.
@@ -1476,12 +1476,12 @@ Pri pozivu funkcije \texttt{CartToJnt} generira Jakobijan te računa izraz slič
 Funkcija \texttt{getFK} sadrži proceduru za rješavanje direktne kinematike, dok \texttt{getIKvel} sadrži račun vezan uz dobivanje potrebnih pomaka zglobova.
 
 Poznavajući teorijsku pozadinu iza ovakvog sustava, vlastita implementacija algoritma također je moguća.
-Unatoč tome, za KDL biblioteke odlučili smo se radi već rješenih tehničkih problema kao što su upravljanje memorijom i optimiranje performansi.
+Unatoč tome, za odlučeno je koristiti KDL biblioteku radi već rješenih tehničkih problema kao što su upravljanje memorijom i optimiranje performansi.
 Sustav mora vršiti izračune relativno visokom frekvencijom i stoga bilo kakvo \textit{curenje} memorije može ostaviti trag na performansama.
 
 \section{Simuliranje sustava}\label{simuliranje}
 Ispravnost sustava bilo je potrebno testirati na simulaciji kako pri stvarnoj primjeni ne bi došlo do oštećenja korištenog manipulatora.
-Za postizanje simulacije manipulatora koristili smo Gazebo programski paket.
+Za postizanje simulacije manipulatora korišten je Gazebo programski paket.
 
 Kao što je prije spomenuto, Gazebo ima ugrađenu kompatibilnost sa \texttt{ros\_contr- ol} paketom te nudi opciju stvaranja "lažnog" sklopovskog sučelja za simulaciju.
 Velika prednost Gazeba leži upravo u navedenoj kompatibilnosti jer pri simuliranju možemo koristiti identičan kod kao i za stvarni manipulator.
@@ -1729,9 +1729,9 @@ Dobiveni rezultati (tablica \ref{ispitivanje-premjestanja}) upućuju na to kako 
 
 Valja napomenuti i kako su se studenti doimali vidno sigurniji u upravljanju pokretima vlastite ruke no robotskima, ali da su i u nekim trenucima počeli očekivati i previše od sustava, kao na primjer pokušati pomaknuti robotsku ruku u smjeru gdje ona fizički nije u mogućnosti doći.
 
-Ispitali smo i mišljenje studenata te je traženo da subjektivno ocjene iskustvo upravljanja na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka.
+Ispitano je i mišljenje studenata te je traženo da subjektivno ocjene iskustvo upravljanja na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka.
 Pri korištenju igraće palice studenti navode da „nisu imali u potpunosti osjećaj kontrole nad robotskom rukom“, te da su „neki aspekti u radu igraće palice kontraintuitivni što izaziva osjećaj nesigurnosti“. Traženo je da subjektivno ocjene iskustvo u radu s igraćom palicom na skali od 1 - 10 pri čemu su u obzir morali uzeti: jednostavnost korištenja, spretnost u izvođenju pokreta, te opći osjećaj zadovoljstva tokom izvođenja zadatka. Dobivena je prosječna ocjena 5.9/10.
-Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena saznali smo da je studentima „značajno lakše upravljati rukom na ovaj način“. Ponovno je, po istim kriterijima korištenim ranije, traženo da ocjene iskustvo u ovom načinu rada. Dobivena je prosječna ocjena 8.1/10.
+Prilikom korištenja razvijenog sustava ispitivanjem subjektivnog mišljena saznalo se da je studentima „značajno lakše upravljati rukom na ovaj način“. Ponovno je, po istim kriterijima korištenim ranije, traženo da ocjene iskustvo u ovom načinu rada. Dobivena je prosječna ocjena 8.1/10.
 
 \chapter{Zaključak}
 Sustav zamišljen kao intuitivnija alternativa konvencionalnim načinima upravljanja ostvaren je u potpunosti koristeći metode neovisne o konkretnoj sklopovskoj implementaciji. 

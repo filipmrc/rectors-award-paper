@@ -23,13 +23,18 @@
     urlcolor=cyan,
 }
 \title{Intuitivni sustav teleoperacije robotskog manipulatora korištenjem RGB-Dubinske kamere}
+\engtitle{Intuitive method of robotic manipulator teleoperation using an RGB-D camera}
 
 \begin{document}
 \begin{sazetak}
 U ovom radu razvijena je metoda upravljanja robotskim manipulatorom baziranu na imitiranju pokreta ljudske ruke. Pokrete i lokacija ruke korisnika detektirana je koristeći 3-d kameru i vlastite algoritme bazirane na strojnom učenju. Algoritam za detekciju dlana razvijen je za uporabu u stvarnom vremenu i postižemo dvije efikasne varijante. Sustav je zamišljen kao univerzalan i modularan, što ga čini primjenjivim na velikom broju manipulatora uz minimalne modifikacije. Pretpostavljen je manipulator bez ugrađenih naprednih kinematičkih funkcija, te se istražuje problematika rješavanja kinematike manipulatora u općem slučaju. Dobiveni sustav upravljanja prvo se ispituje na simulaciji Jaco robotske ruke, a potom i na stvarnoj robotskoj ruci iste vrste. Rezultati se izlažu u obliku slika, grafova i videozapisa. Komentira se intuitivnost sustava i kvaliteta praćenja korisnikovih kretnji.
+
+\kljucnerijeci{robotika, RGB-Dubinska kamera, upravljanje, ROS, detekcija}
 \end{sazetak}
 
 \begin{abstract}
 In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and research methods of solving manipulator kinematics in the general case. The resulting control system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analysed for quality of control and simplicity of use.
+
+\keywords{robotics, RGB-D camera, control, ROS, detection}
 \end{abstract}
 \end{document}

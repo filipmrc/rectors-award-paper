@@ -6,12 +6,12 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{bm}
-\usepackage[]{mcode}
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{subcaption}
 \usepackage[font = footnotesize]{caption}
 \usepackage{fancyhdr}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
 
 \usetikzlibrary{shapes,arrows}
 \graphicspath{ {images/} }
@@ -41,6 +41,7 @@
 
 % TODO: Navedite naslov rada.
 \title{Intuitivni sustav teleoperacije robotskog manipulatora korištenjem RGB-Dubinske kamere}
+\engtitle{Intuitive method of robotic manipulator teleoperation using an RGB-D camera}
 
 % TODO: Navedite vaše ime i prezime.
 \author{Filip Marić \\ Ivan Jurin}
@@ -701,7 +702,7 @@ Množenjem ovih matrica dobiva se matrica homogene transformacije između baze r
 \label{b-a}
 \end{equation}
 
-Članovi ove matrice određuju se koristeći matlab skriptu, rezultat računa i skripta ispisani su u dodatku.
+Članovi ove matrice određuju se koristeći matlab skriptu, rezultat računa i skripta ispisani su u dodatku \ref{kinematkod}.
 Iz matrice $\mathbf{T_{alat}^{baza}}$  se dobiva potpuna informaciju o položaju alata u baznom koordinatnom sustavu kao funkcija zakreta zglobova:
 \begin{equation}
 \mathbf{w}(\bm \theta) = 
@@ -1386,8 +1387,8 @@ Pokazalo se da je ovaj pristup optimalan za brzi početak korištenja jer visoka
 
 \subsubsection{Sučelje brzine/pozicije zglobova}
 Nakon inicijalizacije, sučelje registrira pojedinačne zglobove i "spaja" se na naredbe pisanja i čitanja stanja zglobova.
-Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \texttt{ros\_control}regulatorima.
-Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \texttt{hardware\_interface} klase i neće se spajati na neodgovarajuća sučelja.
+Ovo spajanje vrši se tako da se spomenuti API naredbe umataju u funkcije čiji su pokazivači dostupni  odgovarajućim \texttt{ros\_control} regulatorima.
+Važno je spomenuti da svaki regulator ima odgovarajuću podvrstu \texttt{hard -ware\_interface} klase i neće se spajati na neodgovarajuća sučelja.
 
 Sljedeći korak je inicijalizacija sučelja, pokreće se regulator tipa \texttt{velocity\_ controllers/JointGroupVelocityController}. 
 Regulator svoje parametre učitava iz odgovarajuće konfiguracijske YAML\footnote{YAML (engl. YAML Ain't Markup Language) - \texttt{www.yaml.org}} datoteke.
@@ -1459,7 +1460,7 @@ Kako bi ostavili prostora za kvalitetnijeg nasljednika ili moguće vlastite impl
 Kao što je ranije spomenuto, sve funkcije vezane uz kinematičke kalkulacije sadržane su u  \texttt{Kinematics} klasi.
 
 Pri inicijalizaciji kalse unutar glavnog čvora prvo je potrebno konstruirati kinematički lanac od semantičkog opisa sadržanog u URDF datoteci.
-Čitanje se obavlja tako da pri pokretanju sustava datoteku učitavamo u ROS parametar \texttt{robot\_description}, koji klasa pri inicijalizaciji dohvaća i sprema kao varijablu tipa \texttt{string}.
+Čitanje se obavlja tako da pri pokretanju sustava datoteku učitavamo u ROS parametar \texttt{robot\_descripti -on}, koji klasa pri inicijalizaciji dohvaća i sprema kao varijablu tipa \texttt{string}.
 Ovaj opis zatim parsiramo pomoću KDL funkcije  \texttt{treeFromString} koja od opisa generira kinematičko stablo tipa \texttt{Tree}.
 Kinematički lanac koji opisuje manipulator iz stabla dohvaćamo pomoću funkcije \texttt{getChain} i spremamo u varijablu tipa \texttt{Chain}.
 
@@ -1476,7 +1477,7 @@ Sustav mora vršiti izračune relativno visokom frekvencijom i stoga bilo kakvo 
 Ispravnost sustava bilo je potrebno testirati na simulaciji kako pri stvarnoj primjeni ne bi došlo do oštećenja korištenog manipulatora.
 Za postizanje simulacije manipulatora koristili smo Gazebo programski paket.
 
-Kao što je prije spomenuto, Gazebo ima ugrađenu kompatibilnost sa \texttt{ros\_control} paketom te nudi opciju stvaranja "lažnog" sklopovskog sučelja za simulaciju.
+Kao što je prije spomenuto, Gazebo ima ugrađenu kompatibilnost sa \texttt{ros\_contr- ol} paketom te nudi opciju stvaranja "lažnog" sklopovskog sučelja za simulaciju.
 Velika prednost Gazeba leži upravo u navedenoj kompatibilnosti jer pri simuliranju možemo koristiti identičan kod kao i za stvarni manipulator.
 Ovakvim pristupom znatno smanjujemo vrijeme potrebno za testiranje jer uočene probleme ne moramo popravljati na dvije različite varijante koda.
 
@@ -1497,7 +1498,7 @@ Prva putanja prostire se samo u yz-ravnini te bi se u idealnom slučaju trebalo 
 \centering
 \includegraphics[width=0.49\textwidth]{xz_krug}
 \includegraphics[width=0.49\textwidth]{yz_krug}
-\caption{Prikaz zadane putanje u yz-ravnini (crveno) i njene izvedbe (plavo). \textbf{Lijevo}: prikaz u xz-ravnini, \textbf{Desno}: prikaz u yz-ravnini.} \label{krug_1}
+\caption{Prikaz zadane putanje u $yz$-ravnini (crveno) i njene izvedbe (plavo). \textbf{Lijevo}: prikaz u $xz$-ravnini, \textbf{Desno}: prikaz u $yz$-ravnini.} \label{krug_1}
 \end{figure}
 Na slici \ref{krug_1} primjećujemo kako za planarno gibanje model ima naočigled zadovoljavajuće preformanse.
 Prikaz u xz-ravnini otkriva kako ostvarujemo skoro savršeno kružnu putanju. Greška u stacionarnom stanju uzrokovana je relativno malim promjerom kruga čija zakrivljenost zahtjeva veliku brzinu sustizanja.
@@ -1506,7 +1507,7 @@ Na prikazu gibanja u yz-ravnini primjećujemo odstupanja reda veličine manjeg o
 \centering
 \includegraphics[width=0.49\textwidth]{xz_krug2}
 \includegraphics[width=0.49\textwidth]{yz_krug2}
-\caption{Prikaz zadane putanje u xz-ravnini (crveno) i njene izvedbe (plavo). \textbf{Lijevo}: prikaz u xz-ravnini, \textbf{Desno}: prikaz u yz-ravnini.} \label{krug_2}
+\caption{Prikaz zadane putanje u $xz$-ravnini (crveno) i njene izvedbe (plavo). \textbf{Lijevo}: prikaz u $xz$-ravnini, \textbf{Desno}: prikaz u $yz$-ravnini.} \label{krug_2}
 \end{figure}
 Postavljamo krug duž xz-ravnine i zabilježavamo rezultate na slici \ref{krug_2}.
 Rezultati su slični kao i kod slučaja sa slike \ref{krug_1}, te su pogreške u praćenju zanemarive kada uzmemo u obzir zamišljene aplikacije sustava.
@@ -1602,9 +1603,9 @@ Tokom testiranja primjećeno je da se najbolji rezulati dobivaju skaliranjem ove
 \end{figure}
 
 Slika \ref{fig:kinectsimkut} prikazuje kretanje vrijednosti osi rotacije u baznom koordinatnom sustavu s obzirom na zadanu naredbu rotacije.
-Zadana mjera rotacije vezana je uz odgovarajuću os na alatu manipulatora, Y.
-Na slici je vidljivo kako se projekcija osi Y na bazni koordinatni sustav najmanje mijenja s promjenama naredbe, što je očekivano jer se oko nje vrši rotacija.
-Male promjene u projekciji osi Y uzrokovane su  pomicanjem ruke korisnika pri okretanju dlana.
+Zadana mjera rotacije vezana je uz odgovarajuću os na alatu manipulatora, $y$.
+Na slici je vidljivo kako se projekcija osi $y$ na bazni koordinatni sustav najmanje mijenja s promjenama naredbe, što je očekivano jer se oko nje vrši rotacija.
+Male promjene u projekciji osi $y$ uzrokovane su  pomicanjem ruke korisnika pri okretanju dlana.
 
 Provjera ponašanja samog sustava u simulaciji pokazala je kako je sustav robustan na promjene reference te otvara mogućnost primjene na stvarnom manipulatoru.
 
@@ -1631,7 +1632,7 @@ Otvaranje i zatvaranje šake korisnika vežu se uz otvaranje i zatvaranje "šake
 Zatvaranje "šake" robotske ruke odrađuje podređena petlja sa povratnom vezom po sili, gdje se pri velikim protusilama stiskanje šake zaustavlja kako bi se izvršni član zaštitio od oštećenja.
 Upravljačko sučelje prvo se ispituje pri situacijama gdje korisnik miče i rotira ruku bez posebnog cilja, istražujući radni prostor robotske ruke.
 Nakon toga ispituju se situacije gdje je korisniku zadan konkretan zadatak kao što je podizanje objekta ili stavljanje objekta u spremnik.
-Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperimenta ograničen po z osi, kako ne bi došlo do udaranja u podlogu pri ispitivanju.
+Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperimenta ograničen po $z$ osi, kako ne bi došlo do udaranja u podlogu pri ispitivanju.
 
 
 \begin{figure}[H]
@@ -1640,7 +1641,7 @@ Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperime
 \includegraphics[width=0.45\textwidth]{jaco_kinect_yz}
 \includegraphics[width=0.45\textwidth]{jaco_kinect_xz}
 \includegraphics[width=0.45\textwidth]{jaco_kinect_xyz}
-\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u xy, yz i xz ravninama, te u prostoru.}
+\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u $xy$, $yz$ i $xz$ ravninama, te u prostoru.}
 \label{fig:jacok1}
 \end{figure}
 \begin{figure}[H]
@@ -1649,7 +1650,7 @@ Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperime
 \includegraphics[width=0.45\textwidth]{jaco_kinect2_yz}
 \includegraphics[width=0.45\textwidth]{jaco_kinect2_xz}
 \includegraphics[width=0.45\textwidth]{jaco_kinect2_xyz}
-\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u xy, yz i xz ravninama, te u prostoru.}
+\caption{Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u $xy$, $yz$ i $xz$ ravninama, te u prostoru.}
 \label{fig:jacok2}
 \end{figure}
 
@@ -1752,11 +1753,86 @@ Zaključujemo kako ovakvo upravljačko sučelje zbog svoje izrazito ljudske kara
 \bibliographystyle{fer}
 \listoffigures
 \listoftables
+\clearpage
+\appendix
+\chapter{}\label{kinematkod}
+\begin{lstlisting}
+syms C1 C2 C3 C4 C5 C6 S1 S2 S3 S4 S5 S6 d1 a2 d3 d4 d5 d6 q1 q2 q3 q4 q5 q6 dx dy dz wx wy wz J
+Sal = 0.8192;
+Cal = 0.5736;
+digits(5);
+
+%Simbolicke matrice transformacije
+T01=[C1 0 S1 0; S1 0 -C1 0; 0 1 0 d1; 0 0 0 1];
+T12=[C2 S2 0 a2*C2; S2 -C2 0 a2*S2; 0 0 -1 0; 0 0 0 1];
+T23=[C3 0 S3 0; S3 0 -C3 0; 0 1 0 d3; 0 0 0 1];
+T34  =[C4 -Cal*S4 Sal*S4 0; S4 Cal*C4 -Sal*C4 0; 0 Sal Cal d4; 0 0 0 1];
+T45  =[C5 -Cal*S5 Sal*S5 0; S5 Cal*C5 -Sal*C5 0; 0 Sal Cal d5; 0 0 0 1];
+T56  =[C6 S6 0 0; S6 -C6 0 0; 0 0 -1 d6; 0 0 0 1];
+
+%Simbolicke matrice transformacije kao funkcije zakreta zglobova
+T01 = subs(T01,[C1 S1],[cos(q1) sin(q1)]);
+T12 = subs(T12,[C2 S2],[cos(q2) sin(q2)]);
+T23 = subs(T23,[C3 S3],[cos(q3) sin(q3)]);
+T34  = subs(T34,[C4 S4],[cos(q4) sin(q4)]);
+T45  = subs(T45,[C5 S5],[cos(q5) sin(q5)]);
+T56  = subs(T56,[C6 S6],[cos(q6) sin(q6)]);
+
+%Matrice transformacije koristene u sintezi matrice Jakobijana
+T02 = T01*T12;
+T03 = T02*T23;
+T04 = T03*T34;
+T05 = T04*T45;
+T06 = T05*T56;
+
+%Sinteza matrice Jakobijana
+R01 = T01(1:3,1:3);
+R02 = T02(1:3,1:3);
+R03 = T03(1:3,1:3);
+R04 = T04(1:3,1:3);
+R05 = T05(1:3,1:3);
+R06 = T06(1:3,1:3);
+
+O01 = T01(1:3,4);
+O02 = T02(1:3,4);
+O03 = T03(1:3,4);
+O04 = T04(1:3,4);
+O05 = T05(1:3,4);
+O06 = T06(1:3,4);
+
+z0 = [0; 0; 1];
+z1 = R01*[0; 0; 1];
+z2 = R02*[0; 0; 1];
+z3 = R03*[0; 0; 1];
+z4 = R04*[0; 0; 1];
+z5 = R05*[0; 0; 1];
+
+%Rotacijski dio matrice Jakobijana
+Jw = [z0 z1 z2 z3 z4 z5];
+
+Jv1=cross(z0, O06);
+Jv2=cross(z1, O06 - O01);
+Jv3=cross(z2, O06 - O02);
+Jv4=cross(z3, O06 - O03);
+Jv5=cross(z4, O06 - O04);
+Jv6=cross(z5, O06 - O05);
+
+%Translacijski dio matrice Jakobijana
+Jv = [ Jv1 Jv2 Jv3 Jv4 Jv5 Jv6];
+
+%Matrica Jakobijana kao funkcija zakreta zglobova
+J = vpa(subs([Jv;Jw], [ d1 a2 d3 d4 d5 d6],[0.2755 0.41 -0.0098 -0.249182 -0.08376448 -0.21058224]));
+\end{lstlisting}
+
 \begin{sazetak}
 U ovom radu razvijena je metoda upravljanja robotskim manipulatorom baziranu na imitiranju pokreta ljudske ruke. Pokrete i lokacija ruke korisnika detektirana je koristeći 3-d kameru i vlastite algoritme bazirane na strojnom učenju. Algoritam za detekciju dlana razvijen je za uporabu u stvarnom vremenu i postižemo dvije efikasne varijante. Sustav je zamišljen kao univerzalan i modularan, što ga čini primjenjivim na velikom broju manipulatora uz minimalne modifikacije. Pretpostavljen je manipulator bez ugrađenih naprednih kinematičkih funkcija, te se istražuje problematika rješavanja kinematike manipulatora u općem slučaju. Dobiveni sustav upravljanja prvo se ispituje na simulaciji Jaco robotske ruke, a potom i na stvarnoj robotskoj ruci iste vrste. Rezultati se izlažu u obliku slika, grafova i videozapisa. Komentira se intuitivnost sustava i kvaliteta praćenja korisnikovih kretnji.
+
+\kljucnerijeci{robotika, RGB-Dubinska kamera, upravljanje, ROS, detekcija}
 \end{sazetak}
 
 \begin{abstract}
 In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and research methods of solving manipulator kinematics in the general case. The resulting control system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analysed for quality of control and simplicity of use.
+
+\keywords{robotics, RGB-D camera, control, ROS, detection}
 \end{abstract}
 \end{document}

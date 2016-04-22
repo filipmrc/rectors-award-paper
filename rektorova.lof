@@ -36,16 +36,17 @@
 \contentsline {figure}{\numberline {6.11}{\ignorespaces Vizualizacija izlaza zadnjeg potpuno povezanog sloja neuronske mre\IeC {\v z}e metodom t-SNE nad svim podacima za u\IeC {\v c}enje.\relax }}{47}{figure.caption.60}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {7.1}{\ignorespaces Upravlja\IeC {\v c}ka shema\relax }}{48}{figure.caption.61}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Prikaz zadane putanje u yz-ravnini (crveno) i njene izvedbe (plavo). \textbf {Lijevo}: prikaz u xz-ravnini, \textbf {Desno}: prikaz u yz-ravnini.\relax }}{54}{figure.caption.64}
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Prikaz zadane putanje u xz-ravnini (crveno) i njene izvedbe (plavo). \textbf {Lijevo}: prikaz u xz-ravnini, \textbf {Desno}: prikaz u yz-ravnini.\relax }}{55}{figure.caption.65}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Prikaz zadane putanje u $yz$-ravnini (crveno) i njene izvedbe (plavo). \textbf {Lijevo}: prikaz u $xz$-ravnini, \textbf {Desno}: prikaz u $yz$-ravnini.\relax }}{54}{figure.caption.64}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Prikaz zadane putanje u $xz$-ravnini (crveno) i njene izvedbe (plavo). \textbf {Lijevo}: prikaz u $xz$-ravnini, \textbf {Desno}: prikaz u $yz$-ravnini.\relax }}{55}{figure.caption.65}
 \contentsline {figure}{\numberline {7.4}{\ignorespaces Prikaz zadane prostorne putanje (crveno) i njene izvedbe (plavo) u Kartezijevom koordinatnom sustavu.\relax }}{55}{figure.caption.66}
 \contentsline {figure}{\numberline {7.5}{\ignorespaces Prikaz izvedbe iste putanje sa dvije razli\IeC {\v c}ite po\IeC {\v c}etne konfiguracije. Gornji red sadr\IeC {\v z}i \IeC {\v z}eljenu (crveno) i izvedenu (plavo) putanju . Donji red sadr\IeC {\v z}i prikaz po\IeC {\v c}etne konfiguracije putanje iznad.\relax }}{56}{figure.caption.67}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {8.1}{\ignorespaces Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe u simulaciji (plavo).\relax }}{58}{figure.caption.68}
 \contentsline {figure}{\numberline {8.2}{\ignorespaces Prikaz naredbe orijentacije zadane RGB-Dubinskom kamerom te odziva simulacije.\relax }}{59}{figure.caption.69}
 \contentsline {figure}{\numberline {8.3}{\ignorespaces Prikaz trajektorija zadanih ra\IeC {\v c}unalom (crveno) i njene izvedbe Jaco robotskom rukom (plavo).\relax }}{60}{figure.caption.70}
-\contentsline {figure}{\numberline {8.4}{\ignorespaces Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u xy, yz i xz ravninama, te u prostoru.\relax }}{61}{figure.caption.71}
-\contentsline {figure}{\numberline {8.5}{\ignorespaces Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u xy, yz i xz ravninama, te u prostoru.\relax }}{61}{figure.caption.72}
+\contentsline {figure}{\numberline {8.4}{\ignorespaces Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u $xy$, $yz$ i $xz$ ravninama, te u prostoru.\relax }}{61}{figure.caption.71}
+\contentsline {figure}{\numberline {8.5}{\ignorespaces Prikaz putanje zadane RGB-Dubinskom kamerom (crveno) i njene izvedbe Jaco robotskom rukom (plavo) u $xy$, $yz$ i $xz$ ravninama, te u prostoru.\relax }}{61}{figure.caption.72}
 \contentsline {figure}{\numberline {8.6}{\ignorespaces Uspje\IeC {\v s}na manipulacija objektom u prvom ispitnom scenariju.\relax }}{63}{figure.caption.73}
 \contentsline {figure}{\numberline {8.7}{\ignorespaces Uspje\IeC {\v s}na manipulacija objektom u drugom ispitnom scenariju.\relax }}{63}{figure.caption.74}
+\addvspace {10\p@ }
 \addvspace {10\p@ }

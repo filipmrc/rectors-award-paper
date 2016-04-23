@@ -17,7 +17,7 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Model Jaco robotske ruke sa ozna\IeC {\v c}enim parametrima\relax }}{19}{figure.caption.26}
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Model Jaco robotske ruke sa ozna\IeC {\v c}enim parametrima kori\IeC {\v s}tenim pri sintezi DH parametara\relax }}{20}{figure.caption.27}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Blok dijagram izvedbe upravlja\IeC {\v c}e petlje manipulatora\relax }}{27}{figure.caption.32}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Blok dijagram izvedbe upravlja\IeC {\v c}ke petlje manipulatora\relax }}{27}{figure.caption.32}
 \contentsline {figure}{\numberline {5.4}{\ignorespaces Promjena pozicije inverzom Jakobijana. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava u Eulerovim kutevima.\relax }}{29}{figure.caption.33}
 \contentsline {figure}{\numberline {5.5}{\ignorespaces Promjena orijentacije inverzom Jakobijana. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava u Eulerovim kutevima.\relax }}{29}{figure.caption.34}
 \contentsline {figure}{\numberline {5.6}{\ignorespaces Promjena orijentacije metodom prigu\IeC {\v s}enih najmanjih kvadrata. Slika a) (lijevo) sadr\IeC {\v z}i translacijski odziv, b) (desno) sadr\IeC {\v z}i odziv orijentacije sustava u Eulerovim kutevima.\relax }}{30}{figure.caption.35}

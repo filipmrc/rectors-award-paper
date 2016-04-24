@@ -1627,10 +1627,9 @@ Prvi korak sastoji se od ispitivanja praćenja jednostavnih periodičkih trajekt
 \centering
 \includegraphics[width=0.49\textwidth]{jaco_elipsa}
 \includegraphics[width=0.49\textwidth]{jaco_pravokutnik}
-\caption{Prikaz trajektorija zadanih računalom (crveno) i njene izvedbe Jaco robotskom rukom (plavo).}
+\caption{Prikaz zadanih trajektorija (crveno) i njihove izvedbe Jaco robotskom rukom (plavo).}
 \label{fig:jacooblici}
 \end{figure}
-
 Rezultati prikazani na slici \ref{fig:jacooblici} pokazuju kvalitetno praćenje trajektorije.
 Pri izvođenju pravokutne trajektorije primjećujemo zakrivljenje na kutevima karakteristično za izvođenje pravokutnih putanja, ovo ponašanje opisano je u \ref{simuliranje} i očekivano.
 Praćenje eliptične putanje vrlo je precizno te ima pogrešku reda veličine manjeg od milimetra. 
@@ -1644,7 +1643,6 @@ Zatvaranje "šake" robotske ruke odrađuje podređena petlja sa povratnom vezom 
 Upravljačko sučelje prvo se ispituje pri situacijama gdje korisnik miče i rotira ruku bez posebnog cilja, istražujući radni prostor robotske ruke.
 Nakon toga ispituju se situacije gdje je korisniku zadan konkretan zadatak kao što je podizanje objekta ili stavljanje objekta u spremnik.
 Pri tome je bitno napomenuti kako je radni prostor robotske ruke u oba eksperimenta ograničen po $z$ osi, kako ne bi došlo do udaranja u podlogu pri ispitivanju.
-
 
 \begin{figure}[H]
 \centering
@@ -1677,18 +1675,41 @@ Kašnjenje u upravljanju jedan je od glavnih faktora kod intuitivnosti i stoga o
 
 Na slici \ref{fig:jacok2} prikazano je kretanje nešto drugačijeg karaktera gdje korisnik zadržava ruku na određenim točkama.
 Lokacije na slici sa većom koncentracijom crvenih točaka nastaju kada korisnik zaustavi kretanje ruke, te translacijska naredba daje približno iste vrijednosti.
-Ovakvo kretanje događa se pri manipulaciji objektima jer korisnik na oređenim točkama objekt hvata ili mijenja orijentaciju.
-Pri ovoj karakteristici korištenja velika brzina zadavanja naredbi između točaka uzrokuje gibanje manipulatora približno po pravcu, što upravljanje čini intuitivnijim jer je lako predviditi putanju same ruke. 
+Ovakvo kretanje događa se pri manipulaciji objektima jer korisnik na oređenim točkama objekt hvata ili mijenja orijentaciju kao na slici \ref{fig:jacoorient}.
 Na prikazu u xy-ravnini moguće je primjetiti odstupanja od pravocrtnog gibanja u točkama gdje se događa naredba promjene orijentacije, tada se pozicija alata mijenja u vremenu potrebnom za izvršenje naredbe.
 Pri sporijem kretanju moguće je ostvariti potpuno praćenje putanje ruke.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.49\textwidth]{kingore}
+\includegraphics[width=0.49\textwidth]{kindolje}
+\caption{Prikaz upravljanja orijentacijom izvršnog člana.}
+\label{fig:jacoorient}
+\end{figure}
+Kao vizualna povratna veza korisniku je dostupno grafičko sučelje prikazano na slici \ref{fig:gui}.
+Na sučelju su prikazane obična i dubinska snimka, kao i superponirana informacija o detektiranom dlanu i otvorenosti.
+Ove informacije korisne su za praćenje putanje koja se zadaje manipulatoru.
+
+ \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{gui}
+	\caption{Grafičko sučelje na računalu.}
+	\label{fig:gui}
+\end{figure}
 Iz gornjih grafova (kao i iz vlastitog iskustva pri korištenju) zaključujemo da sustav ostvaruje kvalitetno vladanje.
 Pri tome je praktično ograničiti kretanje manipulatora tako da se uvijek nalazi izvan "cilindra" radijusa 5-10 cm formiranog oko njegove baze kako bi se izbjegla većina singulariteta koji smanjuju kvalitetu gibanja.
-Uz ova saznanja moguće je testirati sustav pri konkretnim zadacima kao što su podizanje i spuštanje objekta, te spremanje objekta u spremink.
+Uz ova saznanja moguće je testirati sustav izvršavajući konkretne zadatke kao što su podizanje i spuštanje objekta, te spremanje objekta u spremink.
 Pri ovim zadacima prikazanim na slikama \ref{fig:successful_grasp_1} i \ref{fig:successful_grasp_2} upravljačko sučelje pokazalo se vrlo intuitivnim.
 Rezultati ovih testiranja dostupni su u obliku video zapisa na \href{https://youtu.be/exf7TUviuSg}{ovom linku}.
-Radi činjenice da izvršni član ima samo tri prsta potrebno se ograničiti na klasu predmeta veličine ne manje od teniske loptice, što potpuno odgovara namjenjenoj funkciji Jaco robotske ruke. 
 
+Izvršni član Jaco robotske ruke ima samo tri prsta, te je zadatke potrebno ograničiti na klasu predmeta veličine veće od teniske loptice. 
+Značajna prednost našeg upravljačkog sučelja primjećena je pri hvatanju objekata, gdje je vrijeme vršenja radnje skraćeno radi intuitivnosti kontrole prilaženja objektu.
+Otvorena je i mogućnost prikaza stanja robotske ruke i njene ciljane pozicije na 3d modelima, čime korisnik dobiva bolji uvid pri finijim kretnjama.
+
+Moguće poboljšanje u budućim implementacijama nalazi se u kontroli samog grabljenja i ispuštanja objekta.
+Trenutno se nakon prilaženja objektu on mora postaviti između prstiju izvršnog člana, što čini korisnik.
+Ovaj dio radnje zauzima većinu upravljačkog vremena te se može olakšati implementacijom autonomnog hvatanja koristeći kameru u grabilici kao povratnu vezu.
+Na ovaj način vrijeme upravljanja za hvatanje svelo bi se na red veličine nekoliko sekundi.
 
 
 \begin{figure}[H]
@@ -1709,6 +1730,7 @@ Radi činjenice da izvršni član ima samo tri prsta potrebno se ograničiti na 
 	\caption{Uspješna manipulacija objektom u drugom ispitnom scenariju.}
 	\label{fig:successful_grasp_2}
 \end{figure}
+
 
 \section{Ispitivanje}
 Ispitivanje je provedeno uz pomoć 7 kolega studenata Sveučilišta u Zagrebu. Cilj ispitivanja bilo je istražiti zahtjevnost uporabe razvijenog sustava upravljanja robotskom rukom. Ispitivanjem nad kolegama s drugih fakulteta pokušano je postići bolji dojam o lakoći upravljanja kod pojedinca koji se prethodno nisu susreli s korištenjem uređaja tog tipa.

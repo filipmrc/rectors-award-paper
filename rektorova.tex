@@ -1189,46 +1189,46 @@ Ispitivanje je vršeno na 3108 slika od kojih 1323 s otvorenim dlanom i 1785  sa
 %\clearpage
 \begin{table}[h!]
 \centering
+\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u pojedinoj slici}
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
 	Broj primjeraka & 1203 & 120 &1323\\
 	Udio&90.9\%&9.1\%
 \end{tabular}
 \renewcommand{\figurename}{Tablica}
-	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u pojedinoj slici}
 	\label{fig:single_img_open}
 \end{table}
 \begin{table}[h!]
 \centering
+\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u pojedinoj slici}
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
 	Broj primjeraka & 1728 & 57 &1785\\
 	Udio&96.8\%&3.2\%
 \end{tabular}
 \renewcommand{\figurename}{Tablica}
-	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u pojedinoj slici}
 	\label{fig:single_img_close}
 \end{table}
 \begin{table}[h!]
 \centering
+\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u slijednim slikama}
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
 	Broj primjeraka & 1256 & 67 &1323\\
 	Udio&94.9\%&5.1\%
 \end{tabular}
 \renewcommand{\figurename}{Tablica}
-	\caption{Rezultati ispitivanja klasifikacije otvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_open}
 \end{table}
 \begin{table}[H]
 \centering
+\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u slijednim slikama}
 \begin{tabular}{ l || c c || r }
 	& Ispravno  & Neispravnih &Ukupno\\\hline
 	Broj primjeraka & 1740 & 45 &1785\\
 	Udio&97.5\%&2.5\%
 \end{tabular}
 \renewcommand{\figurename}{Tablica}
-	\caption{Rezultati ispitivanja klasifikacije zatvorenog dlana u slijednim slikama}
 	\label{fig:multi_img_close}
 \end{table}
 
@@ -1283,6 +1283,7 @@ U implementaciji neuronske mreže korištena je bibiloteka \textit{TensorFlow}. 
 Dobiveni rezultati prikazani su na slijedećoj tablici:
 \begin{table}[h!]
     \centering
+     \caption{Prikaz točnosti naučene konvolucijske mreže} \label{rezultati-mreze}
     \begin{tabular}{ | l  l  l  l |}
     \hline
 Vrsta skupa & Točnost otvorenosti & Točnost orijentacije & Ukupna točnost \\ \hline
@@ -1290,7 +1291,6 @@ Vrsta skupa & Točnost otvorenosti & Točnost orijentacije & Ukupna točnost \\ 
     Skup za validaciju &$97.1\%$&$94.5\%$&$92.1\%$\\
     Skup za ispitivanje & $97.0\%$&$94.6\%$&$92.2\%$\\ \hline
     \end{tabular}
-    \caption{Prikaz točnosti naučene konvolucijske mreže} \label{rezultati-mreze}
 \end{table}
 
 Kao što se vidi u tablici \ref{rezultati-mreze} ukupna točnost mreže prelazi 92\% prilikom klasifikacije na pojedinačnoj slici. Klasifikacija se dodatno poboljšava uprosječavanjem zadnjih $7$ slika dubinske kamere, kao i u odlomku \ref{brza-metoda} te tako točnost raste na 96\%. Kao što je bilo i očekivano, klasifikacija otvorenosti dlana je puno lakši problem od orijentacije te u pojedinačnim slikama je dobivena točnost od 97\%.
@@ -1787,8 +1787,9 @@ Zaključujemo kako ovakvo upravljačko sučelje zbog svoje izrazito ljudske kara
 \listoffigures
 \listoftables
 \clearpage
-\appendix
-\chapter{}\label{kinematkod}
+
+\chapter*{Dodatak A}\label{kinematkod}
+\thispagestyle{empty}
 \begin{lstlisting}
 syms C1 C2 C3 C4 C5 C6 S1 S2 S3 S4 S5 S6 d1 a2 d3 d4 d5 d6 q1 q2 q3 q4 q5 q6 dx dy dz wx wy wz J
 Sal = 0.8192;
@@ -1856,16 +1857,20 @@ Jv = [ Jv1 Jv2 Jv3 Jv4 Jv5 Jv6];
 %Matrica Jakobijana kao funkcija zakreta zglobova
 J = vpa(subs([Jv;Jw], [ d1 a2 d3 d4 d5 d6],[0.2755 0.41 -0.0098 -0.249182 -0.08376448 -0.21058224]));
 \end{lstlisting}
-
-\begin{sazetak}
+\thispagestyle{empty}
+\chapter*{Sažetak}
+\thispagestyle{empty}
 U ovom radu razvijena je metoda upravljanja robotskim manipulatorom baziranu na imitiranju pokreta ljudske ruke. Pokrete i lokacija ruke korisnika detektirana je koristeći 3-d kameru i vlastite algoritme bazirane na strojnom učenju. Algoritam za detekciju dlana razvijen je za uporabu u stvarnom vremenu i postižemo dvije efikasne varijante. Sustav je zamišljen kao univerzalan i modularan, što ga čini primjenjivim na velikom broju manipulatora uz minimalne modifikacije. Pretpostavljen je manipulator bez ugrađenih naprednih kinematičkih funkcija, te se istražuje problematika rješavanja kinematike manipulatora u općem slučaju. Dobiveni sustav upravljanja prvo se ispituje na simulaciji Jaco robotske ruke, a potom i na stvarnoj robotskoj ruci iste vrste. Rezultati se izlažu u obliku slika, grafova i videozapisa. Komentira se intuitivnost sustava i kvaliteta praćenja korisnikovih kretnji.
 
 \kljucnerijeci{robotika, RGB-Dubinska kamera, upravljanje, ROS, detekcija}
-\end{sazetak}
 
-\begin{abstract}
+\chapter*{Summary}
+\thispagestyle{empty}
 In this paper we present a method of controlling robotic manipulators based on mirroring movement of the human hand. Movement and location of the arm are detected using a 3-d camera and internally developed algorithms based on machine learning. The proposed method is developed as universal and modular, allowing use on a large number of robotic manipulators. We assume a manipulator without provided advanced kinematics functions and research methods of solving manipulator kinematics in the general case. The resulting control system is then tested on a simulation of the Jaco robotic arm and subsequently on the real Jaco arm itself. Results presented in the form of pictures, graphs and video are analysed for quality of control and simplicity of use.
 
 \keywords{robotics, RGB-D camera, control, ROS, detection}
-\end{abstract}
+%\appendix
+
+
+
 \end{document}
